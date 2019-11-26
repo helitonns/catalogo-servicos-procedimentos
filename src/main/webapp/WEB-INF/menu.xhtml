@@ -1,0 +1,28 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sm="http://primefaces.org/sapphire">
+
+    <div id="layout-menu-container" class="layout-menu-container">
+        <div id="layout-nano" class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <div class="layout-menu-wrapper">
+                    <h:form id="menuform">
+                        <sm:menu>
+                            <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/superadmin/usuario-geral"/>
+                            <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema"/>
+                            <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio"/>
+                            <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao"/>
+                            <p:menuitem id="menu_aut-escolegis" value="Aut. para Escolegis" icon="lock_outline" outcome="/pages/superadmin/autorizacao-escolegis"/>
+                            <p:menuitem id="menu_aut-ac" value="Aut. para Abrindo Caminhos" icon="lock" outcome="/pages/superadmin/autorizacao-abrindo-caminhos"/>
+                        </sm:menu>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>
