@@ -1,47 +1,39 @@
 package br.leg.alrr.catalogo.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
 /**
+ * Entidade que representa um Ator no sistema. Ator é responsável por realizar uma atribuição, se confunde com as funções que determinado cargo realiza.
+ * 
  * @author Heliton Nascimento
  * @since 2019-12-05
  * @version 1.0
+ * @see AtribuicaoAtor
  */
 @Entity
-@Table(schema = "autenticacao")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Sistema implements Serializable{
-
+@Table(schema = "catalogo_servicos_procedimentos")
+public class Ator implements Serializable{
+    
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String nome;
+    private String descricao;
     
-    @Column(unique = true)
-    private String chave;
+    @OneToOne
+    private Documento documento;
     
     private boolean status;
-
-    //========================================================================//
-    public Sistema() {
-    }
-
-    public Sistema(Long id) {
-        this.id = id;
-    }
+    
+    //==========================================================================
 
     public Long getId() {
         return id;
@@ -51,20 +43,20 @@ public class Sistema implements Serializable{
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getChave() {
-        return chave;
+    public Documento getDocumento() {
+        return documento;
     }
 
-    public void setChave(String chave) {
-        this.chave = chave;
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
     }
 
     public boolean isStatus() {
@@ -74,6 +66,7 @@ public class Sistema implements Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
-
+    
+    
     
 }

@@ -12,9 +12,9 @@ import javax.persistence.Table;
 
 
 /**
- * @Organization ALRR
- * @author Heliton Nascimento
- * @Matricula 14583
+* @author Heliton Nascimento
+ * @since 2019-12-05
+ * @version 1.0
  */
 @Entity
 @Table(schema = "autenticacao")

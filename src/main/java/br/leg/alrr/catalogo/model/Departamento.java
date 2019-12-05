@@ -2,8 +2,13 @@ package br.leg.alrr.catalogo.model;
 
 import br.leg.alrr.catalogo.util.BaseEntity;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +26,28 @@ public class Departamento implements BaseEntity, Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private String nome;
+    
+    private String estrutura;
+    
+    private String telefone;
+    
+    private String email;
+    
+    private String chefe;
+    
+    @ManyToMany
+    private List<Ator> atores;
+    
+    @ManyToOne
+    private Departamento departamentoPai;
+    
+    private boolean status;
+    
+    //==========================================================================
     
     @Override
     public Long getId() {
@@ -32,5 +58,70 @@ public class Departamento implements BaseEntity, Serializable{
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEstrutura() {
+        return estrutura;
+    }
+
+    public void setEstrutura(String estrutura) {
+        this.estrutura = estrutura;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getChefe() {
+        return chefe;
+    }
+
+    public void setChefe(String chefe) {
+        this.chefe = chefe;
+    }
+
+    public List<Ator> getAtores() {
+        return atores;
+    }
+
+    public void setAtores(List<Ator> atores) {
+        this.atores = atores;
+    }
+
+    public Departamento getDepartamentoPai() {
+        return departamentoPai;
+    }
+
+    public void setDepartamentoPai(Departamento departamentoPai) {
+        this.departamentoPai = departamentoPai;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
     
 }
