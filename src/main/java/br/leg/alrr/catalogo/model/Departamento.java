@@ -1,18 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.leg.alrr.catalogo.model;
 
 import br.leg.alrr.catalogo.util.BaseEntity;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
- *
- * @author Heliton
+ * Entidade que representa um departamento nas regras de negócio.
+ * 
+ * @author Heliton Nascimento
+ * @since 2019-12-05
+ * @version 1.0
+ * 
  */
-public class Departamento implements BaseEntity{
+@Entity
+@Table(schema = "autenticacao")
+public class Departamento implements BaseEntity, Serializable{
+    
+    private static final long serialVersionUID = 1L;
 
+    @Id
     private Long id;
     
     @Override
