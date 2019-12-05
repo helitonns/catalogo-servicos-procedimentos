@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(schema = "autenticacao")
+@Table(schema = "catalogo_servicos_procedimentos")
 public class Departamento implements BaseEntity, Serializable{
     
     private static final long serialVersionUID = 1L;

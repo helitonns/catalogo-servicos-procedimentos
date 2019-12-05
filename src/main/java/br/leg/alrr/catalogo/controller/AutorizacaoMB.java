@@ -4,7 +4,6 @@ import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Privilegio;
 import br.leg.alrr.catalogo.model.Sistema;
 import br.leg.alrr.catalogo.model.Usuario;
-import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
 import br.leg.alrr.catalogo.persistence.SistemaDAO;
@@ -139,7 +138,7 @@ public class AutorizacaoMB implements Serializable {
     
     public String salvarAutorizacao() {
         try {
-            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
+            autorizacao.setUsuario(new Usuario(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {
@@ -163,7 +162,7 @@ public class AutorizacaoMB implements Serializable {
     
     public String salvarAutorizacaoParaEscolegis() {
         try {
-            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
+            autorizacao.setUsuario(new Usuario(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {
@@ -188,7 +187,7 @@ public class AutorizacaoMB implements Serializable {
     
     public String salvarAutorizacaoParaAbrindoCaminhos() {
         try {
-            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
+            autorizacao.setUsuario(new Usuario(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {

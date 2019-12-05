@@ -3,10 +3,9 @@ package br.leg.alrr.catalogo.controller;
 import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Privilegio;
 import br.leg.alrr.catalogo.model.Usuario;
-import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
-import br.leg.alrr.catalogo.persistence.UsuarioComDepartamentoDAO;
+import br.leg.alrr.catalogo.persistence.UsuarioDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -34,7 +33,7 @@ public class UsuarioMB implements Serializable {
     private AutorizacaoDAO autorizacaoDAO;
     
     @EJB
-    private UsuarioComDepartamentoDAO usuarioDAO;
+    private UsuarioDAO usuarioDAO;
 
 //    @EJB
 //    private UnidadeDAO unidadeDAO;
@@ -43,7 +42,7 @@ public class UsuarioMB implements Serializable {
     private PrivilegioDAO permissaoDAO;
 
     private Autorizacao autorizacao;
-    private UsuarioComDepartamento usuario;
+    private Usuario usuario;
     private String senha;
 
     private List<Usuario> usuarios;
@@ -66,7 +65,7 @@ public class UsuarioMB implements Serializable {
         try {
             
             senha = "";
-            usuario = new UsuarioComDepartamento();
+            usuario = new Usuario();
             usuario.setStatus(true);
             idUS = 0l;
             usuarios = new ArrayList<>();
@@ -102,7 +101,7 @@ public class UsuarioMB implements Serializable {
 
             //verifca se a senha de usuário é forte, se sim permite o cadastro
             if (verificarForcaDaSenha(senha)) {
-                UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                Usuario u = (Usuario) FacesUtils.getBean("usuario");
 //                usuario.setUnidade(u.getUnidade());
                 if (usuario.getId() != null) {
                     usuario.setSenha(Criptografia.criptografarEmMD5(senha));
@@ -113,7 +112,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComUnidadeComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -148,7 +147,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComUnidadeComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -258,11 +257,11 @@ public class UsuarioMB implements Serializable {
     }
     //==========================================================================
 
-    public UsuarioComDepartamento getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioComDepartamento usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 

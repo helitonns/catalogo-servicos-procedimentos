@@ -1,8 +1,7 @@
 package br.leg.alrr.catalogo.filter;
 
-import br.leg.alrr.catalogo.business.TipoUsuario;
 import br.leg.alrr.catalogo.model.Autorizacao;
-import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
+import br.leg.alrr.catalogo.model.Usuario;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -33,7 +32,7 @@ public class NavegacaoFilter implements Filter {
 
         if (httpServletRequest.getRequestURI().indexOf("index.xhtml") <= -1) {
 
-            UsuarioComDepartamento u = (UsuarioComDepartamento) httpSession.getAttribute("usuario");
+            Usuario u = (Usuario) httpSession.getAttribute("usuario");
             if (u == null) {
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.xhtml");
             } else {
