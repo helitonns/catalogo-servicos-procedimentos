@@ -16,26 +16,26 @@ import javax.persistence.Table;
 @Table(schema = "escolegis_academico")
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class UsuarioComUnidade extends Usuario implements Serializable{
+public class UsuarioComDepartamento extends Usuario implements Serializable{
 
     
     @ManyToOne
-    private Unidade unidade;
+    private Departamento departamento;
     //========================================================================//
-    public UsuarioComUnidade() {
+    public UsuarioComDepartamento() {
         super();
     }
 
-    public UsuarioComUnidade(Long id) {
+    public UsuarioComDepartamento(Long id) {
         super(id);
     }
 
-    public Unidade getUnidade() {
-        return unidade;
+    public Departamento getDepartamento() {
+        return departamento;
     }
 
-    public void setUnidade(Unidade unidade) {
-        this.unidade = unidade;
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
     
 }

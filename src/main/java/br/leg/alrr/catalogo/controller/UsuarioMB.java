@@ -1,15 +1,12 @@
 package br.leg.alrr.catalogo.controller;
 
-import br.leg.alrr.catalogo.business.TipoUsuario;
 import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Privilegio;
-import br.leg.alrr.catalogo.model.Unidade;
 import br.leg.alrr.catalogo.model.Usuario;
-import br.leg.alrr.catalogo.model.UsuarioComUnidade;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
-import br.leg.alrr.catalogo.persistence.UnidadeDAO;
-import br.leg.alrr.catalogo.persistence.UsuarioComUnidadeDAO;
+import br.leg.alrr.catalogo.persistence.UsuarioComDepartamentoDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -37,20 +34,20 @@ public class UsuarioMB implements Serializable {
     private AutorizacaoDAO autorizacaoDAO;
     
     @EJB
-    private UsuarioComUnidadeDAO usuarioDAO;
+    private UsuarioComDepartamentoDAO usuarioDAO;
 
-    @EJB
-    private UnidadeDAO unidadeDAO;
+//    @EJB
+//    private UnidadeDAO unidadeDAO;
 
     @EJB
     private PrivilegioDAO permissaoDAO;
 
     private Autorizacao autorizacao;
-    private UsuarioComUnidade usuario;
+    private UsuarioComDepartamento usuario;
     private String senha;
 
     private List<Usuario> usuarios;
-    private List<Unidade> unidades;
+//    private List<Unidade> unidades;
     private List<Privilegio> permissoes;
     private List<Autorizacao> autorizacoes;
 
@@ -69,7 +66,7 @@ public class UsuarioMB implements Serializable {
         try {
             
             senha = "";
-            usuario = new UsuarioComUnidade();
+            usuario = new UsuarioComDepartamento();
             usuario.setStatus(true);
             idUS = 0l;
             usuarios = new ArrayList<>();
@@ -77,7 +74,7 @@ public class UsuarioMB implements Serializable {
             removerUsuario = false;
             autorizacao = new Autorizacao();
 
-            listarUnidades();
+//            listarUnidades();
 
             String[] s = FacesUtils.getURL().split("/");
             permissoes = permissaoDAO.listarTodosPelaChaveDoSistema(s[1]);
@@ -105,8 +102,8 @@ public class UsuarioMB implements Serializable {
 
             //verifca se a senha de usuário é forte, se sim permite o cadastro
             if (verificarForcaDaSenha(senha)) {
-                UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
-                usuario.setUnidade(u.getUnidade());
+                UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+//                usuario.setUnidade(u.getUnidade());
                 if (usuario.getId() != null) {
                     usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                     usuarioDAO.atualizar(usuario);
@@ -141,7 +138,7 @@ public class UsuarioMB implements Serializable {
         try {
             //verifca se a senha de usuário é forte, se sim permite o cadastro
             if (verificarForcaDaSenha(senha)) {
-                usuario.setUnidade(new Unidade(idUS));
+//                usuario.setUnidade(new Unidade(idUS));
                 if (usuario.getId() != null) {
                     usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                     usuarioDAO.atualizar(usuario);
@@ -174,23 +171,23 @@ public class UsuarioMB implements Serializable {
         return "superusuario.xhtml" + "?faces-redirect=true";
     }
 
-public void listarUsuarios() {
-        try {
-            UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
-            usuarios = usuarioDAO.listarTodosPorUnidade(u.getUnidade());
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-    }
+//public void listarUsuarios() {
+//        try {
+//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+//            usuarios = usuarioDAO.listarTodosPorUnidade(u.getUnidade());
+//        } catch (DAOException e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//    }
 
-    public void listarUsuariosSemOSuperAdmin() {
-        try {
-            UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
-            usuarios = usuarioDAO.listarTodosPorUnidadeSemOSuperAdmin(u.getUnidade());
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-    }
+//    public void listarUsuariosSemOSuperAdmin() {
+//        try {
+//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+//            usuarios = usuarioDAO.listarTodosPorUnidadeSemOSuperAdmin(u.getUnidade());
+//        } catch (DAOException e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//    }
 
     public void listarTodosUsuarios() {
         try {
@@ -200,13 +197,13 @@ public void listarUsuarios() {
         }
     }
 
-    public void listarUnidades() {
-        try {
-            unidades = unidadeDAO.listarTodos();
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-    }
+//    public void listarUnidades() {
+//        try {
+//            unidades = unidadeDAO.listarTodos();
+//        } catch (DAOException e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//    }
 
     public void removerUsuario() {
         try {
@@ -221,9 +218,9 @@ public void listarUsuarios() {
         limparForm();
     }
 
-    public void prepararEdicao() {
-        idUS = usuario.getUnidade().getId();
-    }
+//    public void prepararEdicao() {
+//        idUS = usuario.getUnidade().getId();
+//    }
 
     private boolean verificarForcaDaSenha(String senha) {
         if (senha.length() < 8) {
@@ -261,11 +258,11 @@ public void listarUsuarios() {
     }
     //==========================================================================
 
-    public UsuarioComUnidade getUsuario() {
+    public UsuarioComDepartamento getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioComUnidade usuario) {
+    public void setUsuario(UsuarioComDepartamento usuario) {
         this.usuario = usuario;
     }
 
@@ -287,10 +284,6 @@ public void listarUsuarios() {
 
     public void setRemoverUsuario(boolean removerUsuario) {
         this.removerUsuario = removerUsuario;
-    }
-
-    public List<Unidade> getUnidades() {
-        return unidades;
     }
 
     public Long getIdUS() {

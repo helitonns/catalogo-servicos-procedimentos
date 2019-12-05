@@ -1,9 +1,9 @@
 package br.leg.alrr.catalogo.controller;
 
 import br.leg.alrr.catalogo.model.Autorizacao;
-import br.leg.alrr.catalogo.model.UsuarioComUnidade;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
-import br.leg.alrr.catalogo.persistence.UsuarioComUnidadeDAO;
+import br.leg.alrr.catalogo.persistence.UsuarioComDepartamentoDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -30,9 +30,9 @@ public class StartMB implements Serializable {
     private AutorizacaoDAO autorizacaoDAO;
 
     @EJB
-    private UsuarioComUnidadeDAO usuarioDAO;
+    private UsuarioComDepartamentoDAO usuarioDAO;
 
-    private UsuarioComUnidade usuario;
+    private UsuarioComDepartamento usuario;
     private Autorizacao autorizacao;
     
     private String login = "";
@@ -42,7 +42,7 @@ public class StartMB implements Serializable {
     //===========================================================
     @PostConstruct
     private void init() {
-        usuario = new UsuarioComUnidade();
+        usuario = new UsuarioComDepartamento();
     }
 
     public String logar2() {
@@ -92,30 +92,30 @@ public class StartMB implements Serializable {
         }
     }
 
-    public String retornarUnidadeAtiva() {
-        try {
-            UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
-            String s = u.getUnidade().getNome().substring(0, 1);
-            String t = u.getUnidade().getNome().substring(1).toLowerCase();
-            String f = s + t;
-            if (f.length() > 14) {
-                return f.substring(0, 13)+".";
-            }else{
-                return f;
-            }
-        } catch (Exception e) {
-            return "";
-        }
-    }
+//    public String retornarUnidadeAtiva() {
+//        try {
+//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+//            String s = u.getUnidade().getNome().substring(0, 1);
+//            String t = u.getUnidade().getNome().substring(1).toLowerCase();
+//            String f = s + t;
+//            if (f.length() > 14) {
+//                return f.substring(0, 13)+".";
+//            }else{
+//                return f;
+//            }
+//        } catch (Exception e) {
+//            return "";
+//        }
+//    }
     
-    public String retornarUnidadeAtivaNomeCompleto() {
-        try {
-            UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
-            return u.getUnidade().getNome();
-        } catch (Exception e) {
-            return "";
-        }
-    }
+//    public String retornarUnidadeAtivaNomeCompleto() {
+//        try {
+//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+//            return u.getUnidade().getNome();
+//        } catch (Exception e) {
+//            return "";
+//        }
+//    }
 
     private boolean verificarForcaDaSenha(String senha) {
         if (senha.length() < 8) {
@@ -145,11 +145,11 @@ public class StartMB implements Serializable {
     }
 
     //===========================================================
-    public UsuarioComUnidade getUsuario() {
+    public UsuarioComDepartamento getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioComUnidade usuario) {
+    public void setUsuario(UsuarioComDepartamento usuario) {
         this.usuario = usuario;
     }
 

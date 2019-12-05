@@ -3,15 +3,11 @@ package br.leg.alrr.catalogo.controller;
 import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Privilegio;
 import br.leg.alrr.catalogo.model.Sistema;
-import br.leg.alrr.catalogo.model.Unidade;
-import br.leg.alrr.catalogo.model.UnidadeAC;
 import br.leg.alrr.catalogo.model.Usuario;
-import br.leg.alrr.catalogo.model.UsuarioComUnidade;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
 import br.leg.alrr.catalogo.persistence.SistemaDAO;
-import br.leg.alrr.catalogo.persistence.UnidadeACDAO;
-import br.leg.alrr.catalogo.persistence.UnidadeDAO;
 import br.leg.alrr.catalogo.persistence.UsuarioDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -46,18 +42,18 @@ public class AutorizacaoMB implements Serializable {
     @EJB
     private UsuarioDAO usuarioDAO;
     
-    @EJB
-    private UnidadeDAO unidadeDAO;
-    
-    @EJB
-    private UnidadeACDAO unidadeACDAO;
+//    @EJB
+//    private UnidadeDAO unidadeDAO;
+//    
+//    @EJB
+//    private UnidadeACDAO unidadeACDAO;
     
     private ArrayList<Privilegio> permissoes;
     private ArrayList<Sistema> sistemas;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Autorizacao> autorizacoes;
-    private ArrayList<Unidade> unidades;
-    private ArrayList<UnidadeAC> unidadesAC;
+//    private ArrayList<Unidade> unidades;
+//    private ArrayList<UnidadeAC> unidadesAC;
 
     private Autorizacao autorizacao;
 
@@ -125,25 +121,25 @@ public class AutorizacaoMB implements Serializable {
         }
     }
 
-    private void listarUnidadesEscolegis(){
-        try {
-            unidades = (ArrayList<Unidade>) unidadeDAO.listarTodos();
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-    }
-    
-    private void listarUnidadesAbrindoCaminhos(){
-        try {
-            unidadesAC = (ArrayList<UnidadeAC>) unidadeACDAO.listarTodos();
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-    }
+//    private void listarUnidadesEscolegis(){
+//        try {
+//            unidades = (ArrayList<Unidade>) unidadeDAO.listarTodos();
+//        } catch (DAOException e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//    }
+//    
+//    private void listarUnidadesAbrindoCaminhos(){
+//        try {
+//            unidadesAC = (ArrayList<UnidadeAC>) unidadeACDAO.listarTodos();
+//        } catch (DAOException e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//    }
     
     public String salvarAutorizacao() {
         try {
-            autorizacao.setUsuario(new UsuarioComUnidade(idUsuario));
+            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {
@@ -167,7 +163,7 @@ public class AutorizacaoMB implements Serializable {
     
     public String salvarAutorizacaoParaEscolegis() {
         try {
-            autorizacao.setUsuario(new UsuarioComUnidade(idUsuario));
+            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {
@@ -176,7 +172,7 @@ public class AutorizacaoMB implements Serializable {
             } else {
                 if (!autorizacaoDAO.verificarSeHaAutorizacaoParaUsuarioNoSistema(autorizacao.getUsuario(), new Sistema(idSistema))) {
                     autorizacaoDAO.salvar(autorizacao);
-                    unidadeDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
+//                    unidadeDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
                     FacesUtils.addInfoMessageFlashScoped("Autorização salva com sucesso!");
                 } else {
                     FacesUtils.addWarnMessageFlashScoped("O usuário já possui autorização no sistema!");
@@ -192,7 +188,7 @@ public class AutorizacaoMB implements Serializable {
     
     public String salvarAutorizacaoParaAbrindoCaminhos() {
         try {
-            autorizacao.setUsuario(new UsuarioComUnidade(idUsuario));
+            autorizacao.setUsuario(new UsuarioComDepartamento(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
 
             if (autorizacao.getId() != null) {
@@ -201,7 +197,7 @@ public class AutorizacaoMB implements Serializable {
             } else {
                 if (!autorizacaoDAO.verificarSeHaAutorizacaoParaUsuarioNoSistema(autorizacao.getUsuario(), new Sistema(idSistema))) {
                     autorizacaoDAO.salvar(autorizacao);
-                    unidadeACDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
+//                    unidadeACDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
                     FacesUtils.addInfoMessageFlashScoped("Autorização salva com sucesso!");
                 } else {
                     FacesUtils.addWarnMessageFlashScoped("O usuário já possui autorização no sistema!");
@@ -236,8 +232,8 @@ public class AutorizacaoMB implements Serializable {
         sistemas = new ArrayList<>();
         permissoes = new ArrayList<>();
         autorizacoes = new ArrayList<>();
-        unidades = new ArrayList<>();
-        unidadesAC = new ArrayList<>();
+//        unidades = new ArrayList<>();
+//        unidadesAC = new ArrayList<>();
 
         autorizacao = new Autorizacao();
         autorizacao.setStatus(true);
@@ -247,14 +243,7 @@ public class AutorizacaoMB implements Serializable {
         listarAutorizacoes();
         listarSistema();
         listarUsuarios();
-        
-        String s = FacesUtils.getURL();
-        if (s.contains("escolegis")) {
-            listarUnidadesEscolegis();
-        }
-        if (s.contains("abrindo-caminhos")) {
-            listarUnidadesAbrindoCaminhos();
-        }
+               
     }
 
     public String cancelar() {
@@ -326,12 +315,6 @@ public class AutorizacaoMB implements Serializable {
         this.idUnidade = idUnidade;
     }
 
-    public ArrayList<Unidade> getUnidades() {
-        return unidades;
-    }
-
-    public ArrayList<UnidadeAC> getUnidadesAC() {
-        return unidadesAC;
-    }
+   
     
 }

@@ -1,7 +1,7 @@
 package br.leg.alrr.catalogo.persistence;
 
-import br.leg.alrr.catalogo.model.Unidade;
-import br.leg.alrr.catalogo.model.UsuarioComUnidade;
+import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.util.DAOException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -13,12 +13,12 @@ import javax.persistence.PersistenceContext;
  * @author heliton
  */
 @Stateless
-public class UsuarioComUnidadeDAO{
+public class UsuarioComDepartamentoDAO{
 
     @PersistenceContext
     protected EntityManager em;
 
-    public void salvar(UsuarioComUnidade o) throws DAOException{
+    public void salvar(UsuarioComDepartamento o) throws DAOException{
         try {
             em.persist(o);
         } catch (Exception e) {
@@ -26,7 +26,7 @@ public class UsuarioComUnidadeDAO{
         }
     }
 
-    public void atualizar(UsuarioComUnidade o) throws DAOException{
+    public void atualizar(UsuarioComDepartamento o) throws DAOException{
         try {
             em.merge(o);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class UsuarioComUnidadeDAO{
         }
     }
     
-    public List listarTodosPorUnidade(Unidade u) throws DAOException{
+    public List listarTodosPorUnidade(Departamento u) throws DAOException{
         try {
             return em.createQuery("select o from UsuarioComUnidade o where o.unidade.id = :idUnidade order by o.login asc")
                     .setParameter("idUnidade", u.getId())
@@ -52,7 +52,7 @@ public class UsuarioComUnidadeDAO{
         }
     }
     
-    public List listarTodosPorUnidadeSemOSuperAdmin(Unidade u) throws DAOException{
+    public List listarTodosPorUnidadeSemOSuperAdmin(Departamento u) throws DAOException{
         try {
             return em.createQuery("select o from UsuarioComUnidade o where o.unidade.id = :idUnidade and o.tipo != 'SUPER_ADMIN' order by o.login asc")
                     .setParameter("idUnidade", u.getId())
@@ -62,7 +62,7 @@ public class UsuarioComUnidadeDAO{
         }
     }
 
-    public void remover(UsuarioComUnidade o) throws DAOException{
+    public void remover(UsuarioComDepartamento o) throws DAOException{
         try {
             o = em.merge(o);
             em.remove(o);
@@ -71,9 +71,9 @@ public class UsuarioComUnidadeDAO{
         }
     }
 
-    public UsuarioComUnidade pesquisarPorLogin(String login) throws DAOException{
+    public UsuarioComDepartamento pesquisarPorLogin(String login) throws DAOException{
         try {
-            return (UsuarioComUnidade) em.createQuery("select u from UsuarioComUnidade u where u.login =:login")
+            return (UsuarioComDepartamento) em.createQuery("select u from UsuarioComUnidade u where u.login =:login")
                     .setParameter("login", login)
                     .getSingleResult();
         } catch (Exception e) {
@@ -81,9 +81,9 @@ public class UsuarioComUnidadeDAO{
         }
     }
 
-    public UsuarioComUnidade pesquisarPorLoginESenha(String login, String senha) throws DAOException{
+    public UsuarioComDepartamento pesquisarPorLoginESenha(String login, String senha) throws DAOException{
         try {
-            return (UsuarioComUnidade) em.createQuery("select u from UsuarioComUnidade u where u.login =:login and u.senha =:senha")
+            return (UsuarioComDepartamento) em.createQuery("select u from UsuarioComUnidade u where u.login =:login and u.senha =:senha")
                     .setParameter("login", login)
                     .setParameter("senha", senha)
                     .getSingleResult();

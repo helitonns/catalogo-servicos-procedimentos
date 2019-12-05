@@ -1,6 +1,6 @@
 package br.leg.alrr.catalogo.persistence;
 
-import br.leg.alrr.catalogo.model.Unidade;
+import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.model.Usuario;
 import br.leg.alrr.catalogo.util.DAOException;
 import java.util.List;
@@ -50,7 +50,7 @@ public class UsuarioDAO{
         }
     }
     
-    public List listarTodosPorUnidade(Unidade u) throws DAOException{
+    public List listarTodosPorUnidade(Departamento u) throws DAOException{
         try {
             return em.createQuery("select o from Usuario o where o.unidade.id = :idUnidade order by o.login asc")
                     .setParameter("idUnidade", u.getId())
@@ -60,7 +60,7 @@ public class UsuarioDAO{
         }
     }
     
-    public List listarTodosPorUnidadeSemOSuperAdmin(Unidade u) throws DAOException{
+    public List listarTodosPorUnidadeSemOSuperAdmin(Departamento u) throws DAOException{
         try {
             return em.createQuery("select o from Usuario o where o.unidade.id = :idUnidade and o.tipo != 'SUPER_ADMIN' order by o.login asc")
                     .setParameter("idUnidade", u.getId())

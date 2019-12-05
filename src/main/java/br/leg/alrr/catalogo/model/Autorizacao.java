@@ -76,8 +76,8 @@ public class Autorizacao implements Serializable, BaseEntity{
         this.status = status;
     }
     
-    public UsuarioComUnidade getUsuarioComUnidade() {
-        return (UsuarioComUnidade) usuario;
+    public UsuarioComDepartamento getUsuarioComUnidade() {
+        return (UsuarioComDepartamento) usuario;
     }
 
 }

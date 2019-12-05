@@ -1,6 +1,6 @@
 package br.leg.alrr.catalogo.auditoria;
 
-import br.leg.alrr.catalogo.model.UsuarioComUnidade;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.util.FacesUtils;
 import java.time.LocalDateTime;
 
@@ -23,7 +23,7 @@ public class AuditListener implements RevisionListener {
     public void newRevision(Object revisionEntity) {
         AuditEntity revEntity = (AuditEntity) revisionEntity;
         LocalDateTime data = LocalDateTime.now();
-        UsuarioComUnidade u = (UsuarioComUnidade) FacesUtils.getBean("usuario");
+        UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
         String user = u.getLogin();
 
         revEntity.setIdUsuario(u.getId());
