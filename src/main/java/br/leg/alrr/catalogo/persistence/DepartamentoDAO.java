@@ -1,6 +1,6 @@
 package br.leg.alrr.catalogo.persistence;
 
-import br.leg.alrr.catalogo.model.Sistema;
+import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.util.DAOException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -8,57 +8,57 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Classe que gerencia a persistência da entidade Sistema.
+ * Classe que gerencia a persistência da entidade Departamento.
  * 
  * @author Heliton Nascimento
  * @since 2019-12-05
  * @version 1.0
- * @see Sistema
+ * @see Departamento
  */
 @Stateless
-public class SistemaDAO{
+public class DepartamentoDAO{
 
     @PersistenceContext
     protected EntityManager em;
 
-    public void salvar(Sistema o) throws DAOException{
+    public void salvar(Departamento o) throws DAOException{
         try {
             em.persist(o);
         } catch (Exception e) {
-            throw new DAOException("Erro ao salvar sistema.", e);
+            throw new DAOException("Erro ao salvar departamento.", e);
         }
     }
 
-    public void atualizar(Sistema o) throws DAOException{
+    public void atualizar(Departamento o) throws DAOException{
         try {
             em.merge(o);
         } catch (Exception e) {
-            throw new DAOException("Erro ao atualizar sistema.", e);
+            throw new DAOException("Erro ao atualizar departamento.", e);
         }
     }
 
     public List listarTodos() throws DAOException{
         try {
-            return em.createQuery("select o from Sistema o order by o.nome asc").getResultList();
+            return em.createQuery("select o from Departamento o order by o.nome asc").getResultList();
         } catch (Exception e) {
-            throw new DAOException("Erro ao listar sistemas.", e);
+            throw new DAOException("Erro ao listar departamentos.", e);
         }
     }
     
     public List listarTodosAtivos() throws DAOException{
         try {
-            return em.createQuery("select o from Sistema o where o.status = true order by o.nome asc").getResultList();
+            return em.createQuery("select o from Departamento o where o.status = true order by o.nome asc").getResultList();
         } catch (Exception e) {
             throw new DAOException("Erro ao listar sistemas.", e);
         }
     }
     
-    public void remover(Sistema o) throws DAOException{
+    public void remover(Departamento o) throws DAOException{
         try {
             o = em.merge(o);
             em.remove(o);
         } catch (Exception e) {
-            throw new DAOException("Erro ao remover sistema.", e);
+            throw new DAOException("Erro ao remover departamento.", e);
         }
     }
 }

@@ -11,8 +11,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author heliton
+ * Classe que gerencia a persistência da entidade Autorizacao.
+ * 
+ * @author Heliton Nascimento
+ * @since 2019-12-05
+ * @version 1.0
+ * @see Autorizacao
  */
 @Stateless
 public class AutorizacaoDAO{

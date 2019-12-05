@@ -9,8 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author heliton
+ * Classe que gerencia a persistência da entidade Privilegio.
+ * 
+ * @author Heliton Nascimento
+ * @since 2019-12-05
+ * @version 1.0
+ * @see Privilegio
  */
 @Stateless
 public class PrivilegioDAO{

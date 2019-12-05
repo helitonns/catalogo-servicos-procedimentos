@@ -9,8 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author heliton
+ * Classe que gerencia a persistência da entidade Usuario.
+ * 
+ * @author Heliton Nascimento
+ * @since 2019-12-05
+ * @version 1.0
+ * @see Usuario
  */
 @Stateless
 public class UsuarioDAO{
