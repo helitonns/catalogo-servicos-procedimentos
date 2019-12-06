@@ -12,10 +12,18 @@
                 <div class="layout-menu-wrapper">
                     <h:form id="menuform">
                         <sm:menu>
-                            <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/superadmin/usuario-geral"/>
-                            <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema"/>
-                            <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio"/>
-                            <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao"/>
+
+                            <p:submenu id="sub_menu_gerencia" label="Gerência" icon="person">
+                                <p:menuitem id="menu_ator" value="Atores" icon="person" outcome="/pages/user/ator"/>
+                            </p:submenu>
+
+                            <p:submenu id="sub_menu_usuario" label="Configurações gerais" icon="person">
+                                <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/superadmin/usuario-geral"/>
+                                <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema"/>
+                                <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio"/>
+                                <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao"/>
+                            </p:submenu>
+
                         </sm:menu>
                     </h:form>
                 </div>

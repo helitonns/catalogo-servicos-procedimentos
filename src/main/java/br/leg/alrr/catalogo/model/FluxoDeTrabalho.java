@@ -2,6 +2,7 @@ package br.leg.alrr.catalogo.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +24,8 @@ import javax.persistence.Table;
  * @see Atribuicao
  * @see AtribuicaoDepartamento
  */
-@Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+//@Entity
+//@Table(schema = "catalogo_servicos_procedimentos")
 public class FluxoDeTrabalho implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -41,7 +42,7 @@ public class FluxoDeTrabalho implements Serializable{
     @ManyToMany
     private List<Ator> atores;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Documento> documentos;
     
     //==========================================================================

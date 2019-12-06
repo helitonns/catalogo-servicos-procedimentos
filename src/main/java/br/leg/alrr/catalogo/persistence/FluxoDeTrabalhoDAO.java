@@ -45,14 +45,6 @@ public class FluxoDeTrabalhoDAO{
         }
     }
     
-    public List listarTodosAtivos() throws DAOException{
-        try {
-            return em.createQuery("select o from FluxoDeTrabalho o where o.status = true order by o.nome asc").getResultList();
-        } catch (Exception e) {
-            throw new DAOException("Erro ao listar sistemas.", e);
-        }
-    }
-    
     public void remover(FluxoDeTrabalho o) throws DAOException{
         try {
             o = em.merge(o);

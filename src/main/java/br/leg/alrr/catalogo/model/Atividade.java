@@ -20,8 +20,8 @@ import javax.persistence.Table;
  * @version 1.0
  * @see FluxoDeTrabalho
  */
-@Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+//@Entity
+//@Table(schema = "catalogo_servicos_procedimentos")
 public class Atividade implements Serializable{
     
     private static final long serialVersionUID = 1L;

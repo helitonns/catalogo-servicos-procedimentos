@@ -1,6 +1,7 @@
 package br.leg.alrr.catalogo.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,9 +29,6 @@ public class Ator implements Serializable{
     
     private String descricao;
     
-    @OneToOne
-    private Documento documento;
-    
     private boolean status;
     
     //==========================================================================
@@ -49,14 +47,6 @@ public class Ator implements Serializable{
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Documento getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(Documento documento) {
-        this.documento = documento;
     }
 
     public boolean isStatus() {
