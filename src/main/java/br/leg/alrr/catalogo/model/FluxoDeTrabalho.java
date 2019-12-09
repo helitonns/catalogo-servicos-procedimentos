@@ -3,14 +3,12 @@ package br.leg.alrr.catalogo.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * <p>
@@ -22,7 +20,7 @@ import javax.persistence.Table;
  * @since 2019-12-05
  * @version 1.0
  * @see Atribuicao
- * @see AtribuicaoDepartamento
+ * @see Atribuicao
  */
 //@Entity
 //@Table(schema = "catalogo_servicos_procedimentos")
@@ -37,7 +35,7 @@ public class FluxoDeTrabalho implements Serializable{
     private String nome;
     
     @ManyToOne
-    private AtribuicaoDepartamento atribuicaoDepartamento;
+    private Atribuicao atribuicao;
     
     @ManyToMany
     private List<Ator> atores;
@@ -63,12 +61,12 @@ public class FluxoDeTrabalho implements Serializable{
         this.nome = nome;
     }
 
-    public AtribuicaoDepartamento getAtribuicaoDepartamento() {
-        return atribuicaoDepartamento;
+    public Atribuicao getAtribuicao() {
+        return atribuicao;
     }
 
-    public void setAtribuicaoDepartamento(AtribuicaoDepartamento atribuicaoDepartamento) {
-        this.atribuicaoDepartamento = atribuicaoDepartamento;
+    public void setAtribuicao(Atribuicao atribuicao) {
+        this.atribuicao = atribuicao;
     }
 
     public List<Ator> getAtores() {

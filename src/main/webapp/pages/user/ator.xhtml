@@ -27,12 +27,12 @@
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
 
-                            <div class="ui-g-12 ui-md-3">
+                            <div class="ui-g-12 ui-md-6">
                                 <p:message for="idAtorDescricao" showSummary="true" showDetail="false"/>
                             </div>
-                            <div class="ui-g-12 ui-md-9"/>
+                            <div class="ui-g-12 ui-md-6"/>
 
-                            <div class="ui-g-12 ui-md-3">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputText id="idAtorDescricao" value="#{atorMB.ator.descricao}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
@@ -41,13 +41,38 @@
                                 </div>
                             </div>
 
-                            <div class="ui-g-12 ui-md-3">
+                            <div class="ui-g-12 ui-md-6">
                                 <p:selectOneButton value="#{atorMB.ator.status}">
                                     <f:selectItem itemLabel="Ativo" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Inativo" itemValue="#{false}" />
                                 </p:selectOneButton>
                             </div>
 
+
+                            <div class="ui-g-12 ui-md-9">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idAtorAtribuicao" value="#{atorMB.atribuicaoAtor}" converter="upper"/>
+                                        <label>Atribuição</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-3">
+                                <p:commandButton value="Adicionar atribuição" actionListener="#{atorMB.adcionarAtribuicao}" ajax="false" update="tbl_atribuicao" icon="ui-icon-plus"/>
+                            </div>
+
+                            <p:dataTable id="tbl_atribuicao" var="atribuicao_var" value="#{atorMB.atribuicoesDoAtor}" reflow="true"  emptyMessage=" ">
+                                <p:column headerText="Atribução" style="width: 100px">
+                                    <h:outputText value="#{atribuicao_var}" />
+                                </p:column>
+                                <p:column headerText="Ação" style="width: 30px">
+                                    <p:commandButton value="Remover atribução" icon="ui-icon-minus"  style="width: 100%" styleClass="orange-btn" actionListener="#{atorMB.setAtribuicaoAtor(atribuicao_var)}" action="#{atorMB.excluirAtribuicao}" update="tbl_atribuicao"/>
+                                </p:column>
+                            </p:dataTable>
+
+
+                            <div class="ui-g-12 ui-md-6"/>
                             <div class="ui-g-12 ui-md-3">
                                 <p:commandButton value="Salvar" action="#{atorMB.salvarAtor()}" ajax="false" icon="ui-icon-save"/>
                             </div>
@@ -82,8 +107,11 @@
 
                                     <p:column headerText="Ação" style="width: 250px">
                                         <h:panelGrid columns="2">
-                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{sistemaMB.setSistema(sistema_var)}" />
-                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{sistemaMB.setSistemaSelecionado(sistema_var)}" onclick="PF('modal_excluir').show();"/>
+                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">
+                                                <f:setPropertyActionListener value="#{ator_var}" target="#{atorMB.ator}"/>
+                                                <f:setPropertyActionListener value="#{ator_var.atribuicoes}" target="#{atorMB.atribuicoesDoAtor}"/>
+                                            </p:commandButton>
+                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{atorMB.setAtor(ator_var)}" onclick="PF('modal_excluir').show();"/>
                                         </h:panelGrid>
                                     </p:column>
                                 </p:dataTable>
@@ -93,7 +121,7 @@
                         <p:dialog header="Exclusão" widgetVar="modal_excluir" modal="true" height="100" width="550">
                             <h:panelGrid columns="2" style="width: 100%">
                                 <h:outputText value="Tem certeza que deseja excluir o item selecionado?" style="width: 100%"/>
-                                <p:selectOneButton value="#{sistemaMB.removerSistema}">
+                                <p:selectOneButton value="#{atorMB.excluirAtor}">
                                     <f:selectItem itemLabel="Sim" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Não" itemValue="#{false}" />
                                 </p:selectOneButton>
@@ -101,7 +129,7 @@
 
                             <f:facet name="footer">
                                 <h:panelGrid columns="2" style="width: 100%">
-                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{sistemaMB.removerSistema()}" style="width: 100%"/>
+                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{atorMB.excluirAtor()}" style="width: 100%"/>
                                     <p:button value="Cancelar" styleClass="blue-grey-btn" icon="ui-icon-cancel"  style="width: 100%"/>
                                 </h:panelGrid>
                             </f:facet>

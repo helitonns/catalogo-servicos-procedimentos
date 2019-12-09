@@ -61,4 +61,12 @@ public class AtorDAO{
             throw new DAOException("Erro ao remover ator.", e);
         }
     }
+    
+    public Ator pegarReferencia(Long idAtor) throws DAOException{
+        try {
+            return em.find(Ator.class, idAtor);
+        } catch (Exception e) {
+            throw new DAOException("Erro ao remover ator.", e);
+        }
+    }
 }

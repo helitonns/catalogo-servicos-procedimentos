@@ -1,12 +1,13 @@
 package br.leg.alrr.catalogo.model;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
+import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,10 +30,21 @@ public class Ator implements Serializable{
     
     private String descricao;
     
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> atribuicoes;
+    
     private boolean status;
     
     //==========================================================================
 
+    public Ator() {
+    }
+    
+    public Ator(Long id) {
+        this.id = id;
+    }
+    
+    
     public Long getId() {
         return id;
     }
@@ -56,7 +68,13 @@ public class Ator implements Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
+
+    public List<String> getAtribuicoes() {
+        return atribuicoes;
+    }
+
+    public void setAtribuicoes(List<String> atribuicoes) {
+        this.atribuicoes = atribuicoes;
+    }
     
 }

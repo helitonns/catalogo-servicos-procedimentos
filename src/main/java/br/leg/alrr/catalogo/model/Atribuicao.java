@@ -5,14 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
  * <p>
- * Entidade que representa uma atribuição tanto para Ator quanto para Departamento. Esta é a classe mãe que está especializada em AtribuicaoAtor, que represeta
- * uma atribuição do ator, e em AtribuicaoDepartamento, que representa uma atribuição do departamento.
+ * Entidade que representa uma atribuição para Departamento. 
  * </p>
  * 
  * @author Heliton Nascimento
@@ -24,7 +22,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Atribuicao implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -34,6 +31,9 @@ public class Atribuicao implements Serializable {
     private Long id;
 
     private String descricao;
+    
+    @OneToMany
+    private Departamento departamento;
     
    //===========================================================================
 
@@ -52,7 +52,13 @@ public class Atribuicao implements Serializable {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
-    
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
     
 }
