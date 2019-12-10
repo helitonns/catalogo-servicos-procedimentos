@@ -1,62 +1,64 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
-        <f:facet name="first">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-        </f:facet>
-        <title>..:: Catálogo de Serviços e Procedimentos ::..</title>
-        <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/imagens/favicon.ico" type="image/x-icon" />
-        <h:outputScript name="js/layout.js" library="sapphire-layout" />
-        <h:outputScript name="js/ripple.js" library="sapphire-layout" />
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template1.xhtml">
 
-    <h:body styleClass="login-body" style="background-color: #4680ca">
-        <h:form>
-            <div class="login-panel ui-fluid">
-                <div class="login-panel-header">
-                    <p:graphicImage name="images/login/logo-sapphire-color.png" library="sapphire-layout" />
-                </div>
-                <div class="login-panel-content">
-                    <div class="ui-g">
-                        <div class="ui-g-12">
-                            <h1>ALRR</h1>
-                            <h2>CATÁLOGO DE SERVIÇOS E PROCEDIMENTOS</h2>
-                        </div>
-                        <div class="ui-g-12">
-                            <h:panelGroup styleClass="md-inputfield">
-                                <p:inputText value="#{startMB.login}" autocomplete="off" />
-                                <label>Usuário:</label>
-                            </h:panelGroup>
-                        </div>
-                        <div class="ui-g-12">
-                            <h:panelGroup styleClass="md-inputfield">
-                                <p:password value="#{startMB.senha}" autocomplete="off" />
-                                <label>Senha:</label>
-                            </h:panelGroup>
-                        </div>
-                        <div class="ui-g-12">
-                            <h:panelGrid columns="2" style="width: 100%">
-                                <p:commandButton value="Entrar" action="#{startMB.logar2()}" />
-                                <p:commandButton value="Limpar" action="#{startMB.sair()}" styleClass="orange-btn" ajax="false"/>
-                            </h:panelGrid>
-                        </div>
-                        <div class="ui-g-12">
-                            <p:messages globalOnly="true" closable="true"/>
+    <ui:define name="breadcrumb">
+        <li>Páginas</li>
+        <li>/</li>
+        <li><p:link outcome="/index.xhtml">Início</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+           <div class="ui-g">
+                <div class="ui-g-12">
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Departamentos</label>
+                    <div class="card card-w-title" style="margin-top: 5px">
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+
+
+                            <div class="ui-g-12 ui-md-12" style="width: 100%;">
+                                <center>
+                                <p:organigram id="organigram"
+                                              widgetVar="organigram"
+                                              value="#{indexMB.rootNode}"
+                                              selection="#{indexMB.selecionado}"
+                                              var="node"
+                                              zoom="true">
+                                    
+                                    <p:ajax event="select" listener="#{indexMB.nodeSelectListener}" />
+                                    
+                                    <p:organigramNode type="1" >
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="2" >
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="3" >
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                    <p:organigramNode type="4">
+                                        <h:outputText value="#{node.data}" />
+                                    </p:organigramNode>
+
+                                </p:organigram>
+                                    </center>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-
-            <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="sapphire-layout" />
         </h:form>
-    </h:body>
 
-</html>
+    </ui:define>
+</ui:composition>

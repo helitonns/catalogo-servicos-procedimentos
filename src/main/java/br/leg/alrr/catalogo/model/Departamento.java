@@ -47,6 +47,8 @@ public class Departamento implements BaseEntity, Serializable{
     
     private boolean status;
     
+    private int nivel;
+    
     //==========================================================================
     
     @Override
@@ -112,6 +114,7 @@ public class Departamento implements BaseEntity, Serializable{
     }
 
     public void setDepartamentoPai(Departamento departamentoPai) {
+        this.nivel += departamentoPai.getNivel();
         this.departamentoPai = departamentoPai;
     }
 
@@ -122,6 +125,12 @@ public class Departamento implements BaseEntity, Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
 }

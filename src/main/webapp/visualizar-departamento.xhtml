@@ -1,0 +1,72 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/template1.xhtml">
+
+    <ui:define name="breadcrumb">
+        <li>Páginas</li>
+        <li>/</li>
+        <li><p:link outcome="/index.xhtml">Início</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Departamento</label>
+                    <div class="card card-w-title" style="margin-top: 5px">
+
+                        <p:messages globalOnly="true" closable="true"/>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            
+                                                      
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{visualizarDepartamentoMB.departamento.nome}"/>
+                                        <label>Nome do departamento</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{visualizarDepartamentoMB.departamento.chefe}"/>
+                                        <label>Chefe do departamento</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{visualizarDepartamentoMB.departamento.telefone}"/>
+                                        <label>Telefone do departamento</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{visualizarDepartamentoMB.departamento.email}"/>
+                                        <label>E-mail do departamento</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

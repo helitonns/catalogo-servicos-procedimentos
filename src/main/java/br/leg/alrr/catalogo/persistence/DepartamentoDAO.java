@@ -61,4 +61,22 @@ public class DepartamentoDAO{
             throw new DAOException("Erro ao remover departamento.", e);
         }
     }
+    
+    public int pesquisarOMaiorNivelDosDepartamentos() throws DAOException{
+        try {
+            return (int) em.createQuery("select MAX(o.nivel) from Departamento o where o.status = true").getSingleResult();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao pesquisar o maior nível dos departamentos.", e);
+        }
+    }
+    
+    public List pesquisarDepartamentosPorNivel(int nivel) throws DAOException{
+        try {
+            return em.createQuery("select o from Departamento o where o.nivel = :nivel and o.status = true order by o.nome asc")
+                    .setParameter("nivel", nivel)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao pesquisar departamentos por nível.", e);
+        }
+    }
 }
