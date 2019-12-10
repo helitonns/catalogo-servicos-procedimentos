@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -108,10 +107,6 @@ public class IndexMB implements Serializable {
             }
         }
         FacesContext.getCurrentInstance().getExternalContext().redirect("visualizar-departamento.xhtml?faces-redirect=true");
-    }
-    
-    public String redirecionar(){
-        return "visualizar-departamento.xhtml?faces-redirect=true"; 
     }
     
     private void iniciar() {
