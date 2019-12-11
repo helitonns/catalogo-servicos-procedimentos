@@ -65,7 +65,7 @@ public class StartMB implements Serializable {
             System.out.println(e.getMessage());
         }
 
-        return "/index.xhtml" + "?faces-redirect=true";
+        return "/login.xhtml" + "?faces-redirect=true";
     }
 
     public String sair() {
@@ -73,7 +73,7 @@ public class StartMB implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         } catch (Exception e) {
         }
-        return "/index.xhtml" + "?faces-redirect=true";
+        return "/login.xhtml" + "?faces-redirect=true";
     }
 
     public void trocarSenha() {

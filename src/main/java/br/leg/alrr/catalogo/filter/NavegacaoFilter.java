@@ -30,20 +30,20 @@ public class NavegacaoFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        if (httpServletRequest.getRequestURI().indexOf("index.xhtml") <= -1) {
+        if (httpServletRequest.getRequestURI().indexOf("login.xhtml") <= -1) {
 
             Usuario u = (Usuario) httpSession.getAttribute("usuario");
             if (u == null) {
-                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.xhtml");
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.xhtml");
             } else {
                 Autorizacao autorizacao = (Autorizacao) httpSession.getAttribute("autorizacao");
                 
                 if (autorizacao.getPrivilegio().getDescricao().equals("RELATORIO") && (httpServletRequest.getRequestURI().contains("superadmin") || httpServletRequest.getRequestURI().contains("admin") || httpServletRequest.getRequestURI().contains("user"))) {
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/relatorio/relatorio-geral.xhtml");
                 } else if (autorizacao.getPrivilegio().getDescricao().equals("OPERADOR") && (httpServletRequest.getRequestURI().contains("admin") || httpServletRequest.getRequestURI().contains("superadmin"))) {
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/verificar-cpf.xhtml");
+                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/ator.xhtml");
                 } else if (autorizacao.getPrivilegio().getDescricao().equals("ADMIN") && httpServletRequest.getRequestURI().contains("superadmin")) {
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/verificar-cpf.xhtml");
+                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/ator.xhtml");
                 } else {
                     chain.doFilter(request, response);
                 }
