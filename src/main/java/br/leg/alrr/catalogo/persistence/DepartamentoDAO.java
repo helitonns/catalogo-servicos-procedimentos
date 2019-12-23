@@ -45,6 +45,14 @@ public class DepartamentoDAO{
         }
     }
     
+    public List listarTodosDepartamentoPai() throws DAOException{
+        try {
+            return em.createQuery("select o from Departamento o.departamentoPai order by o.nome asc").getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar departamentos pai.", e);
+        }
+    }
+    
     public List listarTodosAtivos() throws DAOException{
         try {
             return em.createQuery("select o from Departamento o where o.status = true order by o.nome asc").getResultList();
@@ -77,6 +85,24 @@ public class DepartamentoDAO{
                     .getResultList();
         } catch (Exception e) {
             throw new DAOException("Erro ao pesquisar departamentos por nível.", e);
+        }
+    }
+    
+    public long buscarDepartamentoPaiPorId(long id) throws DAOException{
+        try {
+            return (long) em.createQuery("select o from Departamento o where o.departamentoPai = :id")
+            		.setParameter("id", id)
+            		.getSingleResult();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao pesquisar departamento Pai por id.", e);
+        }
+    }
+    
+    public Departamento buscarPorID(Long id) throws DAOException{
+        try {
+            return em.find(Departamento.class, id);
+        } catch (Exception e) {
+            throw new DAOException("Erro ao buscar Departamento por ID.", e);
         }
     }
 }

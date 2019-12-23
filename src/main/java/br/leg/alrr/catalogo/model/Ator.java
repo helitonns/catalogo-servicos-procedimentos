@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.leg.alrr.catalogo.util.BaseEntity;
+
 /**
  * Entidade que representa um Ator no sistema. Ator é responsável por realizar uma atribuição, se confunde com as funções que determinado cargo realiza.
  * 
@@ -20,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
-public class Ator implements Serializable{
+public class Ator implements Serializable, BaseEntity{
     
     private static final long serialVersionUID = 1L;
 
@@ -44,11 +46,11 @@ public class Ator implements Serializable{
         this.id = id;
     }
     
-    
+    @Override
     public Long getId() {
         return id;
     }
-
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
