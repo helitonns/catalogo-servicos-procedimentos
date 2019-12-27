@@ -76,8 +76,7 @@ public class DepartamentoMB implements Serializable {
 	@PostConstruct
     public void init() {
         iniciar();
-        listarTodosOsDepartamentos();
-        listarTodosOsAtores();
+        
        
     }
 	
@@ -85,13 +84,14 @@ public class DepartamentoMB implements Serializable {
 		ator = new Ator();
         atores = new ArrayList<>();
         departamento = new Departamento();
+        departamentos = new ArrayList<>();
+        departamentoPais = new ArrayList<>();
         atoresSelecionados = new ArrayList<>();
         atoresAdicionados = new ArrayList<>();
-        ativarPai = true;
-        deleteDepartamento = false;
-        idDeptoPai = 0l;;
+        departamentoPai = new Departamento();
         
-        
+        listarTodosOsDepartamentos();
+        listarTodosOsAtores();
         
     }
 	
@@ -114,7 +114,7 @@ public class DepartamentoMB implements Serializable {
 						FacesUtils.addInfoMessageFlashScoped("departamento salvo com sucesso!");
 	        	 	}
 	         }
-			 limpaForm();
+			 iniciar();;
 		 	}catch (DAOException e) {
 				 // TODO Auto-generated catch block
 				e.printStackTrace();
@@ -198,14 +198,7 @@ public class DepartamentoMB implements Serializable {
         return "departamento.xhtml" + "?faces-redirect=true";
     }
 	
-	private void limpaForm(){
-		ator = new Ator();
-        atores = new ArrayList<>();
-        departamento = new Departamento();
-        atoresSelecionados = new ArrayList<>();
-        atoresAdicionados = new ArrayList<>();
-        departamentoPai = new Departamento();
-	}
+	
 
 	
 	//=============================GETTERS E SETTERS=============================================

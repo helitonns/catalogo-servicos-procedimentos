@@ -1,12 +1,16 @@
 package br.leg.alrr.catalogo.model;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import br.leg.alrr.catalogo.util.BaseEntity;
 
 /**
  * <p>
@@ -22,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
-public class Atribuicao implements Serializable {
+public class Atribuicao implements Serializable, BaseEntity {
     
     private static final long serialVersionUID = 1L;
     
@@ -36,11 +40,20 @@ public class Atribuicao implements Serializable {
     private Departamento departamento;
     
    //===========================================================================
+    
+    public Atribuicao() {
+    }
 
+    public Atribuicao(Long id) {
+    }
+    
+    
+    @Override
     public Long getId() {
         return id;
     }
-
+    
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -59,6 +72,35 @@ public class Atribuicao implements Serializable {
 
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Atribuicao other = (Atribuicao) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        return hash;
     }
     
 }
