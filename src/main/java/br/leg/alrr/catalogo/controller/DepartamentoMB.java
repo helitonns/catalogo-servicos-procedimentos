@@ -14,8 +14,10 @@ import javax.inject.Named;
 
 
 import br.leg.alrr.catalogo.model.Ator;
+import br.leg.alrr.catalogo.model.Atribuicao;
 import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.persistence.AtorDAO;
+import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -49,6 +51,9 @@ public class DepartamentoMB implements Serializable {
 	
 	@EJB
 	private AtorDAO atorDAO;
+	
+	@EJB
+	private AtribuicaoDAO atribuicaoDAO;
 	
 	
 	
@@ -153,6 +158,8 @@ public class DepartamentoMB implements Serializable {
 	            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
 	        }
 	    }
+	 
+	 
 	
 	 private void listarTodosOsAtores() {
 	        try {
@@ -299,7 +306,7 @@ public class DepartamentoMB implements Serializable {
 	public void setDeleteDepartamento(boolean deleteDepartamento) {
 		this.deleteDepartamento = deleteDepartamento;
 	}
-	
+
 	
 	
 	

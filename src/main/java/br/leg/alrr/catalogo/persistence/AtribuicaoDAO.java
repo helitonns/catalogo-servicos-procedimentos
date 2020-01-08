@@ -45,6 +45,15 @@ public class AtribuicaoDAO{
         }
     }
     
+    public List listarTodos2(long id) throws DAOException{
+        try {
+        	return em.createQuery("select o from Atribuicao o where o.departamento.id =:id").setParameter("id",id).getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar atribuuições.", e);
+        }
+    }
+    
+    
        public void remover(Atribuicao o) throws DAOException{
         try {
             o = em.merge(o);

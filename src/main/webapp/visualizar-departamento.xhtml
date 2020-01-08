@@ -15,7 +15,7 @@
     <ui:define name="content">
         <h:form id="form">
 
-
+		
             <div class="ui-g">
                 <div class="ui-g-12">
                     <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Departamento</label>
@@ -43,7 +43,7 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+                            <H2></H2>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -62,11 +62,48 @@
                                 </div>
                             </div>
                             
+                            <div class="ui-g-12 ui-md-12">
+                            <p:dataList value="#{visualizarDepartamentoMB.atribuicoesPorDepartamento}" var="at" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+						        <f:facet name="header">
+						            Atribuições
+						        </f:facet>
+						       
+						        <h:outputText value="#{at.descricao}"/>
+						    </p:dataList>     
+                            </div>
                             
                         </div>
                     </div>
                 </div>
             </div>
         </h:form>
+        
+         <h:form id="form2">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title"> 
+                        <div style="margin-left: 20px;">Atribuições cadastradas</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataList var="atribuicao_var" value="#{visualizarDepartamentoMB.atribuicoesPorDepartamento}" type="unordered" itemType="none"  rows="10" styleClass="paginated">
+                                   
+                                  	
+                                  	<p:link value="#{atribuicao_var.descricao}">
+									   
+									</p:link>
+                                  
+
+                                   
+                                </p:dataList>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+        
     </ui:define>
 </ui:composition>

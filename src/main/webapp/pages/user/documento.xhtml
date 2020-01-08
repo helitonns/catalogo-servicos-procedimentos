@@ -1,0 +1,126 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="breadcrumb">
+        <li>Páginas</li>
+        <li>/</li>
+        <li><p:link outcome="/pages/user/documento">Documento</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Documento</label>
+                    <div class="card card-w-title" style="margin-top: 5px">
+
+                        <p:messages id="msg" globalOnly="true" closable="true"/>
+
+                        <div style="margin-left: 20px;">Gerenciar Documentos</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                            
+							    <p:fileUpload mode="advanced" auto="true" fileUploadListener="#{documentoMB.upload}" update="idNomeArquivo" required="true" requiredMessage="Campo obrigatório!"  dragDropSupport="false"  multiple="false" fileLimitMessage="Só é possível escolher 1 arquivo por vez."
+							    invalidFileMessage="São permitidas somente arquivos word (docx)" invalidSizeMessage="O tamanho máximo permitido é de 1MB."
+							    label="Escolher" uploadLabel="Enviar" cancelLabel="Cancelar"
+							    sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(docx)$/" style="width:100%" />
+							    
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-12">
+                                 <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idNomeArquivo" value="#{documentoMB.nomeArquivo}" disabled="true" converter="upperClean"/>
+                                        <label>Arquivo</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                 <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idDocLocalizacao" value="#{documentoMB.documento.localizacao}" converter="upperClean"/>
+                                        <label>Localização do Documento</label>
+                                        <p:message for="idDocLocalizacao" showSummary="false" showDetail="false"/>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                            	
+                                <p:selectBooleanButton id="idDocStatus" value="#{documentoMB.documento.status}" required="true" requiredMessage="Campo obrigatório!"  onLabel="Documento Ativo" offLabel="Documento Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                    <p:tooltip value="Clique para selecoinar o Status" for="idDocStatus"/>
+                                </p:selectBooleanButton>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Salvar" ajax="false" action="#{documentoMB.salvar}" icon="ui-icon-save"/>
+                            </div>
+							
+							<div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Cancelar" immediate="true" action="#{documentoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" />
+                            </div>  
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        
+        <h:form id="form2">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title"> 
+                        <div style="margin-left: 20px;">Documentos cadastrados</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable var="doc_var" value="#{documentoMB.documentos}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
+                                    <p:column headerText="Id" style="width: 100px">
+                                        <h:outputText value="#{doc_var.id}" />
+                                    </p:column>
+                                    <p:column headerText="Conteudo" sortBy="#{doc_var.conteudo}" filterBy="#{doc_var.conteudo}">
+                                        <h:outputText value="#{doc_var.conteudo}" />
+                                    </p:column>
+                                    <p:column headerText="Status">
+                                        <h:outputText value="#{doc_var.status ? 'Ativo' : 'Inativo'}" />
+                                    </p:column>
+									<p:column headerText="Ação" style="width: 250px">
+                                        <h:panelGrid columns="2">
+                                            <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-edit" target="_blank"  update="form" style="width: 100%">
+                                                <f:setPropertyActionListener value="#{doc_var.id}" target="#{documentoMB.idDoc}"/>
+                                            </p:commandButton>
+                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">
+                                                <f:setPropertyActionListener value="#{doc_var}" target="#{documentoMB.documento}"/>
+                                                
+                                                
+                                              
+                                            </p:commandButton>
+                                        </h:panelGrid>
+                                    </p:column>
+                                   
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        
+
+
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+        
+        
+       
+    </ui:define>
+</ui:composition>
