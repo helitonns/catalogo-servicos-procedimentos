@@ -87,13 +87,13 @@
                                     <p:column headerText="Id" style="width: 100px">
                                         <h:outputText value="#{doc_var.id}" />
                                     </p:column>
-                                    <p:column headerText="Conteudo" sortBy="#{doc_var.conteudo}" filterBy="#{doc_var.conteudo}">
-                                        <h:outputText value="#{doc_var.conteudo}" />
+                                    <p:column headerText="Conteudo" sortBy="#{doc_var.localizacao}" filterBy="#{doc_var.conteudo}">
+                                        <h:outputText value="#{doc_var.localizacao}" />
                                     </p:column>
                                     <p:column headerText="Status">
                                         <h:outputText value="#{doc_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>
-									<p:column headerText="Ação" style="width: 250px">
+									<p:column headerText="Ação" style="width: ">
                                         <h:panelGrid columns="2">
                                             <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-edit" target="_blank"  update="form" style="width: 100%">
                                                 <f:setPropertyActionListener value="#{doc_var.id}" target="#{documentoMB.idDoc}"/>
