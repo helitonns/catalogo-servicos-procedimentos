@@ -76,9 +76,7 @@ public class DocumentoMB implements Serializable {
         	
         	//arquivo = new DefaultStreamedContent(event.getFile().getInputstream());
         	byte[] conteudo = event.getFile().getContents();
-        	nomeArquivo = event.getFile().getFileName();
-      
-        	documento.setNome(nomeArquivo);
+        	documento.setNome(event.getFile().getFileName());
             documento.setConteudo(conteudo);
           
     }
@@ -87,7 +85,7 @@ public class DocumentoMB implements Serializable {
     	 try {
     		 
     		if (documento.getId() != null) {
-         		 
+         		documentoDao.atualizar(documento);
                  FacesUtils.addInfoMessage("Documento atualizada com sucesso!");
              } else {
              	documentoDao.salvar(documento);

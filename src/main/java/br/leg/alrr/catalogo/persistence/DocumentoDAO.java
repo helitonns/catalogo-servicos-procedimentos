@@ -32,6 +32,14 @@ public class DocumentoDAO {
         }
     }
     
+    public void atualizar(Documento o) throws DAOException{
+        try {
+            em.merge(o);
+        } catch (Exception e) {
+            throw new DAOException("Erro ao atualizar departamento.", e);
+        }
+    }
+    
     public List listarTodos() throws DAOException{
         try {
             return em.createQuery("select o from Documento o order by o.id asc").getResultList();
