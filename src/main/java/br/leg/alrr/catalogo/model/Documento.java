@@ -27,6 +27,8 @@ public class Documento implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private String nome;
+    
     private String localizacao;
     
     @Lob
@@ -68,6 +70,15 @@ public class Documento implements Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+    
     
     
 }
