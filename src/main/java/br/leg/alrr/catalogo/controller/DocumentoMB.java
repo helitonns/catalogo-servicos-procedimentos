@@ -77,7 +77,8 @@ public class DocumentoMB implements Serializable {
         	//arquivo = new DefaultStreamedContent(event.getFile().getInputstream());
         	byte[] conteudo = event.getFile().getContents();
         	nomeArquivo = event.getFile().getFileName();
-        	System.out.println(nomeArquivo);
+      
+        	documento.setNome(nomeArquivo);
             documento.setConteudo(conteudo);
           
     }
@@ -85,11 +86,7 @@ public class DocumentoMB implements Serializable {
     public String salvar() {
     	 try {
     		 
-    		 
-    		
-    		 System.out.println(nomeArquivo);
-    		 System.out.println(documento.getConteudo());
-         	   if (documento.getId() != null) {
+    		if (documento.getId() != null) {
          		 
                  FacesUtils.addInfoMessage("Documento atualizada com sucesso!");
              } else {
@@ -134,6 +131,8 @@ public class DocumentoMB implements Serializable {
     	Documento doc = documentoDao.buscarPorID(idDoc);
     	System.out.println(doc.getConteudo());
     	System.out.println(doc.getId());
+    	nomeArquivo = doc.getNome();
+    	System.out.println(doc.getNome());
 
         FacesContext fc = FacesContext.getCurrentInstance();
 
@@ -156,7 +155,7 @@ public class DocumentoMB implements Serializable {
         // Seta o nome do arquivo e a disposição: "inline" abre no próprio
         // navegador.
         // Mude para "attachment" para indicar que deve ser feito um download
-        response.setHeader("Content-disposition", "inline; filename=arquivo.docx");
+        response.setHeader("Content-disposition", "inline; filename=\"" + nomeArquivo+"\"");
         try {
 
            // Envia o conteudo do arquivo PDF para o response
