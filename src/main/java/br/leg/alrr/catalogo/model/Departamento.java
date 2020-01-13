@@ -3,6 +3,7 @@ package br.leg.alrr.catalogo.model;
 import br.leg.alrr.catalogo.util.BaseEntity;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,7 +44,7 @@ public class Departamento implements BaseEntity, Serializable{
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Ator> atores;
     
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Departamento departamentoPai;
     
     private boolean status;
@@ -115,7 +116,7 @@ public class Departamento implements BaseEntity, Serializable{
     }
 
     public void setDepartamentoPai(Departamento departamentoPai) {
-        this.nivel += departamentoPai.getNivel();
+        this.nivel = departamentoPai.getNivel() + 1;
         this.departamentoPai = departamentoPai;
     }
 

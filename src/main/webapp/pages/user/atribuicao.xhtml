@@ -9,7 +9,7 @@
     <ui:define name="breadcrumb">
         <li>Páginas</li>
         <li>/</li>
-        <li><p:link outcome="/pages/user/atribuicao">Atribuição</p:link></li>
+        <li><p:link outcome="/pages/user/departamento">Departamentos</p:link></li>
     </ui:define>
 
     <ui:define name="content">
@@ -26,10 +26,19 @@
                         <div style="margin-left: 20px;">Gerenciar Atribuição</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
-                            <div class="ui-g-12 ui-md-6">
+                            
+                            <div class="ui-g-12 ui-md-12">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{fluxoDeTrabalhoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{fluxoDeTrabalhoMB.selecionarDepartamento}">
+                                    <p:ajax event="change" update="form2:tbl_atribuicoes"/>
+                                    <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
+                                    <f:selectItems value="#{fluxoDeTrabalhoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />
+                                </p:selectOneMenu>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-12">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idAtribuicaoDesc" value="#{atribuicaoMB.atribuicao.descricao}" required="true"  converter="upperClean"/>
+                                        <p:inputText id="idAtribuicaoDesc" value="#{fluxoDeTrabalhoMB.atribuicao.descricao}"  required="true" converter="upper"/>
                                         <label>Descrição da Atribuição</label>
                                         <p:message for="idAtribuicaoDesc" showSummary="false" showDetail="false"/>
                                     </h:panelGroup>     
@@ -37,18 +46,11 @@
                             </div>
                             
                             <div class="ui-g-12 ui-md-6">
-                                <p:selectOneMenu id="idSelectDepartamento" value="#{atribuicaoMB.departamento}" required="true" converter="entityConverter" style="margin-top: 10px;">
-                                    <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
-                                    <f:selectItems value="#{atribuicaoMB.departamentos}" var="varDepto" itemValue="#{varDepto}" itemLabel="#{varDepto.nome}" />
-                                </p:selectOneMenu>
+                                <p:commandButton value="Salvar" action="#{fluxoDeTrabalhoMB.salvarAtribuicao}" ajax="false" icon="ui-icon-save"/>
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Salvar" action="#{atribuicaoMB.salvarAtribuicao}" ajax="false" icon="ui-icon-save"/>
-                            </div>
-
-                            <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Cancelar" action="#{atribuicaoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
+                                <p:commandButton value="Cancelar" action="#{fluxoDeTrabalhoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
                             </div>
                         </div>
                     </div>
@@ -65,7 +67,7 @@
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
-                                <p:dataTable var="atribuicao_var" value="#{atribuicaoMB.atribuicoes}" reflow="true" rowKey="#{atribuicao_var.id}" paginator="true" rows="10">
+                                <p:dataTable id="tbl_atribuicoes" var="atribuicao_var" value="#{fluxoDeTrabalhoMB.atribuicoes}" reflow="true" rowKey="#{atribuicao_var.id}" paginator="true" rows="10" emptyMessage=" ">
                                     <p:column headerText="Id" style="width: 100px">
                                         <h:outputText value="#{atribuicao_var.id}" />
                                     </p:column>
@@ -80,10 +82,10 @@
 
                                     <p:column headerText="Ação" style="width: 250px">
                                         <h:panelGrid columns="2">
-                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{atribuicaoMB.setAtribuicao(atribuicao_var)}">
-                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{atribuicaoMB.departamento}"/>
+                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}">
+                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{fluxoDeTrabalhoMB.departamento}"/>
                                             </p:commandButton>
-                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{atribuicaoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();"/>
+                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();"/>
                                         </h:panelGrid>
                                     </p:column>
                                 </p:dataTable>
@@ -93,7 +95,7 @@
                         <p:dialog header="Exclusão" widgetVar="modal_excluir" modal="true" height="100" width="550">
                             <h:panelGrid columns="2" style="width: 100%">
                                 <h:outputText value="Tem certeza que deseja excluir o item selecionado?" style="width: 100%"/>
-                                <p:selectOneButton value="#{atribuicaoMB.removerAtribuicao}">
+                                <p:selectOneButton value="#{fluxoDeTrabalhoMB.removerAtribuicao}">
                                     <f:selectItem itemLabel="Sim" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Não" itemValue="#{false}" />
                                 </p:selectOneButton>
@@ -101,7 +103,7 @@
 
                             <f:facet name="footer">
                                 <h:panelGrid columns="2" style="width: 100%">
-                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{atribuicaoMB.excluirAtribuicao}" style="width: 100%"/>
+                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{fluxoDeTrabalhoMB.excluirAtribuicao}" style="width: 100%"/>
                                     <p:button value="Cancelar" styleClass="blue-grey-btn" icon="ui-icon-cancel"  style="width: 100%"/>
                                 </h:panelGrid>
                             </f:facet>

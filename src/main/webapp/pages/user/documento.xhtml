@@ -98,7 +98,8 @@
                                     </p:column>
 									<p:column headerText="Ação" style="width:300px ">
                                         <h:panelGrid columns="2">
-                                            <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-file-download" target="_blank"  update="form" style="width: 100%">
+                                            <!--<p:commandButton value="Visualizar" ajax="false" action="# {documentoMB.visualizarDoc}" icon="ui-icon-file-download" target="_blank"  update="form" style="width: 100%">-->
+                                            <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-file-download" update="form" style="width: 100%">
                                                 <f:setPropertyActionListener value="#{doc_var.id}" target="#{documentoMB.idDoc}"/>
                                             </p:commandButton>
                                             <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">

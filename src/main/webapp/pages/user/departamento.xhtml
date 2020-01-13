@@ -53,9 +53,6 @@
                             </div>
                             
                             
-
-                            
-                            
                             <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -77,7 +74,7 @@
 							<div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoTelefone" value="#{departamentoMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
                                         <label>Telefone</label>
                                     </h:panelGroup>     
                                 </div>
@@ -86,7 +83,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoEmail" value="#{departamentoMB.departamento.email}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputText id="idDeptoEmail" value="#{departamentoMB.departamento.email}" required="true" requiredMessage="Campo obrigatório!"/>
                                         <label>Email</label>
                                     </h:panelGroup>     
                                 </div>
@@ -156,15 +153,18 @@
                                     <p:column headerText="Nome" sortBy="#{departamento_var.nome}" filterBy="#{departamento_var.nome}">
                                         <h:outputText value="#{departamento_var.nome}" />
                                     </p:column>
-                                    <p:column headerText="Status">
+                                    <p:column headerText="Status" style="width: 100px">
                                         <h:outputText value="#{departamento_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>
                                      <p:column headerText="DeptoPai">
                                         <h:outputText value="#{departamento_var.departamentoPai.nome}" />
                                     </p:column>
 
-                                    <p:column headerText="Ação" style="width: 250px">
-                                        <h:panelGrid columns="2">
+                                    <p:column headerText="Ação" style="width: 300px">
+                                        <h:panelGrid columns="2" style="width: 100%">
+                                            <p:commandButton value="Atribuições" action="#{departamentoMB.redirecionarParaAtribuicoes}"  icon="ui-icon-add-circle-outline" styleClass="orange-btn" style="width: 100%">
+                                                <f:setPropertyActionListener value="#{departamento_var}" target="#{departamentoMB.departamento}"/>
+                                            </p:commandButton>
                                             <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">
                                                 <f:setPropertyActionListener value="#{departamento_var}" target="#{departamentoMB.departamento}"/>
                                                 <f:setPropertyActionListener value="#{departamento_var.departamentoPai}" target="#{departamentoMB.departamentoPai}"/>
