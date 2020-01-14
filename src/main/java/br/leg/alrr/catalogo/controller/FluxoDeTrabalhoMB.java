@@ -1,5 +1,7 @@
 package br.leg.alrr.catalogo.controller;
 
+import br.leg.alrr.catalogo.model.Atividade;
+import br.leg.alrr.catalogo.model.Ator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,27 +13,33 @@ import javax.inject.Named;
 
 import br.leg.alrr.catalogo.model.Atribuicao;
 import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
+import br.leg.alrr.catalogo.persistence.AtorDAO;
 import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
+import br.leg.alrr.catalogo.persistence.FluxoDeTrabalhoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
 import javax.faces.event.ValueChangeEvent;
 
 /**
- * Classe de gerenciamento das regras de negócio para a entidade Atribuicao.
+ * Classe de gerenciamento das regras de negócio para a entidade
+ * FLuxoDeTrabalho.
  *
- * @author Rafael
+ * @author Heliton Nascimento
  * @version 1.0
- * @since 2019-12-27
+ * @since 2020-01-13
  * @see Atribuicao
  * @see Departamento
  * @see DepartamentoDAO
  * @see AtribuicaoDAO
+ * @see Ator
+ * @see AtorDAO
  *
  */
 @Named
 @ViewScoped
-public class AtribuicaoMB implements Serializable {
+public class FluxoDeTrabalhoMB implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,13 +49,19 @@ public class AtribuicaoMB implements Serializable {
     @EJB
     private DepartamentoDAO departamentoDAO;
 
-    private Atribuicao atribuicao;
-    private Departamento departamento;
+    @EJB
+    private FluxoDeTrabalhoDAO fluxoDeTrabalhoDAO;
 
     private List<Atribuicao> atribuicoes;
     private List<Departamento> departamentos;
+    private List<Atividade> atividades;
+    private List<Ator> atores;
+    private List<Ator> atoresSelecionados;
 
-    private boolean removerAtribuicao = false;
+    private Atribuicao atribuicao;
+    private Departamento departamento;
+    private Atividade atividade;
+    private FluxoDeTrabalho fluxoDeTrabalho;
 
     //==========================================================================
     @PostConstruct
@@ -69,40 +83,38 @@ public class AtribuicaoMB implements Serializable {
     private void iniciar() {
         atribuicao = new Atribuicao();
         departamento = new Departamento();
+        atividade = new Atividade();
+        fluxoDeTrabalho = new FluxoDeTrabalho();
+
         atribuicoes = new ArrayList<>();
         departamentos = new ArrayList<>();
+        atores = new ArrayList<>();
+        atividades = new ArrayList<>();
+
         listarTodosDepartamentos();
     }
 
-    public void salvarAtribuicao() {
+    public String salvarFluxoDeTrabalho() {
         try {
-            atribuicao.setDepartamento(departamento);
 
+            fluxoDeTrabalho.setAtribuicao(atribuicao);
+            fluxoDeTrabalho.setAtividades(atividades);
+            for (Atividade a : atividades) {
+                a.setFluxoDeTrabalho(fluxoDeTrabalho);
+            }
+            
             if (atribuicao.getId() != null) {
-                atribuicaoDAO.atualizar(atribuicao);
-
-                FacesUtils.addInfoMessage("Atribuição atualizada com sucesso!");
+                fluxoDeTrabalhoDAO.atualizar(fluxoDeTrabalho);
+                FacesUtils.addInfoMessageFlashScoped("FLuxo de trabalho atualizado com sucesso!");
             } else {
-                atribuicaoDAO.salvar(atribuicao);
-                FacesUtils.addInfoMessage("Atribuição salva com sucesso!");
+                fluxoDeTrabalhoDAO.salvar(fluxoDeTrabalho);
+                FacesUtils.addInfoMessageFlashScoped("Fluxo de trabalho salvo com sucesso!");
             }
             iniciar();
         } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
-    }
-
-    public void excluirAtribuicao() {
-        try {
-            if (removerAtribuicao) {
-                atribuicaoDAO.remover(atribuicao);
-                FacesUtils.addInfoMessage("Atribuicao removida com sucesso!");
-            }
-            iniciar();
-        } catch (DAOException e) {
-            System.out.println(e.getCause());
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
+        return "fluxo-de-trabalho" + "?faces-redirect=true";
     }
 
     public void selecionarDepartamento(ValueChangeEvent event) {
@@ -110,6 +122,12 @@ public class AtribuicaoMB implements Serializable {
             if (event.getNewValue() != null) {
                 departamento.setId(Long.parseLong(event.getNewValue().toString()));
                 listarTodasAtribuicoesPorDepartamento();
+
+                for (Departamento d : departamentos) {
+                    if (d.getId().equals(departamento.getId())) {
+                        atores = d.getAtores();
+                    }
+                }
             }
         } catch (NumberFormatException e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -133,14 +151,24 @@ public class AtribuicaoMB implements Serializable {
         }
     }
 
-    public String redirecionarParaFluxoDeTrabalho() {
-        FacesUtils.setBean("departamento", departamento);
-        FacesUtils.setBean("atribuicao", atribuicao);
-        return "fluxo-de-trabalho.xhtml" + "?faces-redirect=true";
+    public void adicionarAtividade() {
+        if (!atividade.getDescricao().equals("")) {
+            if (atoresSelecionados.size() > 0) {
+                atividade.setAtores(atoresSelecionados);
+                atoresSelecionados = new ArrayList<>();
+                atividades.add(atividade);
+                atividade = new Atividade();
+            }else{
+                FacesUtils.addErrorMessageFlashScoped("É necessário que tenha pelo menos um ator vinculado à atividade!");
+            }
+        } else {
+            FacesUtils.addErrorMessageFlashScoped("A descrição da atividade é campo obrigatório!");
+
+        }
     }
 
     public String cancelar() {
-        return "atribuicao.xhtml" + "?faces-redirect=true";
+        return "fluxo-de-trabalho.xhtml" + "?faces-redirect=true";
     }
 
     //============================= GETTERS E SETTERS ==========================
@@ -176,12 +204,40 @@ public class AtribuicaoMB implements Serializable {
         this.departamentos = departamentos;
     }
 
-    public boolean isRemoverAtribuicao() {
-        return removerAtribuicao;
+    public List<Ator> getAtores() {
+        return atores;
     }
 
-    public void setRemoverAtribuicao(boolean removerAtribuicao) {
-        this.removerAtribuicao = removerAtribuicao;
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
+    public Atividade getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
+    public List<Ator> getAtoresSelecionados() {
+        return atoresSelecionados;
+    }
+
+    public void setAtoresSelecionados(List<Ator> atoresSelecionados) {
+        this.atoresSelecionados = atoresSelecionados;
+    }
+
+    public FluxoDeTrabalho getFluxoDeTrabalho() {
+        return fluxoDeTrabalho;
+    }
+
+    public void setFluxoDeTrabalho(FluxoDeTrabalho fluxoDeTrabalho) {
+        this.fluxoDeTrabalho = fluxoDeTrabalho;
     }
 
 }

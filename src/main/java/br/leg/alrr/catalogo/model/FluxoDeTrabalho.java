@@ -3,12 +3,15 @@ package br.leg.alrr.catalogo.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * <p>
@@ -22,8 +25,8 @@ import javax.persistence.OneToMany;
  * @see Atribuicao
  * @see Atribuicao
  */
-//@Entity
-//@Table(schema = "catalogo_servicos_procedimentos")
+@Entity
+@Table(schema = "catalogo_servicos_procedimentos")
 public class FluxoDeTrabalho implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -37,10 +40,10 @@ public class FluxoDeTrabalho implements Serializable{
     @ManyToOne
     private Atribuicao atribuicao;
     
-    @ManyToMany
-    private List<Ator> atores;
+    @OneToMany(mappedBy = "fluxoDeTrabalho", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Atividade> atividades;
     
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Documento> documentos;
     
     //==========================================================================
@@ -69,12 +72,12 @@ public class FluxoDeTrabalho implements Serializable{
         this.atribuicao = atribuicao;
     }
 
-    public List<Ator> getAtores() {
-        return atores;
+    public List<Atividade> getAtividades() {
+        return atividades;
     }
 
-    public void setAtores(List<Ator> atores) {
-        this.atores = atores;
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
     }
 
     public List<Documento> getDocumentos() {

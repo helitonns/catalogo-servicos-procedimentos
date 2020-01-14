@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
  * @version 1.0
  * @see FluxoDeTrabalho
  */
+@Stateless
 public class FluxoDeTrabalhoDAO{
 
     @PersistenceContext

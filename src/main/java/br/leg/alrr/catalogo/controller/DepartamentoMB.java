@@ -77,7 +77,6 @@ public class DepartamentoMB implements Serializable {
 
         listarTodosOsDepartamentos();
         listarTodosOsAtores();
-
     }
 
     public String salvarDepartamento() {
@@ -109,16 +108,13 @@ public class DepartamentoMB implements Serializable {
 
     public void excluirDepartamento() {
         try {
-
             if (deleteDepartamento) {
-
                 departamentoDAO.remover(departamento);
                 departamentos = null;
                 listarTodosOsDepartamentos();
                 iniciar();
                 FacesUtils.addInfoMessage("Departamento excluído com sucesso!");
             }
-
         } catch (DAOException e) {
             FacesUtils.addErrorMessage(e.getMessage());
         }
@@ -143,10 +139,8 @@ public class DepartamentoMB implements Serializable {
     }
 
     public void adicionarAtor() {
-
         for (Ator at : atoresSelecionados) {
             atoresAdicionados.add(at);
-
         }
     }
 

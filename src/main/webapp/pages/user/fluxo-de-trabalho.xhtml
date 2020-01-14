@@ -1,0 +1,196 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="breadcrumb">
+        <li>Páginas / Departamentos</li>
+        <li>/</li>
+        <li><p:link outcome="/pages/user/atribuicao">Atribuições</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+
+            <div class="ui-g" id="id_div_1">
+                <div class="ui-g-12" id="id_div_2">
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Fluxo de Trabalho</label>
+
+                    <!--0000000000000000000000000000 CARD FLUXO DE TRABALHO 0000000000000000000000000000-->
+                    <div class="card card-w-title" style="margin-top: 5px">
+
+                        <p:messages id="id_mensagens" globalOnly="true" closable="true"/>
+
+                        <div style="margin-left: 20px;">Gerenciar Fluxo de trabalho</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+
+                            <div class="ui-g-12 ui-md-6">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{fluxoDeTrabalhoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{fluxoDeTrabalhoMB.selecionarDepartamento}" height="250">
+                                    <p:ajax event="change" update="idSelectAtribuicao id_select_atores"/>
+                                    <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
+                                    <f:selectItems value="#{fluxoDeTrabalhoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6">
+                                <p:selectOneMenu id="idSelectAtribuicao" value="#{fluxoDeTrabalhoMB.atribuicao.id}" required="true" style="margin-top: 10px;">
+                                    <f:selectItem itemLabel="Selecione a atribução" noSelectionOption="true"/>
+                                    <f:selectItems value="#{fluxoDeTrabalhoMB.atribuicoes}" var="varAtribuicao" itemValue="#{varAtribuicao.id}" itemLabel="#{varAtribuicao.descricao}" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idFluxoDeTrabalhoDesc" value="#{fluxoDeTrabalhoMB.fluxoDeTrabalho.nome}"  required="true" converter="upper" style="width: 100%"/>
+                                        <label>Descrição do Fluxo de Trabalho</label>
+                                        <p:message for="idFluxoDeTrabalhoDesc" showSummary="false" showDetail="false"/>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--0000000000000000000000000000 CARD ATIVIDADE 0000000000000000000000000000-->
+                    <div class="card card-w-title" style="margin-top: 5px" id="id_div_atividade">
+                        <div style="margin-left: 20px;">Atividade</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-3">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="id_ipt_ordem" value="#{fluxoDeTrabalhoMB.atividade.ordem}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <label>Orden da atividade no fluxo</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="id_ipt_descricao" value="#{fluxoDeTrabalhoMB.atividade.descricao}" converter="upper"/>
+                                        <label>Descrição da Atividade</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-3">
+                                <p:selectCheckboxMenu  id="id_select_atores"   label="- Selecionar Atores - " value="#{fluxoDeTrabalhoMB.atoresSelecionados}" converter="entityConverter" filter="true" filterMatchMode="contains" style="margin-top: 10px;; font-weight: normal">
+                                    <f:selectItems value="#{fluxoDeTrabalhoMB.atores}" var="var_atores" itemValue="#{var_atores}" itemLabel="#{var_atores.descricao}" />
+                                </p:selectCheckboxMenu>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12">
+                                <p:commandButton value="Adicionar atividade" id="btn_atores"  actionListener="#{fluxoDeTrabalhoMB.adicionarAtividade()}" update="id_ipt_ordem id_ipt_descricao id_select_atores tbl_atividades id_mensagens"  icon="ui-icon-add" styleClass="orange-btn"/>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable id="tbl_atividades" var="var_atividade" value="#{fluxoDeTrabalhoMB.atividades}" reflow="true" rowKey="#{var_atividade.id}" paginator="true" rows="10" emptyMessage=" ">
+                                    <p:column headerText="Ordem" style="width: 100px">
+                                        <h:outputText value="#{var_atividade.ordem}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descricao">
+                                        <h:outputText value="#{var_atividade.descricao}" />
+                                    </p:column>
+
+                                    <p:column headerText="Atores envolvidos">
+                                        <h:outputText value="#{var_atividade.listarAtores}" />
+                                    </p:column>
+
+                                    <p:column headerText="Ação" style="width: 250px">
+                                        <h:panelGrid columns="2">
+                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}">
+                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{fluxoDeTrabalhoMB.departamento}"/>
+                                            </p:commandButton>
+                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();"/>
+                                        </h:panelGrid>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--0000000000000000000000000000 BOTÔES 0000000000000000000000000000-->   
+                    <div class="card card-w-title" style="margin-top: 5px">
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Salvar" action="#{fluxoDeTrabalhoMB.salvarFluxoDeTrabalho}" ajax="false" icon="ui-icon-save"/>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Cancelar" action="#{fluxoDeTrabalhoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+
+
+        <h:form id="form2">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title"> 
+                        <div style="margin-left: 20px;">Atribuições cadastradas</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable id="tbl_atribuicoes" var="atribuicao_var" value="#{fluxoDeTrabalhoMB.atribuicoes}" reflow="true" rowKey="#{atribuicao_var.id}" paginator="true" rows="10" emptyMessage=" ">
+                                    <p:column headerText="Id" style="width: 100px">
+                                        <h:outputText value="#{atribuicao_var.id}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descricao" sortBy="#{atribuicao_var.descricao}" filterBy="#{atribuicao_var.descricao}">
+                                        <h:outputText value="#{atribuicao_var.descricao}" />
+                                    </p:column>
+
+                                    <p:column headerText="Departamento" sortBy="#{atribuicao_var.departamento.nome}" filterBy="#{atribuicao_var.departamento.nome}">
+                                        <h:outputText value="#{atribuicao_var.departamento.nome}" />
+                                    </p:column>
+
+                                    <p:column headerText="Ação" style="width: 250px">
+                                        <h:panelGrid columns="2">
+                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}">
+                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{fluxoDeTrabalhoMB.departamento}"/>
+                                            </p:commandButton>
+                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();"/>
+                                        </h:panelGrid>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+<!--                        <p:dialog header="Exclusão" widgetVar="modal_excluir" modal="true" height="100" width="550">
+                            <h:panelGrid columns="2" style="width: 100%">
+                                <h:outputText value="Tem certeza que deseja excluir o item selecionado?" style="width: 100%"/>
+                                <p:selectOneButton value="# {fluxoDeTrabalhoMB.removerAtribuicao}">
+                                    <f:selectItem itemLabel="Sim" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="Não" itemValue="#{false}" />
+                                </p:selectOneButton>
+                            </h:panelGrid>
+
+                            <f:facet name="footer">
+                                <h:panelGrid columns="2" style="width: 100%">
+                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="# {fluxoDeTrabalhoMB.excluirAtribuicao}" style="width: 100%"/>
+                                    <p:button value="Cancelar" styleClass="blue-grey-btn" icon="ui-icon-cancel"  style="width: 100%"/>
+                                </h:panelGrid>
+                            </f:facet>
+                        </p:dialog>-->
+
+
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

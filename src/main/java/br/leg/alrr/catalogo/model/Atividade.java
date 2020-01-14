@@ -6,8 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,8 +21,8 @@ import javax.persistence.Table;
  * @version 1.0
  * @see FluxoDeTrabalho
  */
-//@Entity
-//@Table(schema = "catalogo_servicos_procedimentos")
+@Entity
+@Table(schema = "catalogo_servicos_procedimentos")
 public class Atividade implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -36,7 +37,8 @@ public class Atividade implements Serializable{
     
     private String resultado;
     
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="id_fluxo_de_trabalho")
     private FluxoDeTrabalho fluxoDeTrabalho;
     
     @ManyToMany
@@ -92,5 +94,20 @@ public class Atividade implements Serializable{
         this.atores = atores;
     }
     
+    public String getListarAtores(){
+        if (atores.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            
+            for (Ator a : atores) {
+                if (sb.length() > 0) {
+                    sb.append(" , ");
+                }
+                sb.append(a.getDescricao());
+            }
+            return sb.toString();
+        }else{
+            return "";
+        }
+    }
     
 }

@@ -28,17 +28,17 @@
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             
                             <div class="ui-g-12 ui-md-12">
-                                <p:selectOneMenu id="idSelectDepartamento" value="#{fluxoDeTrabalhoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{fluxoDeTrabalhoMB.selecionarDepartamento}">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{atribuicaoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{atribuicaoMB.selecionarDepartamento}">
                                     <p:ajax event="change" update="form2:tbl_atribuicoes"/>
                                     <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
-                                    <f:selectItems value="#{fluxoDeTrabalhoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />
+                                    <f:selectItems value="#{atribuicaoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />
                                 </p:selectOneMenu>
                             </div>
                             
                             <div class="ui-g-12 ui-md-12">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idAtribuicaoDesc" value="#{fluxoDeTrabalhoMB.atribuicao.descricao}"  required="true" converter="upper"/>
+                                        <p:inputText id="idAtribuicaoDesc" value="#{atribuicaoMB.atribuicao.descricao}"  required="true" converter="upper"/>
                                         <label>Descrição da Atribuição</label>
                                         <p:message for="idAtribuicaoDesc" showSummary="false" showDetail="false"/>
                                     </h:panelGroup>     
@@ -46,11 +46,11 @@
                             </div>
                             
                             <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Salvar" action="#{fluxoDeTrabalhoMB.salvarAtribuicao}" ajax="false" icon="ui-icon-save"/>
+                                <p:commandButton value="Salvar" action="#{atribuicaoMB.salvarAtribuicao}" ajax="false" icon="ui-icon-save"/>
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Cancelar" action="#{fluxoDeTrabalhoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
+                                <p:commandButton value="Cancelar" action="#{atribuicaoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
-                                <p:dataTable id="tbl_atribuicoes" var="atribuicao_var" value="#{fluxoDeTrabalhoMB.atribuicoes}" reflow="true" rowKey="#{atribuicao_var.id}" paginator="true" rows="10" emptyMessage=" ">
+                                <p:dataTable id="tbl_atribuicoes" var="atribuicao_var" value="#{atribuicaoMB.atribuicoes}" reflow="true" rowKey="#{atribuicao_var.id}" paginator="true" rows="10" emptyMessage=" ">
                                     <p:column headerText="Id" style="width: 100px">
                                         <h:outputText value="#{atribuicao_var.id}" />
                                     </p:column>
@@ -80,12 +80,20 @@
                                         <h:outputText value="#{atribuicao_var.departamento.nome}" />
                                     </p:column>
 
-                                    <p:column headerText="Ação" style="width: 250px">
-                                        <h:panelGrid columns="2">
-                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%"  actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}">
-                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{fluxoDeTrabalhoMB.departamento}"/>
+                                    <p:column headerText="Ação" style="width: 200px">
+                                        <h:panelGrid columns="3" style="width: 100%">
+                                            <p:commandButton id="btn_ft" action="#{atribuicaoMB.redirecionarParaFluxoDeTrabalho}"  icon="ui-icon-add-circle-outline" styleClass="orange-btn" >
+                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{atribuicaoMB.departamento}"/>
+                                                <f:setPropertyActionListener value="#{atribuicao_var}" target="#{atribuicaoMB.atribuicao}"/>
+                                                <p:tooltip value="Fluxos de Trabalho" for="btn_ft" />
                                             </p:commandButton>
-                                            <p:commandButton value="Excluir" icon="ui-icon-cancel"  style="width: 100%" styleClass="red-btn" actionListener="#{fluxoDeTrabalhoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();"/>
+                                            <p:commandButton id="btn_editar" icon="ui-icon-edit" ajax="true" update="form" actionListener="#{atribuicaoMB.setAtribuicao(atribuicao_var)}">
+                                                <f:setPropertyActionListener value="#{atribuicao_var.departamento}" target="#{atribuicaoMB.departamento}"/>
+                                                <p:tooltip value="Editar" for="btn_editar" />
+                                            </p:commandButton>
+                                            <p:commandButton id="btn_excluir" icon="ui-icon-delete"  styleClass="red-btn" actionListener="#{atribuicaoMB.setAtribuicao(atribuicao_var)}" onclick="PF('modal_excluir').show();">
+                                                <p:tooltip value="Excluir" for="btn_excluir" />
+                                            </p:commandButton>
                                         </h:panelGrid>
                                     </p:column>
                                 </p:dataTable>
@@ -95,7 +103,7 @@
                         <p:dialog header="Exclusão" widgetVar="modal_excluir" modal="true" height="100" width="550">
                             <h:panelGrid columns="2" style="width: 100%">
                                 <h:outputText value="Tem certeza que deseja excluir o item selecionado?" style="width: 100%"/>
-                                <p:selectOneButton value="#{fluxoDeTrabalhoMB.removerAtribuicao}">
+                                <p:selectOneButton value="#{atribuicaoMB.removerAtribuicao}">
                                     <f:selectItem itemLabel="Sim" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Não" itemValue="#{false}" />
                                 </p:selectOneButton>
@@ -103,7 +111,7 @@
 
                             <f:facet name="footer">
                                 <h:panelGrid columns="2" style="width: 100%">
-                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{fluxoDeTrabalhoMB.excluirAtribuicao}" style="width: 100%"/>
+                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{atribuicaoMB.excluirAtribuicao}" style="width: 100%"/>
                                     <p:button value="Cancelar" styleClass="blue-grey-btn" icon="ui-icon-cancel"  style="width: 100%"/>
                                 </h:panelGrid>
                             </f:facet>
