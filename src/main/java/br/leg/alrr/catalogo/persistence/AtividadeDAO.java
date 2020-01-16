@@ -9,19 +9,19 @@ import javax.persistence.PersistenceContext;
 
 /**
  * Classe que gerencia a persistência da entidade Atividade.
- * 
+ *
  * @author Heliton Nascimento
  * @since 2019-12-05
  * @version 1.0
  * @see Atividade
  */
 @Stateless
-public class AtividadeDAO{
+public class AtividadeDAO {
 
     @PersistenceContext
     protected EntityManager em;
 
-    public void salvar(Atividade o) throws DAOException{
+    public void salvar(Atividade o) throws DAOException {
         try {
             em.persist(o);
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class AtividadeDAO{
         }
     }
 
-    public void atualizar(Atividade o) throws DAOException{
+    public void atualizar(Atividade o) throws DAOException {
         try {
             em.merge(o);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class AtividadeDAO{
         }
     }
 
-    public List listarTodos() throws DAOException{
+    public List listarTodos() throws DAOException {
         try {
             return em.createQuery("select o from Atividade o order by o.descricao asc").getResultList();
         } catch (Exception e) {
@@ -45,7 +45,17 @@ public class AtividadeDAO{
         }
     }
     
-       public void remover(Atividade o) throws DAOException{
+    public int removerAtividadePorId(Atividade a) throws DAOException {
+        try {
+            return em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.atividade a WHERE a.id = :idAtividade")
+                    .setParameter("idAtividade", a.getId())
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao remover atividades.", e);
+        }
+    }
+
+    public void remover(Atividade o) throws DAOException {
         try {
             o = em.merge(o);
             em.remove(o);

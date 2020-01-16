@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,7 +42,7 @@ public class FluxoDeTrabalho implements Serializable{
     @OneToMany(mappedBy = "fluxoDeTrabalho", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Atividade> atividades;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fluxoDeTrabalho", cascade = CascadeType.ALL)
     private List<Documento> documentos;
     
     //==========================================================================
@@ -88,6 +87,18 @@ public class FluxoDeTrabalho implements Serializable{
         this.documentos = documentos;
     }
     
-    
+    public String getListarAtividades(){
+        if (atividades.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            
+            for (Atividade a : atividades) {
+                sb.append("- ").append(a.getDescricao()).append("<br/>");
+            }
+            
+            return sb.toString();
+        }else{
+            return "";
+        }
+    }
     
 }

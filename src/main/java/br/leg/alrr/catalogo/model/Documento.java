@@ -8,35 +8,39 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Entidade que representa um documento no sistema. Documento será qualquer arquivo que será salvo na forma de byte.
- * 
+ * Entidade que representa um documento no sistema. Documento será qualquer
+ * arquivo que será salvo na forma de byte.
+ *
  * @author Heliton Nascimento
  * @since 2019-12-05
  * @version 1.0
  */
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
-public class Documento implements Serializable{
-    
+public class Documento implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String nome;
-    
+
     private String localizacao;
-    
+
     @Lob
     @Basic(fetch = FetchType.LAZY, optional = true)
     private byte[] conteudo;
-    
+
     private boolean status;
-    
+
+    @ManyToOne
+    private FluxoDeTrabalho fluxoDeTrabalho;
     //==========================================================================
 
     public Long getId() {
@@ -71,14 +75,19 @@ public class Documento implements Serializable{
         this.status = status;
     }
 
-	public String getNome() {
-		return nome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-    
-    
-    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public FluxoDeTrabalho getFluxoDeTrabalho() {
+        return fluxoDeTrabalho;
+    }
+
+    public void setFluxoDeTrabalho(FluxoDeTrabalho fluxoDeTrabalho) {
+        this.fluxoDeTrabalho = fluxoDeTrabalho;
+    }
 }

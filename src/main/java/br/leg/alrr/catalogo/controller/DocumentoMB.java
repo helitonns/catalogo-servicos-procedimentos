@@ -29,78 +29,61 @@ import br.leg.alrr.catalogo.util.FacesUtils;
  * @version 1.0
  * @since 2019-12-30
  * @see Documento
- * 
- * 
+ *
  */
-
 @ViewScoped
 @Named
 public class DocumentoMB implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@EJB
-	private DocumentoDAO documentoDao;
-	
-	private Documento documento;
-	private List<Documento> documentos;
-	private long idDoc;
-	private String nomeArquivo;
-	
-	private StreamedContent arquivo;
-	
-	
-	
-	
-	//==========================================================================
+    private static final long serialVersionUID = 1L;
+
+    @EJB
+    private DocumentoDAO documentoDao;
+
+    private Documento documento;
+    private List<Documento> documentos;
+    private long idDoc;
+    private String nomeArquivo;
+
+    private StreamedContent arquivo;
+
+    //==========================================================================
     @PostConstruct
     public void init() {
         iniciar();
         listarTodosOsDocumentos();
     }
-    
-    private void iniciar(){
-    	documento = new Documento();
-    	documentos = new ArrayList<Documento>();
-    	idDoc = 0l;
-    	
+
+    private void iniciar() {
+        documento = new Documento();
+        documentos = new ArrayList<Documento>();
+        idDoc = 0l;
+
     }
-    
-    
-    
-    public void upload(FileUploadEvent event) throws IOException{
-       
-        	
-        	//arquivo = new DefaultStreamedContent(event.getFile().getInputstream());
-        	byte[] conteudo = event.getFile().getContents();
-        	documento.setNome(event.getFile().getFileName());
-            documento.setConteudo(conteudo);
-          
+
+    public void upload(FileUploadEvent event) throws IOException {
+        //arquivo = new DefaultStreamedContent(event.getFile().getInputstream());
+        byte[] conteudo = event.getFile().getContents();
+        documento.setNome(event.getFile().getFileName());
+        documento.setConteudo(conteudo);
     }
-    
+
     public String salvar() {
-    	 try {
-    		 
-    		if (documento.getId() != null) {
-         		documentoDao.atualizar(documento);
-                 FacesUtils.addInfoMessage("Documento atualizada com sucesso!");
-             } else {
-             	documentoDao.salvar(documento);
-                 FacesUtils.addInfoMessage("Documento salvo com sucesso!");
-             }
-             iniciar();
-         } catch (DAOException e) {
-             FacesUtils.addErrorMessage(e.getMessage());
-         }
-    	 
-    	 return "documento.xhtml" + "?faces-redirect=true";
+        try {
+            if (documento.getId() != null) {
+                documentoDao.atualizar(documento);
+                FacesUtils.addInfoMessage("Documento atualizada com sucesso!");
+            } else {
+                documentoDao.salvar(documento);
+                FacesUtils.addInfoMessage("Documento salvo com sucesso!");
+            }
+            iniciar();
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+        return "documento.xhtml" + "?faces-redirect=true";
     }
-   
-    
-   
+
     private void listarTodosOsDocumentos() {
         try {
             documentos = documentoDao.listarTodos();
@@ -109,12 +92,11 @@ public class DocumentoMB implements Serializable {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
     }
-    
-    
+
     public String cancelar() {
         return "documento.xhtml" + "?faces-redirect=true";
     }
-    
+
     public byte[] toByteArrayUsingJava(InputStream is) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int reads = is.read();
@@ -124,20 +106,21 @@ public class DocumentoMB implements Serializable {
         }
         return baos.toByteArray();
     }
+
     public void visualizarDoc() throws DAOException {
-    	
-    	Documento doc = documentoDao.buscarPorID(idDoc);
-    	System.out.println(doc.getConteudo());
-    	System.out.println(doc.getId());
-    	nomeArquivo = doc.getNome();
-    	System.out.println(doc.getNome());
+
+        Documento doc = documentoDao.buscarPorID(idDoc);
+        System.out.println(doc.getConteudo());
+        System.out.println(doc.getId());
+        nomeArquivo = doc.getNome();
+        System.out.println(doc.getNome());
 
         FacesContext fc = FacesContext.getCurrentInstance();
 
         // Obtem o HttpServletResponse, objeto responsável pela resposta do
         // servidor ao browser
         HttpServletResponse response = (HttpServletResponse) fc
-              .getExternalContext().getResponse();
+                .getExternalContext().getResponse();
 
         // Limpa o buffer do response
         response.reset();
@@ -153,76 +136,65 @@ public class DocumentoMB implements Serializable {
         // Seta o nome do arquivo e a disposição: "inline" abre no próprio
         // navegador.
         // Mude para "attachment" para indicar que deve ser feito um download
-        response.setHeader("Content-disposition", "inline; filename=\"" + nomeArquivo+"\"");
+        response.setHeader("Content-disposition", "inline; filename=\"" + nomeArquivo + "\"");
         try {
 
-           // Envia o conteudo do arquivo PDF para o response
-           response.getOutputStream().write(doc.getConteudo());
+            // Envia o conteudo do arquivo PDF para o response
+            response.getOutputStream().write(doc.getConteudo());
 
-           // Descarrega o conteudo do stream, forçando a escrita de qualquer byte
-           // ainda em buffer
-           response.getOutputStream().flush();
+            // Descarrega o conteudo do stream, forçando a escrita de qualquer byte
+            // ainda em buffer
+            response.getOutputStream().flush();
 
-           // Fecha o stream, liberando seus recursos
-           response.getOutputStream().close();
+            // Fecha o stream, liberando seus recursos
+            response.getOutputStream().close();
 
-           // Sinaliza ao JSF que a resposta HTTP para este pedido já foi gerada
-           fc.responseComplete();
+            // Sinaliza ao JSF que a resposta HTTP para este pedido já foi gerada
+            fc.responseComplete();
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
-     }
-  
+    }
 
-
-	
-	//=============================GETTERS E SETTERS=============================================
-    
+    //=============================GETTERS E SETTERS=============================================
     public Documento getDocumento() {
-		return documento;
-	}
+        return documento;
+    }
 
-	public void setDocumento(Documento documento) {
-		this.documento = documento;
-	}
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
 
-	public List<Documento> getDocumentos() {
-		return documentos;
-	}
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
 
-	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
-	}
+    public void setDocumentos(List<Documento> documentos) {
+        this.documentos = documentos;
+    }
 
-	public StreamedContent getArquivo() {
-		return arquivo;
-	}
+    public StreamedContent getArquivo() {
+        return arquivo;
+    }
 
-	public void setArquivo(StreamedContent arquivo) {
-		this.arquivo = arquivo;
-	}
+    public void setArquivo(StreamedContent arquivo) {
+        this.arquivo = arquivo;
+    }
 
-	public long getIdDoc() {
-		return idDoc;
-	}
+    public long getIdDoc() {
+        return idDoc;
+    }
 
-	public void setIdDoc(long idDoc) {
-		this.idDoc = idDoc;
-	}
+    public void setIdDoc(long idDoc) {
+        this.idDoc = idDoc;
+    }
 
-	public String getNomeArquivo() {
-		return nomeArquivo;
-	}
+    public String getNomeArquivo() {
+        return nomeArquivo;
+    }
 
-	public void setNomeArquivo(String nomeArquivo) {
-		this.nomeArquivo = nomeArquivo;
-	}
+    public void setNomeArquivo(String nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
 
-	
-	
-
-	
-	
-	
-	
 }

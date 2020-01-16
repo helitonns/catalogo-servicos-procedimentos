@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import br.leg.alrr.catalogo.model.Documento;
+import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
 import br.leg.alrr.catalogo.util.DAOException;
 
 /**
@@ -56,4 +57,24 @@ public class DocumentoDAO {
         }
     }
 
+    public List listarDocumentosPorFluxoDeTrabalho(FluxoDeTrabalho ft) throws DAOException{
+        try {
+            return em.createQuery("select o from Documento o where o.fluxoDeTrabalho.id = :idFluxo order by o.id asc")
+                    .setParameter("idFluxo", ft.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar documentos por fluxo de trabalho.", e);
+        }
+    }
+    
+    public int removerDocumentoPorId(Documento d) throws DAOException {
+        try {
+            return em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.documento d WHERE d.id = :idDocumento")
+                    .setParameter("idDocumento", d.getId())
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao remover documento.", e);
+        }
+    }
+    
 }

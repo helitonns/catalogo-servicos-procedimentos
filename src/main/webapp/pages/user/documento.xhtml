@@ -27,25 +27,25 @@
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
-                            
-							    <p:fileUpload mode="advanced" auto="true" fileUploadListener="#{documentoMB.upload}" update="idNomeArquivo" required="true" requiredMessage="Campo obrigatório!"  dragDropSupport="false"  multiple="false" fileLimitMessage="Só é possível escolher 1 arquivo por vez."
-							    invalidFileMessage="São permitidas somente arquivos do tipo word (docx) e Pdf" invalidSizeMessage="O tamanho máximo permitido é de 1MB."
-							    label="Escolher" uploadLabel="Enviar" cancelLabel="Cancelar"
-							    sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(docx)|(pdf)$/" style="width:100%" />
-							    
+
+                                <p:fileUpload mode="advanced" auto="true" fileUploadListener="#{documentoMB.upload}" update="idNomeArquivo" required="true" requiredMessage="Campo obrigatório!"  dragDropSupport="false"  multiple="false" fileLimitMessage="Só é possível escolher 1 arquivo por vez."
+                                              invalidFileMessage="São permitidas somente arquivos do tipo word (docx) e Pdf" invalidSizeMessage="O tamanho máximo permitido é de 1MB."
+                                              label="Escolher" uploadLabel="Enviar" cancelLabel="Cancelar"
+                                              sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(docx)|(pdf)$/" style="width:100%" />
+
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-12">
-                                 <div class="ui-inputgroup">
+                                <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputText id="idNomeArquivo" value="#{documentoMB.documento.nome}" disabled="true" converter="upperClean"/>
                                         <label>Arquivo</label>
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-6">
-                                 <div class="ui-inputgroup">
+                                <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputText id="idDocLocalizacao" value="#{documentoMB.documento.localizacao}" converter="upperClean"/>
                                         <label>Localização do Documento</label>
@@ -53,28 +53,27 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-6">
-                            	
                                 <p:selectBooleanButton id="idDocStatus" value="#{documentoMB.documento.status}" required="true" requiredMessage="Campo obrigatório!"  onLabel="Documento Ativo" offLabel="Documento Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
                                     <p:tooltip value="Clique para selecoinar o Status" for="idDocStatus"/>
                                 </p:selectBooleanButton>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-6">
                                 <p:commandButton value="Salvar" ajax="false" action="#{documentoMB.salvar}" icon="ui-icon-save"/>
                             </div>
-							
-							<div class="ui-g-12 ui-md-6">
+
+                            <div class="ui-g-12 ui-md-6">
                                 <p:commandButton value="Cancelar" immediate="true" action="#{documentoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" />
                             </div>  
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
         </h:form>
-        
+
         <h:form id="form2">
             <div class="ui-g">
                 <div class="ui-g-12">
@@ -84,21 +83,17 @@
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
                                 <p:dataTable var="doc_var" value="#{documentoMB.documentos}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
-                                    <p:column headerText="Id" style="width: 100px">
-                                        <h:outputText value="#{doc_var.id}" />
-                                    </p:column>
-                                    <p:column headerText="Nome" sortBy="#{doc_var.nome}" filterBy="#{doc_var.nome}">
+                                    <p:column headerText="Nome" sortBy="#{doc_var.nome}" filterBy="#{doc_var.nome}" resizable="true">
                                         <h:outputText value="#{doc_var.nome}" />
                                     </p:column>
                                     <p:column headerText="Localização" sortBy="#{doc_var.localizacao}" filterBy="#{doc_var.conteudo}">
                                         <h:outputText value="#{doc_var.localizacao}" />
                                     </p:column>
-                                    <p:column headerText="Status">
+                                    <p:column headerText="Status" style="width: 100px">
                                         <h:outputText value="#{doc_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>
-									<p:column headerText="Ação" style="width:300px ">
-                                        <h:panelGrid columns="2">
-                                            <!--<p:commandButton value="Visualizar" ajax="false" action="# {documentoMB.visualizarDoc}" icon="ui-icon-file-download" target="_blank"  update="form" style="width: 100%">-->
+                                    <p:column headerText="Ação" style="width:280px">
+                                        <h:panelGrid columns="2" style="width: 100%">
                                             <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-file-download" update="form" style="width: 100%">
                                                 <f:setPropertyActionListener value="#{doc_var.id}" target="#{documentoMB.idDoc}"/>
                                             </p:commandButton>
@@ -107,12 +102,12 @@
                                             </p:commandButton>
                                         </h:panelGrid>
                                     </p:column>
-                                   
+
                                 </p:dataTable>
                             </div>
                         </div>
 
-                        
+
 
 
                     </div>
@@ -120,8 +115,8 @@
             </div>
 
         </h:form>
-        
-        
-       
+
+
+
     </ui:define>
 </ui:composition>

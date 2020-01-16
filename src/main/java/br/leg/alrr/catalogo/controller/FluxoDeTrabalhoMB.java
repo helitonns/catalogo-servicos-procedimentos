@@ -13,14 +13,21 @@ import javax.inject.Named;
 
 import br.leg.alrr.catalogo.model.Atribuicao;
 import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.Documento;
 import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
+import br.leg.alrr.catalogo.persistence.AtividadeDAO;
 import br.leg.alrr.catalogo.persistence.AtorDAO;
 import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
+import br.leg.alrr.catalogo.persistence.DocumentoDAO;
 import br.leg.alrr.catalogo.persistence.FluxoDeTrabalhoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
+import java.io.IOException;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.http.HttpServletResponse;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  * Classe de gerenciamento das regras de negócio para a entidade
@@ -52,16 +59,30 @@ public class FluxoDeTrabalhoMB implements Serializable {
     @EJB
     private FluxoDeTrabalhoDAO fluxoDeTrabalhoDAO;
 
+    @EJB
+    private AtividadeDAO atividadeDAO;
+
+    @EJB
+    private DocumentoDAO documentoDAO;
+
     private List<Atribuicao> atribuicoes;
     private List<Departamento> departamentos;
     private List<Atividade> atividades;
+    private List<Atividade> atividadesQueDevemSerExcluidas;
     private List<Ator> atores;
     private List<Ator> atoresSelecionados;
+    private List<FluxoDeTrabalho> fluxosDeTrabalho;
+    private List<Documento> documentos;
+    private List<Documento> documentosQueDevemSerExcluidos;
 
     private Atribuicao atribuicao;
     private Departamento departamento;
     private Atividade atividade;
     private FluxoDeTrabalho fluxoDeTrabalho;
+    private Documento documento;
+
+    private String nomeArquivo;
+    private boolean excluirFluxo;
 
     //==========================================================================
     @PostConstruct
@@ -81,40 +102,99 @@ public class FluxoDeTrabalhoMB implements Serializable {
     }
 
     private void iniciar() {
+        excluirFluxo = false;
+
         atribuicao = new Atribuicao();
         departamento = new Departamento();
         atividade = new Atividade();
         fluxoDeTrabalho = new FluxoDeTrabalho();
+        documento = new Documento();
+        documento.setStatus(true);
 
         atribuicoes = new ArrayList<>();
         departamentos = new ArrayList<>();
         atores = new ArrayList<>();
         atividades = new ArrayList<>();
+        atividadesQueDevemSerExcluidas = new ArrayList<>();
+        fluxosDeTrabalho = new ArrayList<>();
+        documentos = new ArrayList<>();
+        documentosQueDevemSerExcluidos = new ArrayList<>();
 
         listarTodosDepartamentos();
     }
 
+    //--------------------------------------------------------------------------
     public String salvarFluxoDeTrabalho() {
         try {
 
             fluxoDeTrabalho.setAtribuicao(atribuicao);
-            fluxoDeTrabalho.setAtividades(atividades);
-            for (Atividade a : atividades) {
-                a.setFluxoDeTrabalho(fluxoDeTrabalho);
-            }
-            
-            if (atribuicao.getId() != null) {
+
+            //ATUALIZAR
+            if (fluxoDeTrabalho.getId() != null) {
+                //VERIFICA SE HÁ ATIVIDADES PARA SER EXLUÍDA
+                if (atividadesQueDevemSerExcluidas.size() > 0) {
+
+                    atividades.removeAll(atividadesQueDevemSerExcluidas);
+
+                    for (Atividade atividadeParaExclusao : atividadesQueDevemSerExcluidas) {
+                        atividadeDAO.removerAtividadePorId(atividadeParaExclusao);
+                    }
+
+                    atividadesQueDevemSerExcluidas = null;
+                    atividadesQueDevemSerExcluidas = new ArrayList<>();
+                }
+
+                //DEVE-SE SETAR ATIVIDADES EM FLUXO E FLUXO EM ATIVIDADES
+                fluxoDeTrabalho.setAtividades(atividades);
+                for (Atividade a : atividades) {
+                    a.setFluxoDeTrabalho(fluxoDeTrabalho);
+                }
+
+                //SETANDO A LISTA DE DOCUMENTOS
+                fluxoDeTrabalho.setDocumentos(documentos);
+                for (Documento d : documentos) {
+                    d.setFluxoDeTrabalho(fluxoDeTrabalho);
+                }
+                //VERIFICA SE HÁ DOCUEMNTOS PARA SEREM EXCLUÍDOS
+                for (Documento d : documentosQueDevemSerExcluidos) {
+                    documentoDAO.removerDocumentoPorId(d);
+                }
+
                 fluxoDeTrabalhoDAO.atualizar(fluxoDeTrabalho);
-                FacesUtils.addInfoMessageFlashScoped("FLuxo de trabalho atualizado com sucesso!");
-            } else {
+                FacesUtils.addInfoMessageFlashScoped("Fluxo de trabalho atualizado com sucesso!");
+            } //SALVAR
+            else {
+                //DEVE-SE SETAR ATIVIDADES EM FLUXO E FLUXO EM ATIVIDADES
+                fluxoDeTrabalho.setAtividades(atividades);
+                for (Atividade a : atividades) {
+                    a.setFluxoDeTrabalho(fluxoDeTrabalho);
+                }
+
+                //SETANDO A LISTA DE DOCUMENTOS
+                fluxoDeTrabalho.setDocumentos(documentos);
+                for (Documento d : documentos) {
+                    d.setFluxoDeTrabalho(fluxoDeTrabalho);
+                }
+
                 fluxoDeTrabalhoDAO.salvar(fluxoDeTrabalho);
                 FacesUtils.addInfoMessageFlashScoped("Fluxo de trabalho salvo com sucesso!");
             }
             iniciar();
         } catch (DAOException e) {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+            System.out.println(e.getCause());
         }
         return "fluxo-de-trabalho" + "?faces-redirect=true";
+    }
+
+    //--------------------------------------------------------------------------
+    private void listarTodosDepartamentos() {
+        try {
+            departamentos = departamentoDAO.listarTodos();
+
+        } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
     }
 
     public void selecionarDepartamento(ValueChangeEvent event) {
@@ -142,11 +222,32 @@ public class FluxoDeTrabalhoMB implements Serializable {
         }
     }
 
-    private void listarTodosDepartamentos() {
+    public void selecionarAtribuicao(ValueChangeEvent event) {
         try {
-            departamentos = departamentoDAO.listarTodos();
+            if (event.getNewValue() != null) {
+                atribuicao.setId(Long.parseLong(event.getNewValue().toString()));
+                listarFluxoDeTrabalhoPorAtribuicao();
+            }
+        } catch (NumberFormatException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+    }
 
+    private void listarFluxoDeTrabalhoPorAtribuicao() {
+        try {
+            fluxosDeTrabalho = fluxoDeTrabalhoDAO.listarFluxoDeTrabalhoPorAtribuicao(atribuicao);
+            listarAtividadesDosFluxosDeTrabalho();
         } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+    }
+
+    private void listarAtividadesDosFluxosDeTrabalho() {
+        try {
+            for (FluxoDeTrabalho f : fluxosDeTrabalho) {
+                f.setAtividades(fluxoDeTrabalhoDAO.listarAtividadesPorFLuxoDeTrabalho(f));
+            }
+        } catch (DAOException e) {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
     }
@@ -158,7 +259,7 @@ public class FluxoDeTrabalhoMB implements Serializable {
                 atoresSelecionados = new ArrayList<>();
                 atividades.add(atividade);
                 atividade = new Atividade();
-            }else{
+            } else {
                 FacesUtils.addErrorMessageFlashScoped("É necessário que tenha pelo menos um ator vinculado à atividade!");
             }
         } else {
@@ -166,6 +267,102 @@ public class FluxoDeTrabalhoMB implements Serializable {
 
         }
     }
+
+    //--------------------------------------------------------------------------
+    public String excluirFluxo() {
+        try {
+            if (excluirFluxo) {
+                fluxoDeTrabalhoDAO.remover(fluxoDeTrabalho);
+                FacesUtils.addInfoMessageFlashScoped("Fluxo de trabalho excluído com sucesso!");
+                excluirFluxo = false;
+            }
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+        return "fluxo-de-trabalho.xhtml" + "?faces-redirect=true";
+    }
+
+    public void excluirAtividade() {
+        for (Atividade a : atividades) {
+            if (a.getId().equals(atividade.getId())) {
+                atividadesQueDevemSerExcluidas.add(a);
+                atividades.remove(a);
+                atividade = new Atividade();
+                break;
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    public void upload(FileUploadEvent event) throws IOException {
+        byte[] conteudo = event.getFile().getContents();
+        documento.setNome(event.getFile().getFileName());
+        documento.setConteudo(conteudo);
+    }
+
+    public void adicinarDocumento() {
+        documentos.add(documento);
+        documento = new Documento();
+        documento.setStatus(true);
+    }
+
+    public void listarDocumentosPorFluxoDeTrabalho() {
+        try {
+            documentos = documentoDAO.listarDocumentosPorFluxoDeTrabalho(fluxoDeTrabalho);
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getCause().toString());
+        }
+    }
+
+    public void excluirDocumento() {
+        for (Documento d : documentos) {
+            if (d.getId().equals(documento.getId())) {
+                documentosQueDevemSerExcluidos.add(d);
+                documentos.remove(d);
+                documento = new Documento();
+                break;
+            }
+        }
+    }
+
+    public void visualizarDocumento(Long idDocumento) throws DAOException {
+        Documento doc = documentoDAO.buscarPorID(idDocumento);
+        nomeArquivo = doc.getNome();
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+
+        // Obtem o HttpServletResponse, objeto responsável pela resposta do servidor ao browser
+        HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+
+        // Limpa o buffer do response
+        response.reset();
+
+        // Seta o tipo de conteudo no cabecalho da resposta. No caso, indica que o conteudo sera um documento pdf.
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+        // Seta o tamanho do conteudo no cabecalho da resposta. No caso, o tamanho em bytes do arquivo
+        response.setContentLength(doc.getConteudo().length);
+
+        // Seta o nome do arquivo e a disposição: "inline" abre no próprio navegador.
+        // Mude para "attachment" para indicar que deve ser feito um download
+        response.setHeader("Content-disposition", "inline; filename=\"" + nomeArquivo + "\"");
+        try {
+            // Envia o conteudo do arquivo PDF para o response
+            response.getOutputStream().write(doc.getConteudo());
+
+            // Descarrega o conteudo do stream, forçando a escrita de qualquer byte ainda em buffer
+            response.getOutputStream().flush();
+
+            // Fecha o stream, liberando seus recursos
+            response.getOutputStream().close();
+
+            // Sinaliza ao JSF que a resposta HTTP para este pedido já foi gerada
+            fc.responseComplete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //--------------------------------------------------------------------------
 
     public String cancelar() {
         return "fluxo-de-trabalho.xhtml" + "?faces-redirect=true";
@@ -240,4 +437,27 @@ public class FluxoDeTrabalhoMB implements Serializable {
         this.fluxoDeTrabalho = fluxoDeTrabalho;
     }
 
+    public List<FluxoDeTrabalho> getFluxosDeTrabalho() {
+        return fluxosDeTrabalho;
+    }
+
+    public boolean isExcluirFluxo() {
+        return excluirFluxo;
+    }
+
+    public void setExcluirFluxo(boolean excluirFluxo) {
+        this.excluirFluxo = excluirFluxo;
+    }
+
+    public Documento getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
+    }
+
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
 }

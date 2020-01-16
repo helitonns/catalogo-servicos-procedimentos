@@ -1,5 +1,6 @@
 package br.leg.alrr.catalogo.persistence;
 
+import br.leg.alrr.catalogo.model.Atribuicao;
 import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
 import br.leg.alrr.catalogo.util.DAOException;
 import java.util.List;
@@ -44,6 +45,28 @@ public class FluxoDeTrabalhoDAO{
             throw new DAOException("Erro ao listar fluxos de trabalho.", e);
         }
     }
+    
+    public List listarFluxoDeTrabalhoPorAtribuicao(Atribuicao a) throws DAOException{
+        try {
+            return em.createQuery("select o from FluxoDeTrabalho o where o.atribuicao.id = :idAtribuicao order by o.nome")
+                    .setParameter("idAtribuicao", a.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar fluxos de trabalho.", e);
+        }
+    }
+    
+    public List listarAtividadesPorFLuxoDeTrabalho(FluxoDeTrabalho f) throws DAOException{
+        try {
+            return em.createQuery("select o from Atividade o join fetch o.atores where o.fluxoDeTrabalho.id = :idFLuxo order by o.ordem")
+                    .setParameter("idFLuxo", f.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar fluxos de trabalho.", e);
+        }
+    }
+    
+    
     
     public void remover(FluxoDeTrabalho o) throws DAOException{
         try {
