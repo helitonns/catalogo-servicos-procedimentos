@@ -1,6 +1,7 @@
 package br.leg.alrr.catalogo.persistence;
 
 import br.leg.alrr.catalogo.model.Atividade;
+import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
 import br.leg.alrr.catalogo.util.DAOException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -42,6 +43,16 @@ public class AtividadeDAO {
             return em.createQuery("select o from Atividade o order by o.descricao asc").getResultList();
         } catch (Exception e) {
             throw new DAOException("Erro ao listar atividades.", e);
+        }
+    }
+    
+    public List listarAtividadesPorFluxoDeTrabalho(FluxoDeTrabalho f) throws DAOException {
+        try {
+            return em.createQuery("select o from Atividade o JOIN FETCH o.atores where o.fluxoDeTrabalho.id =:idFluxo order by o.ordem asc")
+                    .setParameter("idFluxo", f.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar atividades por fluxo de trabalho.", e);
         }
     }
     

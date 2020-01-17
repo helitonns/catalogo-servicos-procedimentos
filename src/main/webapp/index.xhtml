@@ -17,7 +17,9 @@
 
            <div class="ui-g">
                 <div class="ui-g-12">
-                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Departamentos</label>
+                    <center>
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Catálogo de Serviços e Procedimentos</label>
+                    </center>
                     <div class="card card-w-title" style="margin-top: 5px">
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
@@ -30,24 +32,26 @@
                                               value="#{indexMB.rootNode}"
                                               selection="#{indexMB.selecionado}"
                                               var="node"
-                                              zoom="true">
+                                              zoom="true"
+                                              autoScrollToSelection="true"
+                                              >
                                     
                                     <p:ajax event="select" listener="#{indexMB.nodeSelectListener}" />
                                     
-                                    <p:organigramNode type="1" >
-                                        <h:outputText value="#{node.data}" />
+                                    <p:organigramNode type="1" style="width: 200px">
+                                        <h:outputText value="#{node.data}"/>
                                     </p:organigramNode>
 
-                                    <p:organigramNode type="2" >
-                                        <h:outputText value="#{node.data}" />
+                                    <p:organigramNode type="2" style="width: 200px">
+                                        <h:outputText value="#{node.data}"/>
                                     </p:organigramNode>
 
-                                    <p:organigramNode type="3" >
-                                        <h:outputText value="#{node.data}" />
+                                    <p:organigramNode type="3" style="width: 200px">
+                                        <h:outputText value="#{node.data}"/>
                                     </p:organigramNode>
 
-                                    <p:organigramNode type="4">
-                                        <h:outputText value="#{node.data}" />
+                                    <p:organigramNode type="4" style="width: 200px">
+                                        <h:outputText value="#{node.data}"/>
                                     </p:organigramNode>
 
                                 </p:organigram>

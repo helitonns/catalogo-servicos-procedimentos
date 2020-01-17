@@ -141,7 +141,6 @@ public class IndexMB implements Serializable {
         private Departamento departamentoDoNo;
         private OrganigramNode no;
 
-        //======================================================================
         public DepartamentoNo() {
         }
 

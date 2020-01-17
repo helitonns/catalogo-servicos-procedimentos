@@ -36,7 +36,7 @@ public class FluxoDeTrabalho implements Serializable{
     
     private String nome;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Atribuicao atribuicao;
     
     @OneToMany(mappedBy = "fluxoDeTrabalho", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

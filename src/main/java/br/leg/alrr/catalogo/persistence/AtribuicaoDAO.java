@@ -56,7 +56,7 @@ public class AtribuicaoDAO {
         }
     }
 
-    public List listarTodos2(long id) throws DAOException {
+    public List listarTodosPorIdDoDepartamento(long id) throws DAOException {
         try {
             return em.createQuery("select o from Atribuicao o where o.departamento.id =:id").setParameter("id", id).getResultList();
         } catch (Exception e) {

@@ -4,7 +4,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="WEB-INF/template1.xhtml">
+                template="WEB-INF/template2.xhtml">
 
     <ui:define name="breadcrumb">
         <li>Páginas</li>
@@ -15,7 +15,7 @@
     <ui:define name="content">
         <h:form id="form">
 
-		
+
             <div class="ui-g">
                 <div class="ui-g-12">
                     <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Departamento</label>
@@ -23,9 +23,9 @@
 
                         <p:messages globalOnly="true" closable="true"/>
 
-                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
-                            
-                                                      
+                        <div style="margin-left: 20px;">Departamento</div>
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 30px">
+
                             <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -34,7 +34,7 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -52,7 +52,7 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -61,39 +61,84 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
-                </div>
-            </div>
-        </h:form>
-        
-         <h:form id="form2">
-            <div class="ui-g">
-                <div class="ui-g-12">
+
                     <div class="card card-w-title"> 
-                        <div style="margin-left: 20px;">Atribuições cadastradas</div>
+                        <div style="margin-left: 20px;">Atribuições do Departamento selecionado</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
-                                <p:dataList var="atribuicao_var" value="#{visualizarDepartamentoMB.atribuicoesPorDepartamento}" type="unordered" itemType="none"  rows="10" styleClass="paginated">
-                                   
-                                  	
-                                  	<p:link value="#{atribuicao_var.descricao}">
-									   
-									</p:link>
-                                  
-
-                                   
-                                </p:dataList>
+                                <p:dataTable id="tbl_atribuicoes" var="var_atribuicao_fluxo" value="#{visualizarDepartamentoMB.atribuicoesComSeusFluxos}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
+                                    <f:facet name="header">Departamento: #{visualizarDepartamentoMB.departamento.nome}</f:facet>
+                                    <p:column headerText="Atribuições" groupRow="true">
+                                        <h:outputText value="#{var_atribuicao_fluxo.atribuicao.descricao}" />
+                                    </p:column>
+                                    <p:column headerText="Fluxos de trabalho">
+                                        <h:outputText value="#{var_atribuicao_fluxo.fluxoDeTrabalho.nome}" />
+                                    </p:column>
+                                    <p:column headerText="Ação" style="width: 200px">
+                                        <p:commandButton value="Visualizar fluxo" action="#{visualizarDepartamentoMB.listarAtividadesEDocumentosDoFluxoDeTrabalho}" ajax="false" update="form:tbl_atividades" icon="ui-icon-search" styleClass="green-btn" rendered="#{var_atribuicao_fluxo.fluxoDeTrabalho != null}">
+                                            <f:setPropertyActionListener value="#{var_atribuicao_fluxo.fluxoDeTrabalho}" target="#{visualizarDepartamentoMB.fluxoDeTrabalho}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
                         </div>
 
                     </div>
+
+                    <h:panelGroup rendered="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
+                        <div class="card card-w-title"> 
+                            <div style="margin-left: 20px;">Atividades do Fluxo de Trabalho selecionado</div>
+
+                            <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                                <div class="ui-g-12 ui-md-12">
+                                    <p:dataTable id="tbl_atividades" var="var_atividades" value="#{visualizarDepartamentoMB.atividadesDoFluxoDeTrabalho}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
+                                        <f:facet name="header">Fluxo de trabalho: #{visualizarDepartamentoMB.fluxoDeTrabalho.nome}</f:facet>
+                                        <p:column headerText="Ordem da atividade no fluxo">
+                                            <h:outputText value="#{var_atividades.ordem}" />
+                                        </p:column>
+                                        <p:column headerText="Atividade">
+                                            <h:outputText value="#{var_atividades.descricao}" />
+                                        </p:column>
+                                        <p:column headerText="Atores envolvidos">
+                                            <h:outputText value="#{var_atividades.listarAtores}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
+                        <div class="card card-w-title"> 
+                            <div style="margin-left: 20px;">Documentos do Fluxo de Trabalho selecionado</div>
+
+                            <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                                <div class="ui-g-12 ui-md-12">
+                                    <p:dataTable id="tbl_documentos" var="var_documentos" value="#{visualizarDepartamentoMB.documentosDoFluxoDeTrabalho}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
+                                        <f:facet name="header">Fluxo de trabalho: #{visualizarDepartamentoMB.fluxoDeTrabalho.nome}</f:facet>
+                                        <p:column headerText="Nome">
+                                            <h:outputText value="#{var_documentos.nome}" />
+                                        </p:column>
+                                        <p:column headerText="Localização">
+                                            <h:outputText value="#{var_documentos.localizacao}" />
+                                        </p:column>
+                                        <p:column headerText="Ação" style="width: 200px">
+                                            <p:commandButton value="Visualizar" ajax="false" action="#{visualizarDepartamentoMB.visualizarDocumento(var_documentos.id)}" icon="ui-icon-file-download" update="form" style="width: 100%" styleClass="green-btn"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
+                        </div>
+                    </h:panelGroup>
+
                 </div>
             </div>
-
         </h:form>
-        
     </ui:define>
 </ui:composition>
