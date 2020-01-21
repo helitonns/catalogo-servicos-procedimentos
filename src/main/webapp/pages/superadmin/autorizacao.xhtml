@@ -60,19 +60,25 @@
                                 </p:selectOneMenu>
                             </div>
                             
+                            <div class="ui-g-12 ui-md-3">
+                                <p:selectOneMenu id="idSelectUnidade" value="#{autorizacaoMB.idDepartamento}" required="true" requiredMessage="Campo obrigatório" style="margin-top: 10px;">
+                                    <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
+                                    <f:selectItems value="#{autorizacaoMB.departamentos}" var="varDepartamento" itemValue="#{varDepartamento.id}" itemLabel="#{varDepartamento.nome}" />
+                                </p:selectOneMenu>
+                            </div>
                                                         
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-3">
                                 <p:selectOneButton value="#{autorizacaoMB.autorizacao.status}">
                                     <f:selectItem itemLabel="Ativo" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Inativo" itemValue="#{false}" />
                                 </p:selectOneButton>
                             </div>
                             
-                            <div class="ui-g-12 ui-md-4">
-                                <p:commandButton value="Salvar" action="#{autorizacaoMB.salvarAutorizacao()}" ajax="false" icon="ui-icon-save"/>
+                            <div class="ui-g-12 ui-md-3">
+                                <p:commandButton value="Salvar" action="#{autorizacaoMB.salvarAutorizacaoParaCatalogo()}" ajax="false" icon="ui-icon-save"/>
                             </div>
 
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-3">
                                 <p:commandButton value="Cancelar" action="#{autorizacaoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
                             </div>
                         </div>

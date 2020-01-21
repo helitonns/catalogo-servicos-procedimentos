@@ -61,8 +61,8 @@
 
                             <div class="ui-g-12 ui-md-3">
                                 <p:selectOneMenu id="idUnidadeUsuario" label="Unidade" value="#{usuarioMB.idUS}" required="true" >
-                                    <f:selectItem itemLabel="Selecione a unidade do usuário" noSelectionOption="true"/>
-                                    <f:selectItems value="#{usuarioMB.unidades}" var="u" itemLabel="#{u.nome}" itemValue="#{u.id}" />                            
+                                    <f:selectItem itemLabel="Selecione o departamento do usuário" noSelectionOption="true"/>
+                                    <f:selectItems value="#{usuarioMB.departamentos}" var="u" itemLabel="#{u.nome}" itemValue="#{u.id}" />                            
                                 </p:selectOneMenu>
                             </div>
 
@@ -120,8 +120,8 @@
                                         <h:outputText value="#{autorizacao_var.status ? 'ATIVO' : 'INATIVO'}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Unidade" sortBy="#{autorizacao_var.usuarioComUnidade.unidade.nome}" filterBy="#{autorizacao_var.usuarioComUnidade.unidade.nome}" >
-                                        <h:outputText value="#{autorizacao_var.usuarioComUnidade.unidade.nome}" />
+                                    <p:column headerText="Departamento" sortBy="#{autorizacao_var.usuarioComDepartamento.departamento.nome}" filterBy="#{autorizacao_var.usuarioComDepartamento.departamento.nome}" >
+                                        <h:outputText value="#{autorizacao_var.usuarioComDepartamento.departamento.nome}" />
                                     </p:column>
 
                                     <p:column headerText="Ação" style="width: 250px;">

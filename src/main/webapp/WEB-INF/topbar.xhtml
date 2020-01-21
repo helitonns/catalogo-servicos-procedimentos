@@ -18,7 +18,7 @@
 
                 <div class="layout-topbar-grid-column layout-topbar-grid-column-fixed">
                     <span class="layout-topbar-search">
-                        <h:outputText value="Usuário: #{startMB.usuario.login}" style="color: white"/>
+                        <h:outputText value="Usuário: #{startMB.usuario.login} | #{startMB.retornarUnidadeAtivaNomeCompleto()}" style="color: white"/>
                     </span>
                 </div>
 
@@ -29,7 +29,7 @@
                     <ul id="layout-profile-menu" class="layout-profile-menu">
                         <li>
                             <h:panelGroup>
-                                <a href="/autenticacao/pages/superadmin/redefinir.xhtml" class="ripplelink">
+                                <a href="/catalogo/pages/user/redefinir.xhtml" class="ripplelink">
                                     <i class="material-icons">lock</i>
                                     <span>Redefinir senha</span>
                                 </a>

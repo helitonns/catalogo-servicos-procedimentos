@@ -2,6 +2,7 @@ package br.leg.alrr.catalogo.controller;
 
 import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Usuario;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.UsuarioDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
@@ -119,6 +120,30 @@ public class StartMB implements Serializable {
         return achouNumero && achouMaiuscula && achouMinuscula;
     }
 
+    public String retornarUnidadeAtiva() {
+        try {
+            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+            String s = u.getDepartamento().getNome().substring(0, 1);
+            String t = u.getDepartamento().getNome().substring(1).toLowerCase();
+            String f = s + t;
+            if (f.length() > 14) {
+                return f.substring(0, 13)+".";
+            }else{
+                return f;
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
+    public String retornarUnidadeAtivaNomeCompleto() {
+        try {
+            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+            return u.getDepartamento().getNome();
+        } catch (Exception e) {
+            return "";
+        }
+    }
     //===========================================================
     public Usuario getUsuario() {
         return usuario;

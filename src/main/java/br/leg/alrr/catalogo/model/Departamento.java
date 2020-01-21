@@ -52,6 +52,13 @@ public class Departamento implements BaseEntity, Serializable{
     private int nivel;
     
     //==========================================================================
+
+    public Departamento() {
+    }
+    
+    public Departamento(Long id) {
+        this.id = id;
+    }
     
     @Override
     public Long getId() {

@@ -1,11 +1,14 @@
 package br.leg.alrr.catalogo.controller;
 
 import br.leg.alrr.catalogo.model.Autorizacao;
+import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.model.Privilegio;
 import br.leg.alrr.catalogo.model.Usuario;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
+import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
-import br.leg.alrr.catalogo.persistence.UsuarioDAO;
+import br.leg.alrr.catalogo.persistence.UsuarioComDepartamentoDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -33,20 +36,20 @@ public class UsuarioMB implements Serializable {
     private AutorizacaoDAO autorizacaoDAO;
     
     @EJB
-    private UsuarioDAO usuarioDAO;
+    private UsuarioComDepartamentoDAO usuarioDAO;
 
-//    @EJB
-//    private UnidadeDAO unidadeDAO;
+    @EJB
+    private DepartamentoDAO departamentoDAO;
 
     @EJB
     private PrivilegioDAO permissaoDAO;
 
     private Autorizacao autorizacao;
-    private Usuario usuario;
+    private UsuarioComDepartamento usuario;
     private String senha;
 
     private List<Usuario> usuarios;
-//    private List<Unidade> unidades;
+    private List<Departamento> departamentos;
     private List<Privilegio> permissoes;
     private List<Autorizacao> autorizacoes;
 
@@ -65,7 +68,7 @@ public class UsuarioMB implements Serializable {
         try {
             
             senha = "";
-            usuario = new Usuario();
+            usuario = new UsuarioComDepartamento();
             usuario.setStatus(true);
             idUS = 0l;
             usuarios = new ArrayList<>();
@@ -73,7 +76,7 @@ public class UsuarioMB implements Serializable {
             removerUsuario = false;
             autorizacao = new Autorizacao();
 
-//            listarUnidades();
+            listarDepartamentos();
 
             String[] s = FacesUtils.getURL().split("/");
             permissoes = permissaoDAO.listarTodosPelaChaveDoSistema(s[1]);
@@ -101,8 +104,8 @@ public class UsuarioMB implements Serializable {
 
             //verifca se a senha de usuário é forte, se sim permite o cadastro
             if (verificarForcaDaSenha(senha)) {
-                Usuario u = (Usuario) FacesUtils.getBean("usuario");
-//                usuario.setUnidade(u.getUnidade());
+                UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                usuario.setDepartamento(u.getDepartamento());
                 if (usuario.getId() != null) {
                     usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                     usuarioDAO.atualizar(usuario);
@@ -112,7 +115,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComDepartamentoComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -137,7 +140,7 @@ public class UsuarioMB implements Serializable {
         try {
             //verifca se a senha de usuário é forte, se sim permite o cadastro
             if (verificarForcaDaSenha(senha)) {
-//                usuario.setUnidade(new Unidade(idUS));
+                usuario.setDepartamento(new Departamento(idUS));
                 if (usuario.getId() != null) {
                     usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                     usuarioDAO.atualizar(usuario);
@@ -147,7 +150,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComDepartamentoComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -170,25 +173,16 @@ public class UsuarioMB implements Serializable {
         return "superusuario.xhtml" + "?faces-redirect=true";
     }
 
-//public void listarUsuarios() {
-//        try {
-//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
-//            usuarios = usuarioDAO.listarTodosPorUnidade(u.getUnidade());
-//        } catch (DAOException e) {
-//            FacesUtils.addErrorMessage(e.getMessage());
-//        }
-//    }
+public void listarUsuarios() {
+        try {
+            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+            usuarios = usuarioDAO.listarTodosPorDepartamento(u.getDepartamento());
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+    }
 
-//    public void listarUsuariosSemOSuperAdmin() {
-//        try {
-//            UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
-//            usuarios = usuarioDAO.listarTodosPorUnidadeSemOSuperAdmin(u.getUnidade());
-//        } catch (DAOException e) {
-//            FacesUtils.addErrorMessage(e.getMessage());
-//        }
-//    }
-
-    public void listarTodosUsuarios() {
+        public void listarTodosUsuarios() {
         try {
             usuarios = usuarioDAO.listarTodos();
         } catch (DAOException e) {
@@ -196,13 +190,13 @@ public class UsuarioMB implements Serializable {
         }
     }
 
-//    public void listarUnidades() {
-//        try {
-//            unidades = unidadeDAO.listarTodos();
-//        } catch (DAOException e) {
-//            FacesUtils.addErrorMessage(e.getMessage());
-//        }
-//    }
+    public void listarDepartamentos() {
+        try {
+            departamentos = departamentoDAO.listarTodos();
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+    }
 
     public void removerUsuario() {
         try {
@@ -217,9 +211,9 @@ public class UsuarioMB implements Serializable {
         limparForm();
     }
 
-//    public void prepararEdicao() {
-//        idUS = usuario.getUnidade().getId();
-//    }
+    public void prepararEdicao() {
+        idUS = usuario.getDepartamento().getId();
+    }
 
     private boolean verificarForcaDaSenha(String senha) {
         if (senha.length() < 8) {
@@ -257,11 +251,11 @@ public class UsuarioMB implements Serializable {
     }
     //==========================================================================
 
-    public Usuario getUsuario() {
+    public UsuarioComDepartamento getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioComDepartamento usuario) {
         this.usuario = usuario;
     }
 
@@ -283,6 +277,10 @@ public class UsuarioMB implements Serializable {
 
     public void setRemoverUsuario(boolean removerUsuario) {
         this.removerUsuario = removerUsuario;
+    }
+
+    public List<Departamento> getDepartamentos() {
+        return departamentos;
     }
 
     public Long getIdUS() {

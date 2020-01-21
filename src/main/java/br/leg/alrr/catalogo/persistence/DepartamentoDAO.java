@@ -105,4 +105,15 @@ public class DepartamentoDAO{
             throw new DAOException("Erro ao buscar Departamento por ID.", e);
         }
     }
+    
+    public int salvarDepartamentoParaUsuario(Long idUsuario, Long idDepartamento) throws DAOException{
+        try {
+            return  em.createNativeQuery("INSERT INTO catalogo_servicos_procedimentos.usuariocomdepartamento(id, departamento_id) VALUES (:idUsuario, :idDepartamento)")
+                    .setParameter("idUsuario", idUsuario)
+                    .setParameter("idDepartamento", idDepartamento)
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao salvar departamento para o usuário.", e);
+        }
+    }
 }

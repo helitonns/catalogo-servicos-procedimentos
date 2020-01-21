@@ -1,10 +1,12 @@
 package br.leg.alrr.catalogo.controller;
 
 import br.leg.alrr.catalogo.model.Autorizacao;
+import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.model.Privilegio;
 import br.leg.alrr.catalogo.model.Sistema;
 import br.leg.alrr.catalogo.model.Usuario;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
+import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.persistence.PrivilegioDAO;
 import br.leg.alrr.catalogo.persistence.SistemaDAO;
 import br.leg.alrr.catalogo.persistence.UsuarioDAO;
@@ -41,25 +43,21 @@ public class AutorizacaoMB implements Serializable {
     @EJB
     private UsuarioDAO usuarioDAO;
     
-//    @EJB
-//    private UnidadeDAO unidadeDAO;
-//    
-//    @EJB
-//    private UnidadeACDAO unidadeACDAO;
+    @EJB
+    private DepartamentoDAO departamentoDAO;
     
     private ArrayList<Privilegio> permissoes;
     private ArrayList<Sistema> sistemas;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Autorizacao> autorizacoes;
-//    private ArrayList<Unidade> unidades;
-//    private ArrayList<UnidadeAC> unidadesAC;
+    private ArrayList<Departamento> departamentos;
 
     private Autorizacao autorizacao;
 
     private Long idUsuario;
     private Long idSistema;
     private Long idPermissao;
-    private Long idUnidade;
+    private Long idDepartamento;
 
     private boolean removerAutorizacao;
 
@@ -67,8 +65,6 @@ public class AutorizacaoMB implements Serializable {
     @PostConstruct
     public void init() {
         limparForm();
-
-        
     }
 
     private void listarSistema() {
@@ -120,21 +116,13 @@ public class AutorizacaoMB implements Serializable {
         }
     }
 
-//    private void listarUnidadesEscolegis(){
-//        try {
-//            unidades = (ArrayList<Unidade>) unidadeDAO.listarTodos();
-//        } catch (DAOException e) {
-//            FacesUtils.addErrorMessage(e.getMessage());
-//        }
-//    }
-//    
-//    private void listarUnidadesAbrindoCaminhos(){
-//        try {
-//            unidadesAC = (ArrayList<UnidadeAC>) unidadeACDAO.listarTodos();
-//        } catch (DAOException e) {
-//            FacesUtils.addErrorMessage(e.getMessage());
-//        }
-//    }
+    private void listarDepartamentos(){
+        try {
+            departamentos = (ArrayList<Departamento>) departamentoDAO.listarTodos();
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+    }
     
     public String salvarAutorizacao() {
         try {
@@ -160,7 +148,7 @@ public class AutorizacaoMB implements Serializable {
         return "autorizacao.xhtml" + "?faces-redirect=true";
     }
     
-    public String salvarAutorizacaoParaEscolegis() {
+    public String salvarAutorizacaoParaCatalogo() {
         try {
             autorizacao.setUsuario(new Usuario(idUsuario));
             autorizacao.setPrivilegio(new Privilegio(idPermissao));
@@ -171,7 +159,7 @@ public class AutorizacaoMB implements Serializable {
             } else {
                 if (!autorizacaoDAO.verificarSeHaAutorizacaoParaUsuarioNoSistema(autorizacao.getUsuario(), new Sistema(idSistema))) {
                     autorizacaoDAO.salvar(autorizacao);
-//                    unidadeDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
+                    departamentoDAO.salvarDepartamentoParaUsuario(idUsuario, idDepartamento);
                     FacesUtils.addInfoMessageFlashScoped("Autorização salva com sucesso!");
                 } else {
                     FacesUtils.addWarnMessageFlashScoped("O usuário já possui autorização no sistema!");
@@ -182,34 +170,9 @@ public class AutorizacaoMB implements Serializable {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
             System.out.println(e.getCause());
         }
-        return "autorizacao-escolegis.xhtml" + "?faces-redirect=true";
+        return "autorizacao.xhtml" + "?faces-redirect=true";
     }
     
-    public String salvarAutorizacaoParaAbrindoCaminhos() {
-        try {
-            autorizacao.setUsuario(new Usuario(idUsuario));
-            autorizacao.setPrivilegio(new Privilegio(idPermissao));
-
-            if (autorizacao.getId() != null) {
-                autorizacaoDAO.atualizar(autorizacao);
-                FacesUtils.addInfoMessageFlashScoped("Autorização atualizada com sucesso!");
-            } else {
-                if (!autorizacaoDAO.verificarSeHaAutorizacaoParaUsuarioNoSistema(autorizacao.getUsuario(), new Sistema(idSistema))) {
-                    autorizacaoDAO.salvar(autorizacao);
-//                    unidadeACDAO.salvarUnidadeParaUsuario(idUsuario, idUnidade);
-                    FacesUtils.addInfoMessageFlashScoped("Autorização salva com sucesso!");
-                } else {
-                    FacesUtils.addWarnMessageFlashScoped("O usuário já possui autorização no sistema!");
-                }
-            }
-            limparForm();
-        } catch (DAOException e) {
-            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
-            System.out.println(e.getCause());
-        }
-        return "autorizacao-abrindo-caminhos.xhtml" + "?faces-redirect=true";
-    }
-
     public void removerAutorizacao() {
         try {
             if (removerAutorizacao) {
@@ -231,8 +194,7 @@ public class AutorizacaoMB implements Serializable {
         sistemas = new ArrayList<>();
         permissoes = new ArrayList<>();
         autorizacoes = new ArrayList<>();
-//        unidades = new ArrayList<>();
-//        unidadesAC = new ArrayList<>();
+        departamentos = new ArrayList<>();
 
         autorizacao = new Autorizacao();
         autorizacao.setStatus(true);
@@ -242,6 +204,7 @@ public class AutorizacaoMB implements Serializable {
         listarAutorizacoes();
         listarSistema();
         listarUsuarios();
+        listarDepartamentos();
                
     }
 
@@ -306,14 +269,16 @@ public class AutorizacaoMB implements Serializable {
         return autorizacoes;
     }
 
-    public Long getIdUnidade() {
-        return idUnidade;
+    public Long getIdDepartamento() {
+        return idDepartamento;
     }
 
-    public void setIdUnidade(Long idUnidade) {
-        this.idUnidade = idUnidade;
+    public void setIdDepartamento(Long idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
-   
+    public ArrayList<Departamento> getDepartamentos() {
+        return departamentos;
+    }
     
 }
