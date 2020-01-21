@@ -57,7 +57,7 @@ public class StartMB implements Serializable {
                 usuario = usuarioDAO.pesquisarPorLoginESenha(login, Criptografia.criptografarEmMD5(senha));
                 FacesUtils.setBean("usuario", usuario);
                 FacesUtils.setBean("autorizacao", autorizacao);
-                return "/pages/superadmin/autorizacao.xhtml" + "?faces-redirect=true";
+                return "/pages/user/departamento-usuario.xhtml" + "?faces-redirect=true";
             } else {
                 FacesUtils.addErrorMessageFlashScoped("Usuário e/ou senha incorreto");
             }

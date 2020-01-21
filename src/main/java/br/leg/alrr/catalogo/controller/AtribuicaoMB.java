@@ -10,7 +10,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.leg.alrr.catalogo.model.Atribuicao;
+import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
@@ -60,6 +62,13 @@ public class AtribuicaoMB implements Serializable {
                 departamento = (Departamento) FacesUtils.getBean("departamento");
                 FacesUtils.removeBean("departamento");
                 listarTodasAtribuicoesPorDepartamento();
+            } else{
+                Autorizacao a = (Autorizacao) FacesUtils.getBean("autorizacao");
+                if (!a.getPrivilegio().getDescricao().equalsIgnoreCase("SUPERADMIN")) {
+                    UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                    departamento = u.getDepartamento();
+                    listarTodasAtribuicoesPorDepartamento();
+                }
             }
         } catch (Exception e) {
             FacesUtils.addInfoMessage("Erro ao tentar acessar atribuções.");
@@ -74,25 +83,26 @@ public class AtribuicaoMB implements Serializable {
         listarTodosDepartamentos();
     }
 
-    public void salvarAtribuicao() {
+    public String salvarAtribuicao() {
         try {
             atribuicao.setDepartamento(departamento);
 
             if (atribuicao.getId() != null) {
                 atribuicaoDAO.atualizar(atribuicao);
 
-                FacesUtils.addInfoMessage("Atribuição atualizada com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Atribuição atualizada com sucesso!");
             } else {
                 atribuicaoDAO.salvar(atribuicao);
-                FacesUtils.addInfoMessage("Atribuição salva com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Atribuição salva com sucesso!");
             }
             iniciar();
         } catch (DAOException e) {
-            FacesUtils.addErrorMessage(e.getMessage());
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
+        return "atribuicao.xhtml" + "?faces-redirect=true";
     }
 
-    public void excluirAtribuicao() {
+    public String excluirAtribuicao() {
         try {
             if (removerAtribuicao) {
                 atribuicaoDAO.remover(atribuicao);
@@ -103,6 +113,7 @@ public class AtribuicaoMB implements Serializable {
             System.out.println(e.getCause());
             FacesUtils.addErrorMessage(e.getMessage());
         }
+        return "atribuicao.xhtml" + "?faces-redirect=true";
     }
 
     public void selecionarDepartamento(ValueChangeEvent event) {

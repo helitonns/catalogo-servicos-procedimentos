@@ -9,7 +9,7 @@
     <ui:define name="breadcrumb">
         <li>Páginas</li>
         <li>/</li>
-        <li><p:link outcome="/pages/user/departamento">Departamentos</p:link></li>
+        <li><p:link outcome="/pages/user/departamento-usuario">Departamento</p:link></li>
     </ui:define>
 
     <ui:define name="content">
@@ -28,7 +28,7 @@
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             
                             <div class="ui-g-12 ui-md-12">
-                                <p:selectOneMenu id="idSelectDepartamento" value="#{atribuicaoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{atribuicaoMB.selecionarDepartamento}">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{atribuicaoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{atribuicaoMB.selecionarDepartamento}" disabled="#{!startMB.superAdmin}">
                                     <p:ajax event="change" update="form2:tbl_atribuicoes"/>
                                     <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
                                     <f:selectItems value="#{atribuicaoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />

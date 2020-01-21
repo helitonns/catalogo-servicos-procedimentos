@@ -2,6 +2,7 @@ package br.leg.alrr.catalogo.model;
 
 import br.leg.alrr.catalogo.util.BaseEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,51 +16,50 @@ import javax.persistence.Table;
 
 /**
  * Entidade que representa um departamento nas regras de negócio.
- * 
+ *
  * @author Heliton Nascimento
  * @since 2019-12-05
  * @version 1.0
- * 
+ *
  */
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
-public class Departamento implements BaseEntity, Serializable{
-    
+public class Departamento implements BaseEntity, Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String nome;
-    
+
     private String estrutura;
-    
+
     private String telefone;
-    
+
     private String email;
-    
+
     private String chefe;
-    
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Ator> atores;
-    
+
     @ManyToOne(optional = true)
     private Departamento departamentoPai;
-    
-    private boolean status;
-    
-    private int nivel;
-    
-    //==========================================================================
 
+    private boolean status;
+
+    private int nivel;
+
+    //==========================================================================
     public Departamento() {
     }
-    
+
     public Departamento(Long id) {
         this.id = id;
     }
-    
+
     @Override
     public Long getId() {
         return id;
@@ -142,4 +142,31 @@ public class Departamento implements BaseEntity, Serializable{
     public void setNivel(int nivel) {
         this.nivel = nivel;
     }
+
+    public List<Ator> getAtoresNaoDuplicados() {
+
+        boolean encontrouElemento = false;
+        List<Ator> l = new ArrayList<>();
+
+        for (Ator a : atores) {
+            if (l.size() < 1) {
+                l.add(a);
+            } else {
+                for (Ator aa : l) {
+                    if (a.getId().equals(aa.getId())) {
+                        encontrouElemento = true;
+                        break;
+                    }
+                }
+
+                if (!encontrouElemento) {
+                    l.add(a);
+                }
+                encontrouElemento = false;
+            }
+        }
+
+        return l;
+    }
+
 }

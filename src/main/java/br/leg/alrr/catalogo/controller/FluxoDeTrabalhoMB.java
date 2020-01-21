@@ -12,9 +12,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.leg.alrr.catalogo.model.Atribuicao;
+import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.model.Documento;
 import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AtividadeDAO;
 import br.leg.alrr.catalogo.persistence.AtorDAO;
 import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
@@ -93,8 +95,20 @@ public class FluxoDeTrabalhoMB implements Serializable {
             //VERIFICA SE HÁ DEPARTAMETO NA SESSÃO
             if (FacesUtils.getBean("departamento") != null) {
                 departamento = (Departamento) FacesUtils.getBean("departamento");
+                atores = departamento.getAtoresNaoDuplicados();
                 FacesUtils.removeBean("departamento");
                 listarTodasAtribuicoesPorDepartamento();
+                atribuicao = (Atribuicao) FacesUtils.getBean("atribuicao");
+                FacesUtils.removeBean("atribuicao");
+                listarFluxoDeTrabalhoPorAtribuicao();
+            }else{
+                Autorizacao a = (Autorizacao) FacesUtils.getBean("autorizacao");
+                if (!a.getPrivilegio().getDescricao().equalsIgnoreCase("SUPERADMIN")) {
+                    UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                    departamento = u.getDepartamento();
+                    atores = departamento.getAtoresNaoDuplicados();
+                    listarTodasAtribuicoesPorDepartamento();
+                }
             }
         } catch (Exception e) {
             FacesUtils.addInfoMessage("Erro ao tentar acessar atribuções.");

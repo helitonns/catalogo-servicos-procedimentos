@@ -1,0 +1,142 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/template.xhtml">
+
+    <ui:define name="breadcrumb">
+        <li>Páginas</li>
+        <li>/</li>
+        <li><p:link outcome="/pages/user/departamento">Departamentos</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Estrutura Organizacional</label>
+                    <div class="card card-w-title" style="margin-top: 5px">
+
+                        <p:messages globalOnly="true" closable="true"/>
+
+                        <div style="margin-left: 20px;">Gerenciar departamentos</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                        
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idDeptoNome" value="#{departamentoUsuarioMB.departamento.nome}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <label>Nome</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+           
+                            
+                            <div class="ui-g-12 ui-md-4">
+                            	
+                                <p:selectBooleanButton id="idAtivarPai" value="#{departamentoUsuarioMB.ativarPai}"  onLabel="Selecionar Pai Ativo" offLabel="Selecionar Pai Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                    <p:tooltip value="Clique para Ativar o Departamento" for="idAtivarPai"/>
+                                    <p:ajax event="change" update="idSelectDeptoPai" process="@this" />
+                                </p:selectBooleanButton>
+                            </div>
+                            
+                             <div class="ui-g-12 ui-md-4">
+                                <p:selectOneMenu id="idSelectDeptoPai" disabled="#{departamentoUsuarioMB.ativarPai == false}" converter="entityConverter" value="#{departamentoUsuarioMB.departamentoPai}"  style="margin-top: 10px;">
+                                    <f:selectItem itemLabel="Selecione o Departamento Pai" noSelectionOption="true"/>
+                                    <f:selectItems value="#{departamentoUsuarioMB.departamentos}" var="varDeptoPai" itemValue="#{varDeptoPai}" itemLabel="#{varDeptoPai.nome}" />
+                                </p:selectOneMenu>
+                            </div>
+                            
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idDeptoEstrutura" value="#{departamentoUsuarioMB.departamento.estrutura}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <label>Estrutura</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idDeptoChefe" value="#{departamentoUsuarioMB.departamento.chefe}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <label>Chefe</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+							
+							<div class="ui-g-12 ui-md-4">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoUsuarioMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <label>Telefone</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="ui-inputgroup">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="idDeptoEmail" value="#{departamentoUsuarioMB.departamento.email}" required="true" requiredMessage="Campo obrigatório!"/>
+                                        <label>Email</label>
+                                    </h:panelGroup>     
+                                </div>
+                            </div>
+                        	
+                        	<div class="ui-g-12 ui-md-4">
+                            	
+                                <p:selectBooleanButton id="idDeptoStatus" value="#{departamentoUsuarioMB.departamento.status}"  onLabel="Departamento Ativo" offLabel="Departamento Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                    <p:tooltip value="Clique para selecoinar o Status" for="idDeptoStatus"/>
+                                </p:selectBooleanButton>
+                            </div>
+                            
+                           
+                           <div class="ui-g-12 ui-md-6">
+                                <h:panelGroup>
+                                    <p:selectCheckboxMenu  id="idAtoresSelecionados"   label="- Selecionar Atores - " value="#{departamentoUsuarioMB.atoresSelecionados}" converter="entityConverter" filter="true" filterMatchMode="contains" style="width: 80%; font-weight: normal">
+                                        <f:selectItems value="#{departamentoUsuarioMB.atores}" var="var_atoresSelecionados" itemValue="#{var_atoresSelecionados}" itemLabel="#{var_atoresSelecionados.descricao}" />
+                                    </p:selectCheckboxMenu>
+                                    <p:commandButton id="btnAddAtor"  action="#{departamentoUsuarioMB.adicionarAtor()}" update="idTabAtorAdicionados" icon="ui-icon-add" style="float: right">
+                                        <p:tooltip value="Adicionar Atores" for="btnAddAtor"/>
+                                    </p:commandButton>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable id="idTabAtorAdicionados" var="aa" value="#{departamentoUsuarioMB.atoresAdicionados}" emptyMessage=" ">
+                                    <p:column headerText="Atores Selecionados">
+                                        <h:outputText value="#{aa.descricao}" />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:commandButton id="btnRemoverAtor" ajax="false" title="Remover" icon="ui-icon-remove" styleClass="red-btn"  update="idTabAtorAdicionados" actionListener="#{departamentoUsuarioMB.setRemoverAtor(aa)}"   action="#{departamentoUsuarioMB.removerAtor()}">
+                                            <p:tooltip value="Remover Ator" for="btnRemoverAtor"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            
+                              <div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Salvar" ajax="false" action="#{departamentoUsuarioMB.salvarDepartamento()}" icon="ui-icon-save"/>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6">
+                                <p:commandButton value="Cancelar" immediate="true" action="#{departamentoUsuarioMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" />
+                            </div>  
+                            
+                            <div class="ui-g-12 ui-md-12">
+                               <p:commandButton value="Atribuições" action="#{departamentoUsuarioMB.redirecionarParaAtribuicoes}"  icon="ui-icon-add-circle-outline" styleClass="orange-btn" style="width: 100%"/>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

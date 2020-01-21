@@ -30,7 +30,7 @@
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:selectOneMenu id="idSelectDepartamento" value="#{fluxoDeTrabalhoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{fluxoDeTrabalhoMB.selecionarDepartamento}" height="250">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{fluxoDeTrabalhoMB.departamento.id}" required="true" style="margin-top: 10px;" valueChangeListener="#{fluxoDeTrabalhoMB.selecionarDepartamento}" height="250" disabled="#{!startMB.superAdmin}">
                                     <p:ajax event="change" update="idSelectAtribuicao id_select_atores"/>
                                     <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
                                     <f:selectItems value="#{fluxoDeTrabalhoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />

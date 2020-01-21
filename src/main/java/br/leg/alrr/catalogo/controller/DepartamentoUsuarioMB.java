@@ -11,17 +11,19 @@ import javax.inject.Named;
 
 import br.leg.alrr.catalogo.model.Ator;
 import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
 import br.leg.alrr.catalogo.persistence.AtorDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
+import java.util.Collection;
 
 /**
  * Classe de gerenciamento das regras de negócio para a entidade Departamento.
  *
- * @author rafaell
+ * @author Heliton Nascimento
  * @version 1.0
- * @since 2019-12-07
+ * @since 2020-01-21
  * @see Departamento
  * @see DepartamentoDAO
  * @see AtorDAO
@@ -30,7 +32,7 @@ import br.leg.alrr.catalogo.util.FacesUtils;
  */
 @Named
 @ViewScoped
-public class DepartamentoMB implements Serializable {
+public class DepartamentoUsuarioMB implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +61,18 @@ public class DepartamentoMB implements Serializable {
     @PostConstruct
     public void init() {
         iniciar();
+
+        try {
+            //VERIFICA SE HÁ DEPARTAMETO NA SESSÃO
+            if (FacesUtils.getBean("usuario") != null) {
+                UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                departamento = u.getDepartamento();
+                departamentoPai = departamento.getDepartamentoPai();
+                atoresAdicionados = departamento.getAtoresNaoDuplicados();
+            }
+        } catch (Exception e) {
+            FacesUtils.addInfoMessage("Erro ao tentar acessar atribuções.");
+        }
     }
 
     private void iniciar() {
@@ -77,7 +91,7 @@ public class DepartamentoMB implements Serializable {
 
     public String salvarDepartamento() {
         try {
-            
+
             departamento.setAtores(atoresAdicionados);
 
             if (departamento.getId() != null) {
@@ -99,7 +113,7 @@ public class DepartamentoMB implements Serializable {
             FacesUtils.addErrorMessageFlashScoped("Erro ao salvar departamento!");
             System.out.println(e.getCause());
         }
-        return "departamento.xhtml" + "?faces-redirect=true";
+        return "departamento-usuario.xhtml" + "?faces-redirect=true";
     }
 
     public void excluirDepartamento() {
@@ -155,7 +169,7 @@ public class DepartamentoMB implements Serializable {
         FacesUtils.setBean("departamento", departamento);
         return "atribuicao.xhtml" + "?faces-redirect=true";
     }
-    
+
     public String cancelar() {
         return "departamento.xhtml" + "?faces-redirect=true";
     }
