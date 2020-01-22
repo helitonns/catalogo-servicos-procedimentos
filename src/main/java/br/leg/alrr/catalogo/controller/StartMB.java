@@ -1,14 +1,19 @@
 package br.leg.alrr.catalogo.controller;
 
+import br.leg.alrr.catalogo.model.Acesso;
 import br.leg.alrr.catalogo.model.Autorizacao;
 import br.leg.alrr.catalogo.model.Usuario;
 import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
+import br.leg.alrr.catalogo.persistence.AcessoDAO;
 import br.leg.alrr.catalogo.persistence.AutorizacaoDAO;
 import br.leg.alrr.catalogo.persistence.UsuarioDAO;
 import br.leg.alrr.catalogo.util.Criptografia;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,6 +37,9 @@ public class StartMB implements Serializable {
 
     @EJB
     private UsuarioDAO usuarioDAO;
+    
+    @EJB
+    private AcessoDAO acessoDAO;
 
     private Usuario usuario;
     private Autorizacao autorizacao;
@@ -57,6 +65,18 @@ public class StartMB implements Serializable {
                 usuario = usuarioDAO.pesquisarPorLoginESenha(login, Criptografia.criptografarEmMD5(senha));
                 FacesUtils.setBean("usuario", usuario);
                 FacesUtils.setBean("autorizacao", autorizacao);
+                
+                //==========================================================
+                // Código que incrementa a estatística de acesso na aplicação
+                Acesso acesso = new Acesso();
+                ZoneId zone1 = ZoneId.of("America/Boa_Vista");
+                
+                acesso.setDataDeAcesso(LocalDate.now(zone1));
+                acesso.setMomentoDoAcesso(LocalTime.now(zone1));
+                acesso.setUsuario(usuario);
+                acessoDAO.salvar(acesso);
+                //==========================================================
+                
                 return "/pages/user/departamento-usuario.xhtml" + "?faces-redirect=true";
             } else {
                 FacesUtils.addErrorMessageFlashScoped("Usuário e/ou senha incorreto");

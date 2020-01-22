@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * Entidade que representa uma Dúvida Frequente no sistema.
@@ -16,6 +18,8 @@ import javax.persistence.Table;
  * @since 2020-01-22
  * @version 1.0
   */
+@Audited
+@AuditTable(value="duvida_frequente_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class DuvidaFrequente implements Serializable {

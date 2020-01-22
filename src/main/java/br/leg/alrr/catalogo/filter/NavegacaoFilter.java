@@ -41,9 +41,9 @@ public class NavegacaoFilter implements Filter {
                 if (autorizacao.getPrivilegio().getDescricao().equals("RELATORIO") && (httpServletRequest.getRequestURI().contains("superadmin") || httpServletRequest.getRequestURI().contains("admin") || httpServletRequest.getRequestURI().contains("user"))) {
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/relatorio/relatorio-geral.xhtml");
                 } else if (autorizacao.getPrivilegio().getDescricao().equals("OPERADOR") && (httpServletRequest.getRequestURI().contains("admin") || httpServletRequest.getRequestURI().contains("superadmin"))) {
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/ator.xhtml");
+                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/departamento-usuario.xhtml");
                 } else if (autorizacao.getPrivilegio().getDescricao().equals("ADMIN") && httpServletRequest.getRequestURI().contains("superadmin")) {
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/ator.xhtml");
+                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/pages/user/departamento-usuario.xhtml");
                 } else {
                     chain.doFilter(request, response);
                 }

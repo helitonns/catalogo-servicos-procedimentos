@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * <p>
@@ -21,6 +23,8 @@ import javax.persistence.Table;
  * @version 1.0
  * @see FluxoDeTrabalho
  */
+@Audited
+@AuditTable(value="atividade_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class Atividade implements Serializable{

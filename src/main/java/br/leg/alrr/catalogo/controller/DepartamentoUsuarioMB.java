@@ -169,6 +169,16 @@ public class DepartamentoUsuarioMB implements Serializable {
         FacesUtils.setBean("departamento", departamento);
         return "atribuicao.xhtml" + "?faces-redirect=true";
     }
+    
+    public String redirecionarParaDocumentos() {
+        FacesUtils.setBean("departamento", departamento);
+        return "documento.xhtml" + "?faces-redirect=true";
+    }
+    
+    public String redirecionarParaDuvidasFrequentes() {
+        FacesUtils.setBean("departamento", departamento);
+        return "duvida-frequente.xhtml" + "?faces-redirect=true";
+    }
 
     public String cancelar() {
         return "departamento.xhtml" + "?faces-redirect=true";

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * Entidade que representa um documento no sistema. Documento será qualquer
@@ -19,6 +21,8 @@ import javax.persistence.Table;
  * @since 2019-12-05
  * @version 1.0
  */
+@Audited
+@AuditTable(value="documento_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class Documento implements Serializable {

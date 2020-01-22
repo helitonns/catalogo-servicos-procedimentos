@@ -1,83 +1,85 @@
 package br.leg.alrr.catalogo.model;
 
+import br.leg.alrr.catalogo.util.BaseEntity;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.leg.alrr.catalogo.util.BaseEntity;
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-
 /**
- * <p>
- * Entidade que representa uma atribuição para Departamento. 
- * </p>
- * 
+ * Entidade usada para gerar estatísticas sobre o acesso da aplicação.
+ *
  * @author Heliton Nascimento
- * @since 2019-12-05
+ * @since 2019-11-27
  * @version 1.0
- * @see AtribuicaoAtor
- * @see AtribuicaoDepartamento
- * @see Departamento
  */
-@Audited
-@AuditTable(value="atribuicao_auditoria", schema = "catalogo_servicos_procedimentos")
+@Table(schema = "escolegis_academico")
 @Entity
-@Table(schema = "catalogo_servicos_procedimentos")
-public class Atribuicao implements Serializable, BaseEntity {
-    
+public class Acesso implements Serializable, BaseEntity {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descricao;
-    
-    @ManyToOne
-    private Departamento departamento;
-    
-   //===========================================================================
-    
-    public Atribuicao() {
+    private LocalDate dataDeAcesso;
+
+    private LocalTime momentoDoAcesso;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario usuario;
+
+    //========================================================================//
+    public Acesso() {
     }
 
-    public Atribuicao(Long id) {
+    public Acesso(Long id) {
+        this.id = id;
     }
-    
-    
+
     @Override
     public Long getId() {
         return id;
     }
-    
+
     @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public LocalDate getDataDeAcesso() {
+        return dataDeAcesso;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDataDeAcesso(LocalDate dataDeAcesso) {
+        this.dataDeAcesso = dataDeAcesso;
     }
 
-    public Departamento getDepartamento() {
-        return departamento;
+    public LocalTime getMomentoDoAcesso() {
+        return momentoDoAcesso;
     }
 
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
+    public void setMomentoDoAcesso(LocalTime momentoDoAcesso) {
+        this.momentoDoAcesso = momentoDoAcesso;
     }
-    
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -89,7 +91,7 @@ public class Atribuicao implements Serializable, BaseEntity {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Atribuicao other = (Atribuicao) obj;
+        Acesso other = (Acesso) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;
@@ -106,5 +108,4 @@ public class Atribuicao implements Serializable, BaseEntity {
         hash = 41 * hash + Objects.hashCode(this.id);
         return hash;
     }
-    
 }

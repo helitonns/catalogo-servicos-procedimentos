@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * <p>
@@ -24,6 +26,8 @@ import javax.persistence.Table;
  * @see Atribuicao
  * @see Atribuicao
  */
+@Audited
+@AuditTable(value="fluxo_de_trabalho_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class FluxoDeTrabalho implements Serializable{

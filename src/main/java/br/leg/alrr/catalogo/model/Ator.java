@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import br.leg.alrr.catalogo.util.BaseEntity;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * Entidade que representa um Ator no sistema. Ator é responsável por realizar uma atribuição, se confunde com as funções que determinado cargo realiza.
@@ -20,6 +22,8 @@ import br.leg.alrr.catalogo.util.BaseEntity;
  * @version 1.0
  * @see AtribuicaoAtor
  */
+@Audited
+@AuditTable(value="ator_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class Ator implements Serializable, BaseEntity{

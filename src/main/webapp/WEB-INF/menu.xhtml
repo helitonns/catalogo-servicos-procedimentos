@@ -30,6 +30,11 @@
                                 <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio" rendered="#{startMB.superAdmin}"/>
                                 <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao" rendered="#{startMB.superAdmin}"/>
                             </p:submenu>
+                            
+                            <p:submenu id="menu_estatistica" label="Estatísticas" icon="assignment" rendered="#{startMB.superAdmin}">
+                                <p:menuitem id="menu_estatistica_acesso" value="Estatísticas por acesso" icon="pie_chart" outcome="/pages/superadmin/estatistica"/>
+                                <p:menuitem id="menu_estatistica_usuario" value="Estatísticas por usuário" icon="pie_chart" outcome="/pages/superadmin/estatistica-usuario"/>
+                            </p:submenu>
 
                         </sm:menu>
                     </h:form>

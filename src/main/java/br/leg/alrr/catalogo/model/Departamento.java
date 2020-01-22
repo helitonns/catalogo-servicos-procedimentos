@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 /**
  * Entidade que representa um departamento nas regras de negócio.
@@ -22,6 +24,8 @@ import javax.persistence.Table;
  * @version 1.0
  *
  */
+@Audited
+@AuditTable(value="departamento_auditoria", schema = "catalogo_servicos_procedimentos")
 @Entity
 @Table(schema = "catalogo_servicos_procedimentos")
 public class Departamento implements BaseEntity, Serializable {
