@@ -41,6 +41,9 @@ public class Documento implements Serializable {
 
     @ManyToOne
     private FluxoDeTrabalho fluxoDeTrabalho;
+    
+    @ManyToOne
+    private Departamento departamento;
     //==========================================================================
 
     public Long getId() {
@@ -89,5 +92,13 @@ public class Documento implements Serializable {
 
     public void setFluxoDeTrabalho(FluxoDeTrabalho fluxoDeTrabalho) {
         this.fluxoDeTrabalho = fluxoDeTrabalho;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 }

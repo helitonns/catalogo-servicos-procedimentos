@@ -1,5 +1,7 @@
 package br.leg.alrr.catalogo.controller;
 
+import br.leg.alrr.catalogo.model.Autorizacao;
+import br.leg.alrr.catalogo.model.Departamento;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,8 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 
 import br.leg.alrr.catalogo.model.Documento;
+import br.leg.alrr.catalogo.model.UsuarioComDepartamento;
+import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.persistence.DocumentoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -39,11 +43,19 @@ public class DocumentoMB implements Serializable {
 
     @EJB
     private DocumentoDAO documentoDao;
+    
+    @EJB
+    private DepartamentoDAO departamentoDAO;
 
-    private Documento documento;
     private List<Documento> documentos;
-    private long idDoc;
+    private List<Departamento> departamentos;
+    
+    private Documento documento;
+    private Departamento departamento;
+    
     private String nomeArquivo;
+    private long idDoc;
+    private boolean excluirDocumento;
 
     private StreamedContent arquivo;
 
@@ -51,16 +63,56 @@ public class DocumentoMB implements Serializable {
     @PostConstruct
     public void init() {
         iniciar();
-        listarTodosOsDocumentos();
+        
+        listarDepartamentos();
+        
+        try {
+            //VERIFICA SE HÁ DEPARTAMETO NA SESSÃO
+            if (FacesUtils.getBean("departamento") != null) {
+                departamento = (Departamento) FacesUtils.getBean("departamento");
+                FacesUtils.removeBean("departamento");
+                listarDocumentosPorDepartamento();
+            } else{
+                Autorizacao a = (Autorizacao) FacesUtils.getBean("autorizacao");
+                if (!a.getPrivilegio().getDescricao().equalsIgnoreCase("SUPERADMIN")) {
+                    UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
+                    departamento = u.getDepartamento();
+                    listarDocumentosPorDepartamento();
+                }
+            }
+        } catch (Exception e) {
+            FacesUtils.addInfoMessage("Erro ao tentar acessar atribuções.");
+        }
     }
 
     private void iniciar() {
-        documento = new Documento();
-        documentos = new ArrayList<Documento>();
         idDoc = 0l;
+        
+        documento = new Documento();
+        documento.setStatus(true);
+        departamento = new Departamento();
+        
+        documentos = new ArrayList<>();
+        departamentos = new ArrayList<>();
 
     }
 
+    private void listarDepartamentos(){
+        try {
+            departamentos = departamentoDAO.listarTodosAtivos();
+        } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+    }
+    
+    private void listarDocumentosPorDepartamento(){
+        try {
+            documentos = documentoDao.listarDocumentosPorDepartamento(departamento);
+        } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+    }
+    
     public void upload(FileUploadEvent event) throws IOException {
         //arquivo = new DefaultStreamedContent(event.getFile().getInputstream());
         byte[] conteudo = event.getFile().getContents();
@@ -70,12 +122,13 @@ public class DocumentoMB implements Serializable {
 
     public String salvar() {
         try {
+            documento.setDepartamento(departamento);
             if (documento.getId() != null) {
                 documentoDao.atualizar(documento);
-                FacesUtils.addInfoMessage("Documento atualizada com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Documento atualizada com sucesso!");
             } else {
                 documentoDao.salvar(documento);
-                FacesUtils.addInfoMessage("Documento salvo com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Documento salvo com sucesso!");
             }
             iniciar();
         } catch (DAOException e) {
@@ -83,15 +136,19 @@ public class DocumentoMB implements Serializable {
         }
         return "documento.xhtml" + "?faces-redirect=true";
     }
-
-    private void listarTodosOsDocumentos() {
+    
+    public String excluirDocumento(){
         try {
-            documentos = documentoDao.listarTodos();
-        } catch (NullPointerException e) {
+            if (excluirDocumento) {
+                documentoDao.removerDocumentoPorId(documento);
+                FacesUtils.addInfoMessageFlashScoped("Dúvida excluída com sucesso!");
+            }
         } catch (DAOException e) {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
+        return "documento.xhtml" + "?faces-redirect=true";
     }
+
 
     public String cancelar() {
         return "documento.xhtml" + "?faces-redirect=true";
@@ -110,10 +167,7 @@ public class DocumentoMB implements Serializable {
     public void visualizarDoc() throws DAOException {
 
         Documento doc = documentoDao.buscarPorID(idDoc);
-        System.out.println(doc.getConteudo());
-        System.out.println(doc.getId());
         nomeArquivo = doc.getNome();
-        System.out.println(doc.getNome());
 
         FacesContext fc = FacesContext.getCurrentInstance();
 
@@ -197,4 +251,23 @@ public class DocumentoMB implements Serializable {
         this.nomeArquivo = nomeArquivo;
     }
 
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public List<Departamento> getDepartamentos() {
+        return departamentos;
+    }
+
+    public boolean isExcluirDocumento() {
+        return excluirDocumento;
+    }
+
+    public void setExcluirDocumento(boolean excluirDocumento) {
+        this.excluirDocumento = excluirDocumento;
+    }
 }

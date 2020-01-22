@@ -26,12 +26,19 @@
                         <div style="margin-left: 20px;">Gerenciar Documentos</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
-                            <div class="ui-g-12 ui-md-12">
 
+                            <div class="ui-g-12 ui-md-12">
+                                <p:selectOneMenu id="idSelectDepartamento" value="#{documentoMB.departamento.id}" required="true" style="margin-top: 10px;" disabled="#{!startMB.superAdmin}">
+                                    <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
+                                    <f:selectItems value="#{documentoMB.departamentos}" var="varDepto" itemValue="#{varDepto.id}" itemLabel="#{varDepto.nome}" />
+                                </p:selectOneMenu>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12" style="margin-top: 20px;">
                                 <p:fileUpload mode="advanced" auto="true" fileUploadListener="#{documentoMB.upload}" update="idNomeArquivo" required="true" requiredMessage="Campo obrigatório!"  dragDropSupport="false"  multiple="false" fileLimitMessage="Só é possível escolher 1 arquivo por vez."
-                                              invalidFileMessage="São permitidas somente arquivos do tipo word (docx) e Pdf" invalidSizeMessage="O tamanho máximo permitido é de 1MB."
+                                              invalidFileMessage="São permitidas somente arquivos do tipo word (docx) e Pdf" invalidSizeMessage="O tamanho máximo permitido é de 5MB."
                                               label="Escolher" uploadLabel="Enviar" cancelLabel="Cancelar"
-                                              sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(docx)|(pdf)$/" style="width:100%" />
+                                              sizeLimit="5000000" fileLimit="1" allowTypes="/(\.|\/)(docx)|(pdf)$/" style="width:100%" />
 
                             </div>
 
@@ -92,13 +99,19 @@
                                     <p:column headerText="Status" style="width: 100px">
                                         <h:outputText value="#{doc_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>
-                                    <p:column headerText="Ação" style="width:280px">
-                                        <h:panelGrid columns="2" style="width: 100%">
-                                            <p:commandButton value="Visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-file-download" update="form" style="width: 100%">
+                                    <p:column headerText="Ação" style="width:180px">
+                                        <h:panelGrid columns="3" style="width: 100%">
+                                            <p:commandButton id="id_btn_visualizar" ajax="false" action="#{documentoMB.visualizarDoc}" icon="ui-icon-file-download" update="form" styleClass="green-btn">
                                                 <f:setPropertyActionListener value="#{doc_var.id}" target="#{documentoMB.idDoc}"/>
+                                                <p:tooltip value="Visualizar" for="id_btn_visualizar"/>
                                             </p:commandButton>
-                                            <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">
+                                            <p:commandButton id="id_btn_editar"  icon="ui-icon-edit" ajax="true" update="form" >
                                                 <f:setPropertyActionListener value="#{doc_var}" target="#{documentoMB.documento}"/>
+                                                <p:tooltip value="Editar" for="id_btn_editar"/>
+                                            </p:commandButton>
+                                            <p:commandButton id="id_btn_excluir" icon="ui-icon-delete" onclick="PF('modal_excluir').show();" styleClass="red-btn">
+                                                <f:setPropertyActionListener value="#{doc_var}" target="#{documentoMB.documento}"/>
+                                                <p:tooltip value="Excluir" for="id_btn_excluir"/>
                                             </p:commandButton>
                                         </h:panelGrid>
                                     </p:column>
@@ -107,16 +120,26 @@
                             </div>
                         </div>
 
+                        <p:dialog header="Exclusão" widgetVar="modal_excluir" modal="true" height="100" width="550">
+                            <h:panelGrid columns="2" style="width: 100%">
+                                <h:outputText value="Tem certeza que deseja excluir o item selecionado?" style="width: 100%"/>
+                                <p:selectOneButton value="#{documentoMB.excluirDocumento}">
+                                    <f:selectItem itemLabel="Sim" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="Não" itemValue="#{false}" />
+                                </p:selectOneButton>
+                            </h:panelGrid>
 
-
+                            <f:facet name="footer">
+                                <h:panelGrid columns="2" style="width: 100%">
+                                    <p:commandButton value="Excluir" icon="ui-icon-delete" ajax="false" action="#{documentoMB.excluirDocumento}" style="width: 100%"/>
+                                    <p:button value="Cancelar" styleClass="blue-grey-btn" icon="ui-icon-cancel"  style="width: 100%"/>
+                                </h:panelGrid>
+                            </f:facet>
+                        </p:dialog>
 
                     </div>
                 </div>
             </div>
-
         </h:form>
-
-
-
     </ui:define>
 </ui:composition>

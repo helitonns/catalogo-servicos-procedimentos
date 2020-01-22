@@ -1,5 +1,6 @@
 package br.leg.alrr.catalogo.persistence;
 
+import br.leg.alrr.catalogo.model.Departamento;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -64,6 +65,16 @@ public class DocumentoDAO {
                     .getResultList();
         } catch (Exception e) {
             throw new DAOException("Erro ao listar documentos por fluxo de trabalho.", e);
+        }
+    }
+    
+    public List listarDocumentosPorDepartamento(Departamento d) throws DAOException{
+        try {
+            return em.createQuery("select o from Documento o where o.departamento.id = :idDepartamento order by o.id asc")
+                    .setParameter("idDepartamento", d.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar documentos por departamento.", e);
         }
     }
     
