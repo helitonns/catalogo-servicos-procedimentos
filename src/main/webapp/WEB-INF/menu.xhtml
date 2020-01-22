@@ -15,18 +15,20 @@
 
                             <p:submenu id="sub_menu_gerencia" label="Gerência" icon="person">
                                 <p:menuitem id="menu_ator" value="Atores" icon="person" outcome="/pages/user/ator"/>
-                                <p:menuitem id="menu_departamento" value="Departamentos" icon="store" outcome="/pages/user/departamento"/>
+                                <p:menuitem id="menu_departamento" value="Departamento" icon="store" outcome="/pages/user/departamento-usuario"/>
+                                <p:menuitem id="menu_departamentos" value="Departamentos" icon="store" outcome="/pages/user/departamento" rendered="#{startMB.superAdmin}"/>
                                 <p:menuitem id="menu_atribuicao" value="Atribuição" icon="assignment" outcome="/pages/user/atribuicao"/>
-                                <p:menuitem id="menu_fluxo_de_trabalho" value="Fluxo de trabalho" icon="assignment" outcome="/pages/user/fluxo-de-trabalho"/>
-                                <p:menuitem id="menu_documento" value="Documento" icon="assignment" outcome="/pages/user/documento"/>
+                                <p:menuitem id="menu_fluxo_de_trabalho" value="Fluxo de trabalho" icon="autorenew" outcome="/pages/user/fluxo-de-trabalho"/>
+                                <p:menuitem id="menu_duvida_frequente" value="Dúvidas Frequentes" icon="question_answer" outcome="/pages/user/duvida-frequente"/>
+                                <p:menuitem id="menu_documento" value="Documentos" icon="content_paste" outcome="/pages/user/duvida-frequente"/>
                             </p:submenu>
 
-                            <p:submenu id="sub_menu_usuario" label="Configurações gerais" icon="person">
-                                <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/admin/usuario"/>
-                                <p:menuitem id="menu_usuario_s" value="Super Usuários" icon="person" outcome="/pages/superadmin/superusuario"/>
-                                <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema"/>
-                                <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio"/>
-                                <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao"/>
+                            <p:submenu id="sub_menu_usuario" label="Configurações gerais" icon="settings" rendered="#{startMB.admin || startMB.superAdmin}">
+                                <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/admin/usuario" />
+                                <p:menuitem id="menu_usuario_s" value="Super Usuários" icon="person" outcome="/pages/superadmin/superusuario" rendered="#{startMB.superAdmin}"/>
+                                <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema" rendered="#{startMB.superAdmin}"/>
+                                <p:menuitem id="menu_permissao" value="Privilégios" icon="lock" outcome="/pages/superadmin/privilegio" rendered="#{startMB.superAdmin}"/>
+                                <p:menuitem id="menu_autorizacao" value="Autorizações" icon="lock_outline" outcome="/pages/superadmin/autorizacao" rendered="#{startMB.superAdmin}"/>
                             </p:submenu>
 
                         </sm:menu>
