@@ -9,7 +9,7 @@
     <ui:define name="breadcrumb">
         <li>Páginas</li>
         <li>/</li>
-        <li><p:link outcome="/pages/user/departamento-usuario">Departamento</p:link></li>
+        <li><p:link outcome="/pages/user/departamento-usuario">Unidade organizacional</p:link></li>
     </ui:define>
 
     <ui:define name="content">
@@ -19,13 +19,13 @@
             <div class="ui-g">
                 <div class="ui-g-12">
                     <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Atores</label>
-                    <div class="card card-w-title" style="margin-top: 5px">
+                    <div class="card card-w-title" >
 
                         <p:messages globalOnly="true" closable="true"/>
 
-                        <div style="margin-left: 20px;">Gerenciar atores</div>
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Gerenciar atores</div>
 
-                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 10px">
 
                             <div class="ui-g-12 ui-md-6">
                                 <p:message for="idAtorDescricao" showSummary="true" showDetail="false"/>
@@ -89,8 +89,8 @@
         <h:form id="form2">
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <div class="card card-w-title"> 
-                        <div style="margin-left: 20px;">Atores cadastrados</div>
+                    <div class="card card-w-title">
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Atores cadastrados</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">

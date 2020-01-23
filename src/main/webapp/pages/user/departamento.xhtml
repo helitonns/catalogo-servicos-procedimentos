@@ -9,7 +9,7 @@
     <ui:define name="breadcrumb">
         <li>Páginas</li>
         <li>/</li>
-        <li><p:link outcome="/pages/user/departamento">Departamentos</p:link></li>
+        <li><p:link outcome="/pages/user/departamento">Unidades organizacionais</p:link></li>
     </ui:define>
 
     <ui:define name="content">
@@ -18,12 +18,12 @@
 
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Estrutura Organizacional</label>
+                    <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Unidade Organizacional</label>
                     <div class="card card-w-title" style="margin-top: 5px">
 
                         <p:messages globalOnly="true" closable="true"/>
 
-                        <div style="margin-left: 20px;">Gerenciar departamentos</div>
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Gerenciar unidades</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                         
@@ -39,15 +39,15 @@
                             
                             <div class="ui-g-12 ui-md-4">
                             	
-                                <p:selectBooleanButton id="idAtivarPai" value="#{departamentoMB.ativarPai}"  onLabel="Selecionar Pai Ativo" offLabel="Selecionar Pai Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
-                                    <p:tooltip value="Clique para Ativar o Departamento" for="idAtivarPai"/>
+                                <p:selectBooleanButton id="idAtivarPai" value="#{departamentoMB.ativarPai}"  onLabel="Possui unidade pai" offLabel="Não possui unidade pai" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                    <p:tooltip value="Clique para Ativar / Desativar a unidade pai" for="idAtivarPai"/>
                                     <p:ajax event="change" update="idSelectDeptoPai" process="@this" />
                                 </p:selectBooleanButton>
                             </div>
                             
                              <div class="ui-g-12 ui-md-4">
                                 <p:selectOneMenu id="idSelectDeptoPai" disabled="#{departamentoMB.ativarPai == false}" converter="entityConverter" value="#{departamentoMB.departamentoPai}"  style="margin-top: 10px;">
-                                    <f:selectItem itemLabel="Selecione o Departamento Pai" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Selecione a Unidade Pai" noSelectionOption="true"/>
                                     <f:selectItems value="#{departamentoMB.departamentos}" var="varDeptoPai" itemValue="#{varDeptoPai}" itemLabel="#{varDeptoPai.nome}" />
                                 </p:selectOneMenu>
                             </div>
@@ -91,7 +91,7 @@
                         	
                         	<div class="ui-g-12 ui-md-4">
                             	
-                                <p:selectBooleanButton id="idDeptoStatus" value="#{departamentoMB.departamento.status}"  onLabel="Departamento Ativo" offLabel="Departamento Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                <p:selectBooleanButton id="idDeptoStatus" value="#{departamentoMB.departamento.status}"  onLabel="Unidade Ativa" offLabel="Unidade Inativa" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
                                     <p:tooltip value="Clique para selecoinar o Status" for="idDeptoStatus"/>
                                 </p:selectBooleanButton>
                             </div>
@@ -141,8 +141,8 @@
         <h:form id="form2">
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <div class="card card-w-title"> 
-                        <div style="margin-left: 20px;">Departamentos cadastrados</div>
+                    <div class="card card-w-title">
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Unidade cadastradas</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                             <div class="ui-g-12 ui-md-12">
@@ -156,7 +156,7 @@
                                     <p:column headerText="Status" style="width: 100px">
                                         <h:outputText value="#{departamento_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>
-                                     <p:column headerText="DeptoPai">
+                                     <p:column headerText="Unidade organizacional pai">
                                         <h:outputText value="#{departamento_var.departamentoPai.nome}" />
                                     </p:column>
 
