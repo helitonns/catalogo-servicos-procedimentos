@@ -89,6 +89,49 @@
                     </div>
 
 
+                    <div class="card card-w-title">
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Documentos da unidade selecionada</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable var="doc_var" value="#{visualizarDepartamentoMB.documentosDoDepartamento}" reflow="true"  paginator="true" rows="10" emptyMessage=" ">
+                                    <f:facet name="header">Unidade organizacional: #{visualizarDepartamentoMB.departamento.nome}</f:facet>
+                                    <p:column headerText="Documento" sortBy="#{doc_var.nome}" filterBy="#{doc_var.nome}" resizable="true">
+                                        <h:outputText value="#{doc_var.nome}" />
+                                    </p:column>
+                                    <p:column headerText="Localização" sortBy="#{doc_var.localizacao}" filterBy="#{doc_var.conteudo}">
+                                        <h:outputText value="#{doc_var.localizacao}" />
+                                    </p:column>
+                                    <p:column headerText="Ação" style="width:60px">
+                                        <p:commandButton id="id_btn_visualizar" ajax="false" action="#{visualizarDepartamentoMB.visualizarDocumento(doc_var.id)}" icon="ui-icon-file-download" update="form" styleClass="green-btn">
+                                            <p:tooltip value="Visualizar" for="id_btn_visualizar"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card card-w-title">
+                        <div style="margin-left: 20px; color: #999999; font-size: 20px">Dúvidas frequentes sobre a unidade selecionada</div>
+
+                        <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
+                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable id="tbl_duvidas" var="var_duvida" value="#{visualizarDepartamentoMB.duvidasFrequentes}" reflow="true" paginator="true" rows="10" emptyMessage=" ">
+                                    <f:facet name="header">Unidade organizacional: #{visualizarDepartamentoMB.departamento.nome}</f:facet>
+                                    <p:column headerText="Dúvida" sortBy="#{var_duvida.duvida}" filterBy="#{var_duvida.duvida}">
+                                        <h:outputText value="#{var_duvida.duvida}" />
+                                    </p:column>
+                                    <p:column headerText="Reposta" sortBy="#{var_duvida.resposta}" filterBy="#{var_duvida.resposta}">
+                                        <h:outputText value="#{var_duvida.resposta}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <p:dialog id="id_dlg_info" header="Fluxo de trabalho" modal="true" minHeight="800" width="1000" maximizable="true" fitViewport="true" visible="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
 
                         <h:panelGroup rendered="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">

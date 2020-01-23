@@ -4,11 +4,13 @@ import br.leg.alrr.catalogo.model.Atividade;
 import br.leg.alrr.catalogo.model.Atribuicao;
 import br.leg.alrr.catalogo.model.Departamento;
 import br.leg.alrr.catalogo.model.Documento;
+import br.leg.alrr.catalogo.model.DuvidaFrequente;
 import br.leg.alrr.catalogo.model.FluxoDeTrabalho;
 import br.leg.alrr.catalogo.persistence.AtividadeDAO;
 import br.leg.alrr.catalogo.persistence.AtribuicaoDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.persistence.DocumentoDAO;
+import br.leg.alrr.catalogo.persistence.DuvidaFrequenteDAO;
 import br.leg.alrr.catalogo.persistence.FluxoDeTrabalhoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
@@ -50,11 +52,16 @@ public class VisualizarDepartamentoMB implements Serializable {
     
     @EJB
     private DocumentoDAO documentoDAO;
+    
+    @EJB
+    private DuvidaFrequenteDAO duvidaFrequenteDAO;
 
     private List<Atribuicao> atribuicoesDoDepartamento;
     private List<AtribuicaoFluxoDeTrabalho> atribuicoesComSeusFluxos;
     private List<Atividade> atividadesDoFluxoDeTrabalho;
     private List<Documento> documentosDoFluxoDeTrabalho;
+    private List<Documento> documentosDoDepartamento;
+    private List<DuvidaFrequente> duvidasFrequentes;
 
     private Departamento departamento;
     private FluxoDeTrabalho fluxoDeTrabalho;
@@ -70,6 +77,8 @@ public class VisualizarDepartamentoMB implements Serializable {
             departamento = (Departamento) FacesUtils.getBean("departamento");
             listarAtribuicoes();
             listarFluxosDeTrabalhoDaAtribuicao();
+            listarDocumentosPorDepartamento();
+            listarTodasAsDuvidasFrequentesDoDepartamento();
             FacesUtils.removeBean("departamento");
         }
     }
@@ -84,6 +93,7 @@ public class VisualizarDepartamentoMB implements Serializable {
         atribuicoesComSeusFluxos = new ArrayList<>();
         atividadesDoFluxoDeTrabalho = new ArrayList<>();
         documentosDoFluxoDeTrabalho = new ArrayList<>();
+        documentosDoDepartamento = new ArrayList<>();
     }
     //--------------------------------------------------------------------------
     private void listarAtribuicoes() {
@@ -133,6 +143,23 @@ public class VisualizarDepartamentoMB implements Serializable {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());
         }
     }
+    
+    private void listarDocumentosPorDepartamento(){
+        try {
+            documentosDoDepartamento = documentoDAO.listarDocumentosAtivosPorDepartamento(departamento);
+        } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+    }
+    
+    private void listarTodasAsDuvidasFrequentesDoDepartamento() {
+        try {
+            duvidasFrequentes = duvidaFrequenteDAO.listarTodasAsDuvidasFrequentesAtivasPorDepartamento(departamento);
+        } catch (NullPointerException | DAOException e) {
+            FacesUtils.addErrorMessageFlashScoped(e.getMessage());
+        }
+    }
+    
     
     public void visualizarDocumento(Long idDocumento) throws DAOException {
         Documento doc = documentoDAO.buscarPorID(idDocumento);
@@ -210,6 +237,15 @@ public class VisualizarDepartamentoMB implements Serializable {
     public boolean isExibirAtividadeDocumentos() {
         return exibirAtividadeDocumentos;
     }
+
+    public List<Documento> getDocumentosDoDepartamento() {
+        return documentosDoDepartamento;
+    }
+
+    public List<DuvidaFrequente> getDuvidasFrequentes() {
+        return duvidasFrequentes;
+    }
+    
     //==========================================================================
     /**
      * Classe para ajudar na exibição das atribuições com os seus respectivos fluxos de trabalho.

@@ -78,6 +78,16 @@ public class DocumentoDAO {
         }
     }
     
+    public List listarDocumentosAtivosPorDepartamento(Departamento d) throws DAOException{
+        try {
+            return em.createQuery("select o from Documento o where o.departamento.id = :idDepartamento and o.status = true order by o.id asc")
+                    .setParameter("idDepartamento", d.getId())
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao listar documentos por departamento.", e);
+        }
+    }
+    
     public int removerDocumentoPorId(Documento d) throws DAOException {
         try {
             return em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.documento d WHERE d.id = :idDocumento")
