@@ -47,9 +47,9 @@
                             </div>
 
                             <div class="ui-g-12 ui-md-4">
-                                <p:selectOneMenu id="idSelectDeptoPai" disabled="#{departamentoUsuarioMB.ativarPai == false}" converter="entityConverter" value="#{departamentoUsuarioMB.departamentoPai}"  style="margin-top: 10px;">
+                                <p:selectOneMenu id="idSelectDeptoPai" disabled="#{departamentoUsuarioMB.ativarPai == false}"  value="#{departamentoUsuarioMB.departamentoPai.id}"  style="margin-top: 10px;">
                                     <f:selectItem itemLabel="Selecione a Unidade Pai" noSelectionOption="true"/>
-                                    <f:selectItems value="#{departamentoUsuarioMB.departamentos}" var="varDeptoPai" itemValue="#{varDeptoPai}" itemLabel="#{varDeptoPai.nome}" />
+                                    <f:selectItems value="#{departamentoUsuarioMB.departamentos}" var="varDeptoPai" itemValue="#{varDeptoPai.id}" itemLabel="#{varDeptoPai.nome}" />
                                 </p:selectOneMenu>
                             </div>
 
@@ -82,41 +82,42 @@
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:selectOneRadio id="idDeptoStatus" value="#{departamentoUsuarioMB.departamento.status}" style="width: 100%">
+                                <p:selectOneRadio id="idDeptoStatus" value="#{departamentoUsuarioMB.departamento.status}" >
                                     <f:selectItem itemLabel="Unidade Ativa" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Unidade Inativa" itemValue="#{false}" />
                                     <p:tooltip value="Clique para selecoinar o Status" for="idDeptoStatus"/>
                                 </p:selectOneRadio>
                             </div>
+                            <div class="ui-g-12 ui-md-6"/>
 
 
-                            <div class="ui-g-12 ui-md-6">
+<!--                            <div class="ui-g-12 ui-md-6">
                                 <h:panelGroup>
-                                    <p:selectCheckboxMenu  id="idAtoresSelecionados"   label="- Selecionar Atores - " value="#{departamentoUsuarioMB.atoresSelecionados}" converter="entityConverter" filter="true" filterMatchMode="contains" style="width: 80%; font-weight: normal">
-                                        <f:selectItems value="#{departamentoUsuarioMB.atores}" var="var_atoresSelecionados" itemValue="#{var_atoresSelecionados}" itemLabel="#{var_atoresSelecionados.descricao}" />
+                                    <p:selectCheckboxMenu  id="idAtoresSelecionados"   label="- Selecionar Atores - " value="# {departamentoUsuarioMB.atoresSelecionados}" converter="entityConverter" filter="true" filterMatchMode="contains" style="width: 80%; font-weight: normal">
+                                        <f:selectItems value="# {departamentoUsuarioMB.atores}" var="var_atoresSelecionados" itemValue="# {var_atoresSelecionados}" itemLabel="# {var_atoresSelecionados.descricao}" />
                                     </p:selectCheckboxMenu>
-                                    <p:commandButton id="btnAddAtor"  action="#{departamentoUsuarioMB.adicionarAtor()}" update="idTabAtorAdicionados" icon="ui-icon-add" style="float: right">
+                                    <p:commandButton id="btnAddAtor"  action="# {departamentoUsuarioMB.adicionarAtor()}" update="idTabAtorAdicionados" icon="ui-icon-add" style="float: right">
                                         <p:tooltip value="Adicionar Atores" for="btnAddAtor"/>
                                     </p:commandButton>
                                 </h:panelGroup>
-                            </div>
+                            </div>-->
 
-                            <div class="ui-g-12 ui-md-12">
+<!--                            <div class="ui-g-12 ui-md-12">
                                 <hr style="color: #999999; border-style: dashed"/>
-                            </div>
+                            </div>-->
                             
-                            <div class="ui-g-12 ui-md-12">
-                                <p:dataTable id="idTabAtorAdicionados" var="aa" value="#{departamentoUsuarioMB.atoresAdicionados}" emptyMessage=" ">
+<!--                            <div class="ui-g-12 ui-md-12">
+                                <p:dataTable id="idTabAtorAdicionados" var="aa" value="# {departamentoUsuarioMB.atoresAdicionados}" emptyMessage=" ">
                                     <p:column headerText="Atores Selecionados">
-                                        <h:outputText value="#{aa.descricao}" />
+                                        <h:outputText value="# {aa.descricao}" />
                                     </p:column>
                                     <p:column style="width: 65px">
-                                        <p:commandButton id="btnRemoverAtor" ajax="false" title="Remover" icon="ui-icon-remove" styleClass="red-btn"  update="idTabAtorAdicionados" actionListener="#{departamentoUsuarioMB.setRemoverAtor(aa)}"   action="#{departamentoUsuarioMB.removerAtor()}">
+                                        <p:commandButton id="btnRemoverAtor" ajax="false" title="Remover" icon="ui-icon-remove" styleClass="red-btn"  update="idTabAtorAdicionados" actionListener="# {departamentoUsuarioMB.setRemoverAtor(aa)}"   action="# {departamentoUsuarioMB.removerAtor()}">
                                             <p:tooltip value="Remover Ator" for="btnRemoverAtor"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
-                            </div>
+                            </div>-->
 
                             <div class="ui-g-12 ui-md-6">
                                 <p:commandButton value="Salvar" ajax="false" action="#{departamentoUsuarioMB.salvarDepartamento()}" icon="ui-icon-save"/>

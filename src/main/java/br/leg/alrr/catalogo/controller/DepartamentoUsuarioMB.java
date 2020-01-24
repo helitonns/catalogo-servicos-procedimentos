@@ -16,7 +16,6 @@ import br.leg.alrr.catalogo.persistence.AtorDAO;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
-import java.util.Collection;
 
 /**
  * Classe de gerenciamento das regras de negócio para a entidade Departamento.
@@ -67,7 +66,10 @@ public class DepartamentoUsuarioMB implements Serializable {
             if (FacesUtils.getBean("usuario") != null) {
                 UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
                 departamento = u.getDepartamento();
-                departamentoPai = departamento.getDepartamentoPai();
+                if (departamento.getDepartamentoPai() != null) {
+                    departamentoPai = departamento.getDepartamentoPai();
+                    ativarPai = true;
+                }
                 atoresAdicionados = departamento.getAtoresNaoDuplicados();
             }
         } catch (Exception e) {
@@ -96,21 +98,21 @@ public class DepartamentoUsuarioMB implements Serializable {
 
             if (departamento.getId() != null) {
                 departamentoDAO.atualizar(departamento);
-                FacesUtils.addInfoMessageFlashScoped("departamento atualizado com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Unidade atualizada com sucesso!");
             } else {
                 if (ativarPai == false) {
                     departamento.setNivel(1);
                     departamentoDAO.salvar(departamento);
-                    FacesUtils.addInfoMessageFlashScoped("departamento salvo com sucesso!");
+                    FacesUtils.addInfoMessageFlashScoped("Unidade salva com sucesso!");
                 } else {
                     departamento.setDepartamentoPai(departamentoPai);
                     departamentoDAO.salvar(departamento);
-                    FacesUtils.addInfoMessageFlashScoped("departamento salvo com sucesso!");
+                    FacesUtils.addInfoMessageFlashScoped("Unidade salva com sucesso!");
                 }
             }
             iniciar();
         } catch (DAOException e) {
-            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar departamento!");
+            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar uidade!");
             System.out.println(e.getCause());
         }
         return "departamento-usuario.xhtml" + "?faces-redirect=true";
@@ -123,7 +125,7 @@ public class DepartamentoUsuarioMB implements Serializable {
                 departamentos = null;
                 listarTodosOsDepartamentos();
                 iniciar();
-                FacesUtils.addInfoMessage("Departamento excluído com sucesso!");
+                FacesUtils.addInfoMessage("Unidade excluída com sucesso!");
             }
         } catch (DAOException e) {
             FacesUtils.addErrorMessage(e.getMessage());
@@ -169,12 +171,12 @@ public class DepartamentoUsuarioMB implements Serializable {
         FacesUtils.setBean("departamento", departamento);
         return "atribuicao.xhtml" + "?faces-redirect=true";
     }
-    
+
     public String redirecionarParaDocumentos() {
         FacesUtils.setBean("departamento", departamento);
         return "documento.xhtml" + "?faces-redirect=true";
     }
-    
+
     public String redirecionarParaDuvidasFrequentes() {
         FacesUtils.setBean("departamento", departamento);
         return "duvida-frequente.xhtml" + "?faces-redirect=true";

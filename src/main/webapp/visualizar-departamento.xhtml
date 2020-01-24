@@ -99,10 +99,10 @@
                                     <p:column headerText="Documento" sortBy="#{doc_var.nome}" filterBy="#{doc_var.nome}" resizable="true">
                                         <h:outputText value="#{doc_var.nome}" />
                                     </p:column>
-                                    <p:column headerText="Localização" sortBy="#{doc_var.localizacao}" filterBy="#{doc_var.conteudo}">
-                                        <h:outputText value="#{doc_var.localizacao}" />
-                                    </p:column>
-                                    <p:column headerText="Ação" style="width:60px">
+<!--                                    <p:column headerText="Localização" sortBy="# {doc_var.localizacao}" filterBy="# {doc_var.conteudo}">
+                                        <h:outputText value="# {doc_var.localizacao}" />
+                                    </p:column>-->
+                                    <p:column headerText="Ação" style="width:80px">
                                         <p:commandButton id="id_btn_visualizar" ajax="false" action="#{visualizarDepartamentoMB.visualizarDocumento(doc_var.id)}" icon="ui-icon-file-download" update="form" styleClass="green-btn">
                                             <p:tooltip value="Visualizar" for="id_btn_visualizar"/>
                                         </p:commandButton>
@@ -135,8 +135,8 @@
                     <p:dialog id="id_dlg_info" header="Fluxo de trabalho" modal="true" minHeight="800" width="1000" maximizable="true" fitViewport="true" visible="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
 
                         <h:panelGroup rendered="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
-                            <div class="card card-w-title"> 
-                                <div style="margin-left: 20px;">Atividades do Fluxo de Trabalho selecionado</div>
+                            <div class="card card-w-title">
+                                <div style="margin-left: 20px; color: #999999; font-size: 20px">Atividades do Fluxo de Trabalho selecionado</div>
 
                                 <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                                     <div class="ui-g-12 ui-md-12">
@@ -148,9 +148,9 @@
                                             <p:column headerText="Atividade">
                                                 <h:outputText value="#{var_atividades.descricao}" />
                                             </p:column>
-                                            <p:column headerText="Atores envolvidos">
-                                                <h:outputText value="#{var_atividades.listarAtores}" />
-                                            </p:column>
+<!--                                            <p:column headerText="Atores envolvidos">
+                                                <h:outputText value="# {var_atividades.listarAtores}" />
+                                            </p:column>-->
                                         </p:dataTable>
                                     </div>
                                 </div>
@@ -159,8 +159,8 @@
                         </h:panelGroup>
 
                         <h:panelGroup rendered="#{visualizarDepartamentoMB.exibirAtividadeDocumentos}">
-                            <div class="card card-w-title"> 
-                                <div style="margin-left: 20px;">Documentos do Fluxo de Trabalho selecionado</div>
+                            <div class="card card-w-title">
+                                <div style="margin-left: 20px; color: #999999; font-size: 20px">Documentos do Fluxo de Trabalho selecionado</div>
 
                                 <div class="ui-g ui-fluid form-group" style="margin-top: 20px">
                                     <div class="ui-g-12 ui-md-12">
@@ -169,9 +169,9 @@
                                             <p:column headerText="Nome">
                                                 <h:outputText value="#{var_documentos.nome}" />
                                             </p:column>
-                                            <p:column headerText="Localização">
-                                                <h:outputText value="#{var_documentos.localizacao}" />
-                                            </p:column>
+<!--                                            <p:column headerText="Localização">
+                                                <h:outputText value="# {var_documentos.localizacao}" />
+                                            </p:column>-->
                                             <p:column headerText="Ação" style="width: 200px">
                                                 <p:commandButton value="Visualizar" ajax="false" action="#{visualizarDepartamentoMB.visualizarDocumento(var_documentos.id)}" icon="ui-icon-file-download" update="form" style="width: 100%" styleClass="green-btn"/>
                                             </p:column>

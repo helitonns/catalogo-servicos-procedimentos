@@ -82,21 +82,21 @@ public class DepartamentoMB implements Serializable {
 
             if (departamento.getId() != null) {
                 departamentoDAO.atualizar(departamento);
-                FacesUtils.addInfoMessageFlashScoped("departamento atualizado com sucesso!");
+                FacesUtils.addInfoMessageFlashScoped("Unidade atualizada com sucesso!");
             } else {
                 if (ativarPai == false) {
                     departamento.setNivel(1);
                     departamentoDAO.salvar(departamento);
-                    FacesUtils.addInfoMessageFlashScoped("departamento salvo com sucesso!");
+                    FacesUtils.addInfoMessageFlashScoped("Unidade salva com sucesso!");
                 } else {
                     departamento.setDepartamentoPai(departamentoPai);
                     departamentoDAO.salvar(departamento);
-                    FacesUtils.addInfoMessageFlashScoped("departamento salvo com sucesso!");
+                    FacesUtils.addInfoMessageFlashScoped("Unidade salva com sucesso!");
                 }
             }
             iniciar();
         } catch (DAOException e) {
-            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar departamento!");
+            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar unidade!");
             System.out.println(e.getCause());
         }
         return "departamento.xhtml" + "?faces-redirect=true";
@@ -109,7 +109,7 @@ public class DepartamentoMB implements Serializable {
                 departamentos = null;
                 listarTodosOsDepartamentos();
                 iniciar();
-                FacesUtils.addInfoMessage("Departamento excluído com sucesso!");
+                FacesUtils.addInfoMessage("Unidade excluída com sucesso!");
             }
         } catch (DAOException e) {
             FacesUtils.addErrorMessage(e.getMessage());

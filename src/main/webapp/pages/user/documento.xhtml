@@ -42,7 +42,7 @@
 
                             </div>
 
-                            <div class="ui-g-12 ui-md-12">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputText id="idNomeArquivo" value="#{documentoMB.documento.nome}" disabled="true" converter="upperClean"/>
@@ -51,15 +51,15 @@
                                 </div>
                             </div>
 
-                            <div class="ui-g-12 ui-md-6">
+<!--                            <div class="ui-g-12 ui-md-6">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDocLocalizacao" value="#{documentoMB.documento.localizacao}" converter="upperClean"/>
+                                        <p:inputText id="idDocLocalizacao" value="# {documentoMB.documento.localizacao}" converter="upperClean"/>
                                         <label>Localização do Documento</label>
                                         <p:message for="idDocLocalizacao" showSummary="false" showDetail="false"/>
                                     </h:panelGroup>     
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="ui-g-12 ui-md-6">
                                 <p:selectOneRadio id="idDocStatus" value="#{documentoMB.documento.status}" style="width: 100%">
@@ -95,9 +95,9 @@
                                     <p:column headerText="Nome" sortBy="#{doc_var.nome}" filterBy="#{doc_var.nome}" resizable="true">
                                         <h:outputText value="#{doc_var.nome}" />
                                     </p:column>
-                                    <p:column headerText="Localização" sortBy="#{doc_var.localizacao}" filterBy="#{doc_var.conteudo}">
-                                        <h:outputText value="#{doc_var.localizacao}" />
-                                    </p:column>
+<!--                                    <p:column headerText="Localização" sortBy="# {doc_var.localizacao}" filterBy="# {doc_var.conteudo}">
+                                        <h:outputText value="# {doc_var.localizacao}" />
+                                    </p:column>-->
                                     <p:column headerText="Status" style="width: 100px">
                                         <h:outputText value="#{doc_var.status ? 'Ativo' : 'Inativo'}" />
                                     </p:column>

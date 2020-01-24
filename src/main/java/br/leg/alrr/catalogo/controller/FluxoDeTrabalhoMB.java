@@ -268,14 +268,15 @@ public class FluxoDeTrabalhoMB implements Serializable {
 
     public void adicionarAtividade() {
         if (!atividade.getDescricao().equals("")) {
-            if (atoresSelecionados.size() > 0) {
-                atividade.setAtores(atoresSelecionados);
-                atoresSelecionados = new ArrayList<>();
+            //AS FORAM COMENTADAS PORQUE FOI DESATIVADA A OPÇÃO PARA INCLIR ATORES
+//            if (atoresSelecionados.size() > 0) {
+//                atividade.setAtores(atoresSelecionados);
+//                atoresSelecionados = new ArrayList<>();
                 atividades.add(atividade);
                 atividade = new Atividade();
-            } else {
-                FacesUtils.addErrorMessageFlashScoped("É necessário que tenha pelo menos um ator vinculado à atividade!");
-            }
+//            } else {
+//                FacesUtils.addErrorMessageFlashScoped("É necessário que tenha pelo menos um ator vinculado à atividade!");
+//            }
         } else {
             FacesUtils.addErrorMessageFlashScoped("A descrição da atividade é campo obrigatório!");
 

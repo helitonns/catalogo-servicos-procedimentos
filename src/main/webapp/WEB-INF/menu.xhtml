@@ -14,7 +14,7 @@
                         <sm:menu>
 
                             <p:submenu id="sub_menu_gerencia" label="Gerência" icon="person">
-                                <p:menuitem id="menu_ator" value="Atores" icon="person" outcome="/pages/user/ator"/>
+                                <p:menuitem id="menu_ator" value="Atores" icon="person" outcome="/pages/user/ator" rendered="false"/>
                                 <p:menuitem id="menu_departamento" value="Unidade Organizacional" icon="store" outcome="/pages/user/departamento-usuario"/>
                                 <p:menuitem id="menu_departamentos" value="Unidades Organizacionais" icon="store" outcome="/pages/user/departamento" rendered="#{startMB.superAdmin}"/>
                                 <p:menuitem id="menu_atribuicao" value="Atribuição" icon="assignment" outcome="/pages/user/atribuicao"/>
