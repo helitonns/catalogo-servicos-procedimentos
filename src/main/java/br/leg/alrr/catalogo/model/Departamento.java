@@ -4,7 +4,6 @@ import br.leg.alrr.catalogo.util.BaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,8 +36,6 @@ public class Departamento implements BaseEntity, Serializable {
     private Long id;
 
     private String nome;
-
-    private String estrutura;
 
     private String telefone;
 
@@ -80,14 +77,6 @@ public class Departamento implements BaseEntity, Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getEstrutura() {
-        return estrutura;
-    }
-
-    public void setEstrutura(String estrutura) {
-        this.estrutura = estrutura;
     }
 
     public String getTelefone() {

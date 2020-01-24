@@ -62,9 +62,11 @@
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:selectBooleanButton id="idDocStatus" value="#{documentoMB.documento.status}" required="true" requiredMessage="Campo obrigatório!"  onLabel="Documento Ativo" offLabel="Documento Inativo" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                <p:selectOneRadio id="idDocStatus" value="#{documentoMB.documento.status}" style="width: 100%">
+                                    <f:selectItem itemLabel="Documento Ativo" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="Documento Inativo" itemValue="#{false}" />
                                     <p:tooltip value="Clique para selecoinar o Status" for="idDocStatus"/>
-                                </p:selectBooleanButton>
+                                </p:selectOneRadio>
                             </div>
 
                             <div class="ui-g-12 ui-md-6">

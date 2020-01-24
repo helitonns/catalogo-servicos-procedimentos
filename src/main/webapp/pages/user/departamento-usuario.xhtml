@@ -26,7 +26,7 @@
                         <div style="margin-left: 20px; color: #999999; font-size: 20px">Gerenciar unidades</div>
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 30px">
-                        
+
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -35,34 +35,26 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-           
-                            
+
+
                             <div class="ui-g-12 ui-md-4">
-                            	
-                                <p:selectBooleanButton id="idAtivarPai" value="#{departamentoUsuarioMB.ativarPai}"  onLabel="Possui unidade pai" offLabel="Não possui unidade pai" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+                                <p:selectOneRadio  id="idAtivarPai" value="#{departamentoUsuarioMB.ativarPai}" label="Status" style="width: 100%">
+                                    <f:selectItem itemLabel="Há unidade pai" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="Não há unidade pai" itemValue="#{false}" />
                                     <p:tooltip value="Clique para Ativar / Desativar a unidade pai" for="idAtivarPai"/>
                                     <p:ajax event="change" update="idSelectDeptoPai" process="@this" />
-                                </p:selectBooleanButton>
+                                </p:selectOneRadio>
                             </div>
-                            
-                             <div class="ui-g-12 ui-md-4">
+
+                            <div class="ui-g-12 ui-md-4">
                                 <p:selectOneMenu id="idSelectDeptoPai" disabled="#{departamentoUsuarioMB.ativarPai == false}" converter="entityConverter" value="#{departamentoUsuarioMB.departamentoPai}"  style="margin-top: 10px;">
                                     <f:selectItem itemLabel="Selecione a Unidade Pai" noSelectionOption="true"/>
                                     <f:selectItems value="#{departamentoUsuarioMB.departamentos}" var="varDeptoPai" itemValue="#{varDeptoPai}" itemLabel="#{varDeptoPai.nome}" />
                                 </p:selectOneMenu>
                             </div>
-                            
-                            
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="ui-inputgroup">
-                                    <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoEstrutura" value="#{departamentoUsuarioMB.departamento.estrutura}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
-                                        <label>Estrutura</label>
-                                    </h:panelGroup>     
-                                </div>
-                            </div>
-                            
-                            <div class="ui-g-12 ui-md-6">
+
+
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputText id="idDeptoChefe" value="#{departamentoUsuarioMB.departamento.chefe}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
@@ -70,8 +62,8 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-							
-							<div class="ui-g-12 ui-md-4">
+
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
                                         <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoUsuarioMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
@@ -79,7 +71,7 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
@@ -88,16 +80,17 @@
                                     </h:panelGroup>     
                                 </div>
                             </div>
-                        	
-                        	<div class="ui-g-12 ui-md-4">
-                            	
-                                <p:selectBooleanButton id="idDeptoStatus" value="#{departamentoUsuarioMB.departamento.status}"  onLabel="Unidade Ativa" offLabel="Unidade Inativa" label="Status" onIcon="ui-icon-check" offIcon="ui-icon-close">
+
+                            <div class="ui-g-12 ui-md-6">
+                                <p:selectOneRadio id="idDeptoStatus" value="#{departamentoUsuarioMB.departamento.status}" style="width: 100%">
+                                    <f:selectItem itemLabel="Unidade Ativa" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="Unidade Inativa" itemValue="#{false}" />
                                     <p:tooltip value="Clique para selecoinar o Status" for="idDeptoStatus"/>
-                                </p:selectBooleanButton>
+                                </p:selectOneRadio>
                             </div>
-                            
-                           
-                           <div class="ui-g-12 ui-md-6">
+
+
+                            <div class="ui-g-12 ui-md-6">
                                 <h:panelGroup>
                                     <p:selectCheckboxMenu  id="idAtoresSelecionados"   label="- Selecionar Atores - " value="#{departamentoUsuarioMB.atoresSelecionados}" converter="entityConverter" filter="true" filterMatchMode="contains" style="width: 80%; font-weight: normal">
                                         <f:selectItems value="#{departamentoUsuarioMB.atores}" var="var_atoresSelecionados" itemValue="#{var_atoresSelecionados}" itemLabel="#{var_atoresSelecionados.descricao}" />
@@ -108,6 +101,10 @@
                                 </h:panelGroup>
                             </div>
 
+                            <div class="ui-g-12 ui-md-12">
+                                <hr style="color: #999999; border-style: dashed"/>
+                            </div>
+                            
                             <div class="ui-g-12 ui-md-12">
                                 <p:dataTable id="idTabAtorAdicionados" var="aa" value="#{departamentoUsuarioMB.atoresAdicionados}" emptyMessage=" ">
                                     <p:column headerText="Atores Selecionados">
@@ -120,31 +117,31 @@
                                     </p:column>
                                 </p:dataTable>
                             </div>
-                            
-                              <div class="ui-g-12 ui-md-6">
+
+                            <div class="ui-g-12 ui-md-6">
                                 <p:commandButton value="Salvar" ajax="false" action="#{departamentoUsuarioMB.salvarDepartamento()}" icon="ui-icon-save"/>
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
                                 <p:commandButton value="Cancelar" immediate="true" action="#{departamentoUsuarioMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" />
                             </div>  
-                            
+
                             <div class="ui-g-12 ui-md-12">
-                                <hr/>
+                                <hr style="color: #999999; border-style: dashed"/>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-4" >
-                               <p:commandButton value="Atribuições" action="#{departamentoUsuarioMB.redirecionarParaAtribuicoes}"  icon="ui-icon-add-circle-outline" styleClass="deep-orange-btn" style="width: 100%"/>
+                                <p:commandButton value="Atribuições" action="#{departamentoUsuarioMB.redirecionarParaAtribuicoes}"  icon="ui-icon-add-circle-outline" styleClass="indigo-btn" style="width: 100%"/>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-4" >
-                               <p:commandButton value="Documentos" action="#{departamentoUsuarioMB.redirecionarParaDocumentos}"  icon="ui-icon-add-circle-outline" styleClass="green-btn" style="width: 100%"/>
+                                <p:commandButton value="Documentos" action="#{departamentoUsuarioMB.redirecionarParaDocumentos}"  icon="ui-icon-add-circle-outline" styleClass="indigo-btn" style="width: 100%"/>
                             </div>
-                            
+
                             <div class="ui-g-12 ui-md-4" >
-                               <p:commandButton value="Dúvidas frequentes" action="#{departamentoUsuarioMB.redirecionarParaDuvidasFrequentes}"  icon="ui-icon-add-circle-outline" styleClass="purple-btn" style="width: 100%"/>
+                                <p:commandButton value="Dúvidas frequentes" action="#{departamentoUsuarioMB.redirecionarParaDuvidasFrequentes}"  icon="ui-icon-add-circle-outline" styleClass="indigo-btn" style="width: 100%"/>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
