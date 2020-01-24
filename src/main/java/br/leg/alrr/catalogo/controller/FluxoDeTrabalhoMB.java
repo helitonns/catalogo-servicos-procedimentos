@@ -259,7 +259,7 @@ public class FluxoDeTrabalhoMB implements Serializable {
     private void listarAtividadesDosFluxosDeTrabalho() {
         try {
             for (FluxoDeTrabalho f : fluxosDeTrabalho) {
-                f.setAtividades(fluxoDeTrabalhoDAO.listarAtividadesPorFLuxoDeTrabalho(f));
+                f.setAtividades(fluxoDeTrabalhoDAO.listarAtividadesPorFluxoDeTrabalho(f));
             }
         } catch (DAOException e) {
             FacesUtils.addErrorMessageFlashScoped(e.getMessage());

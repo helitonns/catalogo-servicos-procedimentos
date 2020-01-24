@@ -116,4 +116,14 @@ public class DepartamentoDAO{
             throw new DAOException("Erro ao salvar departamento para o usuário.", e);
         }
     }
+    
+    public int excluirDepartamentoParaUsuario(Long idUsuario) throws DAOException{
+        try {
+            return  em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.usuariocomdepartamento ud WHERE ud.id = :idUsuario")
+                    .setParameter("idUsuario", idUsuario)
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new DAOException("Erro ao salvar departamento para o usuário.", e);
+        }
+    }
 }

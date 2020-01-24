@@ -155,6 +155,8 @@ public class AutorizacaoMB implements Serializable {
 
             if (autorizacao.getId() != null) {
                 autorizacaoDAO.atualizar(autorizacao);
+                departamentoDAO.excluirDepartamentoParaUsuario(idUsuario);
+                departamentoDAO.salvarDepartamentoParaUsuario(idUsuario, idDepartamento);
                 FacesUtils.addInfoMessageFlashScoped("Autorização atualizada com sucesso!");
             } else {
                 if (!autorizacaoDAO.verificarSeHaAutorizacaoParaUsuarioNoSistema(autorizacao.getUsuario(), new Sistema(idSistema))) {

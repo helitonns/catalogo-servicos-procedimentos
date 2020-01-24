@@ -64,7 +64,7 @@ public class DocumentoDAO {
                     .setParameter("idFluxo", ft.getId())
                     .getResultList();
         } catch (Exception e) {
-            throw new DAOException("Erro ao listar documentos por fluxo de trabalho.", e);
+            throw new DAOException("Erro ao listar documentos por fluxo de trabalho: "+e.getCause(), e);
         }
     }
     

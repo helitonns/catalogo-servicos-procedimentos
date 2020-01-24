@@ -56,9 +56,9 @@ public class FluxoDeTrabalhoDAO{
         }
     }
     
-    public List listarAtividadesPorFLuxoDeTrabalho(FluxoDeTrabalho f) throws DAOException{
+    public List listarAtividadesPorFluxoDeTrabalho(FluxoDeTrabalho f) throws DAOException{
         try {
-            return em.createQuery("select o from Atividade o join fetch o.atores where o.fluxoDeTrabalho.id = :idFLuxo order by o.ordem")
+            return em.createQuery("select o from Atividade o where o.fluxoDeTrabalho.id = :idFLuxo order by o.ordem")
                     .setParameter("idFLuxo", f.getId())
                     .getResultList();
         } catch (Exception e) {
