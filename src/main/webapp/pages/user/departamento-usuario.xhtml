@@ -57,7 +57,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoChefe" value="#{departamentoUsuarioMB.departamento.chefe}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputText id="idDeptoChefe" value="#{departamentoUsuarioMB.departamento.chefe}" requiredMessage="Campo obrigatório!"  converter="upper"/>
                                         <label>Chefe</label>
                                     </h:panelGroup>     
                                 </div>
@@ -66,7 +66,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoUsuarioMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoUsuarioMB.departamento.telefone}" requiredMessage="Campo obrigatório!"  converter="upper"/>
                                         <label>Telefone</label>
                                     </h:panelGroup>     
                                 </div>
@@ -75,7 +75,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoEmail" value="#{departamentoUsuarioMB.departamento.email}" required="true" requiredMessage="Campo obrigatório!"/>
+                                        <p:inputText id="idDeptoEmail" value="#{departamentoUsuarioMB.departamento.email}" requiredMessage="Campo obrigatório!"/>
                                         <label>Email</label>
                                     </h:panelGroup>     
                                 </div>
@@ -120,11 +120,11 @@
                             </div>-->
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Salvar" ajax="false" action="#{departamentoUsuarioMB.salvarDepartamento()}" icon="ui-icon-save"/>
+                                <p:commandButton value="Salvar" ajax="false" action="#{departamentoUsuarioMB.salvarDepartamento()}" icon="ui-icon-save" rendered="#{!startMB.operador}"/>
                             </div>
 
                             <div class="ui-g-12 ui-md-6">
-                                <p:commandButton value="Cancelar" immediate="true" action="#{departamentoUsuarioMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" />
+                                <p:commandButton value="Cancelar" immediate="true" action="#{departamentoUsuarioMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" rendered="#{!startMB.operador}"/>
                             </div>  
 
                             <div class="ui-g-12 ui-md-12">

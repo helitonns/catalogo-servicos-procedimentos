@@ -9,7 +9,7 @@
     <ui:define name="breadcrumb">
         <li>Páginas</li>
         <li>/</li>
-        <li><p:link outcome="/pages/user/departamento">Unidades organizacionais</p:link></li>
+        <li><p:link outcome="/pages/admin/departamento">Unidades organizacionais</p:link></li>
     </ui:define>
 
     <ui:define name="content">
@@ -57,7 +57,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoChefe" value="#{departamentoMB.departamento.chefe}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputText id="idDeptoChefe" value="#{departamentoMB.departamento.chefe}" requiredMessage="Campo obrigatório!"  converter="upper"/>
                                         <label>Chefe</label>
                                     </h:panelGroup>     
                                 </div>
@@ -66,7 +66,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoMB.departamento.telefone}" required="true" requiredMessage="Campo obrigatório!"  converter="upper"/>
+                                        <p:inputMask id="idDeptoTelefone" mask="9999-9999" value="#{departamentoMB.departamento.telefone}" requiredMessage="Campo obrigatório!"  converter="upper"/>
                                         <label>Telefone</label>
                                     </h:panelGroup>     
                                 </div>
@@ -75,7 +75,7 @@
                             <div class="ui-g-12 ui-md-4">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idDeptoEmail" value="#{departamentoMB.departamento.email}" required="true" requiredMessage="Campo obrigatório!"/>
+                                        <p:inputText id="idDeptoEmail" value="#{departamentoMB.departamento.email}" requiredMessage="Campo obrigatório!"/>
                                         <label>Email</label>
                                     </h:panelGroup>     
                                 </div>

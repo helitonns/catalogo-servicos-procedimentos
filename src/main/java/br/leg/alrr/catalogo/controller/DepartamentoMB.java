@@ -81,6 +81,7 @@ public class DepartamentoMB implements Serializable {
             departamento.setAtores(atoresAdicionados);
 
             if (departamento.getId() != null) {
+                departamento.setDepartamentoPai(departamentoPai);
                 departamentoDAO.atualizar(departamento);
                 FacesUtils.addInfoMessageFlashScoped("Unidade atualizada com sucesso!");
             } else {
