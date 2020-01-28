@@ -81,7 +81,9 @@ public class DepartamentoMB implements Serializable {
             departamento.setAtores(atoresAdicionados);
 
             if (departamento.getId() != null) {
-                departamento.setDepartamentoPai(departamentoPai);
+                if (ativarPai) {
+                    departamento.setDepartamentoPai(departamentoPai);
+                }
                 departamentoDAO.atualizar(departamento);
                 FacesUtils.addInfoMessageFlashScoped("Unidade atualizada com sucesso!");
             } else {
@@ -154,7 +156,7 @@ public class DepartamentoMB implements Serializable {
 
     public String redirecionarParaAtribuicoes() {
         FacesUtils.setBean("departamento", departamento);
-        return "atribuicao.xhtml" + "?faces-redirect=true";
+        return "/pages/user/atribuicao.xhtml" + "?faces-redirect=true";
     }
     
     public String cancelar() {
