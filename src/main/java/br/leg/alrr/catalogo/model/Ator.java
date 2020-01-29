@@ -23,7 +23,7 @@ import org.hibernate.envers.Audited;
  * @see AtribuicaoAtor
  */
 @Audited
-@AuditTable(value="ator_auditoria", schema = "estrtura_organizacional")
+@AuditTable(value="ator_auditoria", schema = "estrutura_organizacional")
 @Entity
 @Table(schema = "estrutura_organizacional")
 public class Ator implements Serializable, BaseEntity{
