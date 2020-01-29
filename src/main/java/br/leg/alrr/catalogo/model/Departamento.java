@@ -24,9 +24,9 @@ import org.hibernate.envers.Audited;
  *
  */
 @Audited
-@AuditTable(value="departamento_auditoria", schema = "catalogo_servicos_procedimentos")
+@AuditTable(value="departamento_auditoria", schema = "estrutura_organizacional")
 @Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+@Table(schema = "estrutura_organizacional")
 public class Departamento implements BaseEntity, Serializable {
 
     private static final long serialVersionUID = 1L;

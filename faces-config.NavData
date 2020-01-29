@@ -5,11 +5,9 @@
         <Node id="notfound.xhtml" x="1152" y="134" zoom="true"/>
         <Node id="error.xhtml" x="1154" y="84" zoom="true"/>
         <Node id="pages/superadmin/sistema.xhtml" x="602" y="394" zoom="true"/>
-        <Node id="pages/superadmin/redefinir.xhtml" x="624" y="133" zoom="true"/>
         <Node id="index.xhtml" x="1155" y="35" zoom="true"/>
         <Node id="pages/superadmin/autorizacao.xhtml" x="601" y="317" zoom="true"/>
         <Node id="pages/superadmin/superusuario.xhtml" x="148" y="192" zoom="true"/>
-        <Node id="pages/superadmin/usuario-geral.xhtml" x="150" y="150" zoom="true"/>
         <Node id="pages/superadmin/privilegio.xhtml" x="601" y="356" zoom="true"/>
         <Node id="access.xhtml" x="1153" y="187" zoom="true"/>
     </Scope>

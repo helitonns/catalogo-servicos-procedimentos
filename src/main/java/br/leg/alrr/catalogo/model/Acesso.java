@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * @since 2019-11-27
  * @version 1.0
  */
-@Table(schema = "escolegis_academico")
+@Table(schema = "estrutura_organizacional")
 @Entity
 public class Acesso implements Serializable, BaseEntity {
 

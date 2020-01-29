@@ -22,9 +22,9 @@ import org.hibernate.envers.Audited;
  * @version 1.0
  */
 @Audited
-@AuditTable(value="documento_auditoria", schema = "catalogo_servicos_procedimentos")
+@AuditTable(value="documento_auditoria", schema = "estrutura_organizacional")
 @Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+@Table(schema = "estrutura_organizacional")
 public class Documento implements Serializable {
 
     private static final long serialVersionUID = 1L;

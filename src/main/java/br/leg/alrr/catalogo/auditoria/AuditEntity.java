@@ -21,7 +21,7 @@ import org.hibernate.envers.RevisionTimestamp;
  * @since 2019-11-26
  * @version 1.0
  */
-@Table(name = "revisao_info", schema = "catalogo_servicos_procedimentos")
+@Table(name = "revisao_info", schema = "estrutura_organizacional")
 @Entity(name = "revisao_info")
 @RevisionEntity(AuditListener.class)
 public class AuditEntity implements Serializable {

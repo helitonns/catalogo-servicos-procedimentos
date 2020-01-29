@@ -27,9 +27,9 @@ import org.hibernate.envers.Audited;
  * @see Atribuicao
  */
 @Audited
-@AuditTable(value="fluxo_de_trabalho_auditoria", schema = "catalogo_servicos_procedimentos")
+@AuditTable(value="fluxo_de_trabalho_auditoria", schema = "estrutura_organizacional")
 @Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+@Table(schema = "estrutura_organizacional")
 public class FluxoDeTrabalho implements Serializable{
     
     private static final long serialVersionUID = 1L;

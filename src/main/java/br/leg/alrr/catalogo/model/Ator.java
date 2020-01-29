@@ -23,9 +23,9 @@ import org.hibernate.envers.Audited;
  * @see AtribuicaoAtor
  */
 @Audited
-@AuditTable(value="ator_auditoria", schema = "catalogo_servicos_procedimentos")
+@AuditTable(value="ator_auditoria", schema = "estrtura_organizacional")
 @Entity
-@Table(schema = "catalogo_servicos_procedimentos")
+@Table(schema = "estrutura_organizacional")
 public class Ator implements Serializable, BaseEntity{
     
     private static final long serialVersionUID = 1L;

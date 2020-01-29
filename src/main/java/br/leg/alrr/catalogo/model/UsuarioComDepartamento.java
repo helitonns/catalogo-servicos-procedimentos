@@ -13,9 +13,9 @@ import javax.persistence.Table;
  * @author Heliton Nascimento
  * @Matricula 14583
  */
-@Table(schema = "catalogo_servicos_procedimentos")
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
+@Table(schema = "estrutura_organizacional")
 public class UsuarioComDepartamento extends Usuario implements Serializable{
     
     @ManyToOne

@@ -79,6 +79,11 @@ public class IndexMB implements Serializable {
                         if (d.getDepartamentoPai().getId().equals(d2.getDepartamentoDoNo().getId())) {
                             OrganigramNode no = new DefaultOrganigramNode("2", d.getNome(), d2.no);
                             no.setSelectable(true);
+                            
+                            //Se o nível do nó for maior que 2 ele virá não expandido
+                            if (i >= 2 ) {
+                                no.setExpanded(false);
+                            }
                             departamentosNos.add(new DepartamentoNo(d, no));
                             break;
                         }
