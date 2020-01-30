@@ -30,8 +30,8 @@
                                 <div class="ui-g-12 ui-md-12">
                                     <p:treeTable value="#{indexMB.rootArvore}" var="departamento" selectionMode="single" style="margin-top:0">
                                         <p:ajax event="select" listener="#{indexMB.onNodeSelect}" />
-                                        <p:column headerText="Pesquisar" filterBy="#{departamento}" >
-                                            <h:outputText value="#{departamento}" />
+                                        <p:column headerText="Pesquisar" filterBy="#{departamento.nome}" >
+                                            <h:outputText value="#{departamento.nome}" />
                                         </p:column>
                                     </p:treeTable>
                                 </div>

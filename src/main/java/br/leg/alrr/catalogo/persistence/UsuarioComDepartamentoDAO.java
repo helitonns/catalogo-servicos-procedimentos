@@ -113,4 +113,14 @@ public class UsuarioComDepartamentoDAO{
             throw new DAOException("Erro ao pesquisar usuário por login.", e);
         }
     }
+    
+    public boolean haUsuarioComEsteLogin(String login) throws DAOException{
+        try {
+            return em.createQuery("select u from Usuario u where u.login =:login")
+                    .setParameter("login", login)
+                    .getResultList().size() >= 1;
+        } catch (Exception e) {
+            throw new DAOException("Erro ao pesquisar usuário por login.", e);
+        }
+    }
 }

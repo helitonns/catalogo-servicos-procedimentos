@@ -34,7 +34,7 @@ public class UsuarioMB implements Serializable {
 
     @EJB
     private AutorizacaoDAO autorizacaoDAO;
-    
+
     @EJB
     private UsuarioComDepartamentoDAO usuarioDAO;
 
@@ -66,7 +66,7 @@ public class UsuarioMB implements Serializable {
 
     public void limparForm() {
         try {
-            
+
             senha = "";
             usuario = new UsuarioComDepartamento();
             usuario.setStatus(true);
@@ -115,7 +115,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComDepartamentoComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -128,14 +128,14 @@ public class UsuarioMB implements Serializable {
                     }
                 }
             } else {
-                FacesUtils.addWarnMessageFlashScoped("A senha deve atender aos seguintes requisitos: ter no mínimo 8 caracteres, possuir letra minúcula 'a', possuir letra maiúscula 'A' e número '123'!!!");
+                FacesUtils.addWarnMessageFlashScoped("A senha deve atender aos seguintes requisitos: ter no mínimo 8 caracteres, possuir letra minúcula 'a', letra maiúscula 'A' e número '123'!!!");
             }
         } catch (DAOException e) {
             FacesUtils.addErrorMessageFlashScoped("Erro ao salvar usuário!");
         }
         return "usuario.xhtml" + "?faces-redirect=true";
     }
-   
+
     public String salvarSuperUsuario() {
         try {
             //verifca se a senha de usuário é forte, se sim permite o cadastro
@@ -150,7 +150,7 @@ public class UsuarioMB implements Serializable {
                     FacesUtils.addInfoMessageFlashScoped("Usuário atualizado com sucesso!");
                 } else {
                     //verifica se já há usuario cadastrado com o mesmo login
-                    if (!usuarioDAO.haUsuarioComDepartamentoComEsteLogin(usuario.getLogin())) {
+                    if (!usuarioDAO.haUsuarioComEsteLogin(usuario.getLogin())) {
                         usuario.setSenha(Criptografia.criptografarEmMD5(senha));
                         usuarioDAO.salvar(usuario);
                         autorizacao.setUsuario(usuario);
@@ -163,17 +163,16 @@ public class UsuarioMB implements Serializable {
                     }
                 }
             } else {
-                FacesUtils.addWarnMessageFlashScoped("A senha deve atender aos seguintes requisitos: ter no mínimo 8 caracteres, possuir letra minúcula 'a', "
-                        + "possuir letra maiúscula 'A' e número '123'!!!");
+                FacesUtils.addWarnMessageFlashScoped("A senha deve atender aos seguintes requisitos: ter no mínimo 8 caracteres, possuir letra minúcula 'a', letra maiúscula 'A' e número '123'!!!");
             }
 
         } catch (DAOException e) {
-            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar usuário!");
+            FacesUtils.addErrorMessageFlashScoped("Erro ao salvar usuário: "+e.getMessage());
         }
         return "superusuario.xhtml" + "?faces-redirect=true";
     }
 
-public void listarUsuarios() {
+    public void listarUsuarios() {
         try {
             UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
             usuarios = usuarioDAO.listarTodosPorDepartamento(u.getDepartamento());
@@ -182,7 +181,7 @@ public void listarUsuarios() {
         }
     }
 
-        public void listarTodosUsuarios() {
+    public void listarTodosUsuarios() {
         try {
             usuarios = usuarioDAO.listarTodos();
         } catch (DAOException e) {

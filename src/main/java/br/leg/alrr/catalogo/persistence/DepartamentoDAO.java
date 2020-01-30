@@ -108,7 +108,7 @@ public class DepartamentoDAO{
     
     public int salvarDepartamentoParaUsuario(Long idUsuario, Long idDepartamento) throws DAOException{
         try {
-            return  em.createNativeQuery("INSERT INTO catalogo_servicos_procedimentos.usuariocomdepartamento(id, departamento_id) VALUES (:idUsuario, :idDepartamento)")
+            return  em.createNativeQuery("INSERT INTO estrutura_organizacional.usuariocomdepartamento(id, departamento_id) VALUES (:idUsuario, :idDepartamento)")
                     .setParameter("idUsuario", idUsuario)
                     .setParameter("idDepartamento", idDepartamento)
                     .executeUpdate();
@@ -119,7 +119,7 @@ public class DepartamentoDAO{
     
     public int excluirDepartamentoParaUsuario(Long idUsuario) throws DAOException{
         try {
-            return  em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.usuariocomdepartamento ud WHERE ud.id = :idUsuario")
+            return  em.createNativeQuery("DELETE FROM estrutura_organizacional.usuariocomdepartamento ud WHERE ud.id = :idUsuario")
                     .setParameter("idUsuario", idUsuario)
                     .executeUpdate();
         } catch (Exception e) {

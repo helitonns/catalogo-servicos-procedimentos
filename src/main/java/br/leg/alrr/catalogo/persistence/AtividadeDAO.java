@@ -58,7 +58,7 @@ public class AtividadeDAO {
     
     public int removerAtividadePorId(Atividade a) throws DAOException {
         try {
-            return em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.atividade a WHERE a.id = :idAtividade")
+            return em.createNativeQuery("DELETE FROM estrutura_organizacional.atividade a WHERE a.id = :idAtividade")
                     .setParameter("idAtividade", a.getId())
                     .executeUpdate();
         } catch (Exception e) {

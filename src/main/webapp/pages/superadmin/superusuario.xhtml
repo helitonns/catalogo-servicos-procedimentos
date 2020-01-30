@@ -27,22 +27,26 @@
 
                         <div class="ui-g ui-fluid form-group" style="margin-top: 10px">
 
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-3">
                                 <p:message for="idLoginUsuario" showSummary="true" showDetail="false"/>
                             </div>
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-3">
                                 <p:message for="idSenhaUsuario" showSummary="true" showDetail="false"/>
                             </div>
 
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-3">
                                 <p:message for="idUnidadeUsuario" showSummary="true" showDetail="false"/>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-3">
+                                <p:message for="idTipoUsuario" showSummary="true" showDetail="false"/>
                             </div>
 
                             <!-- ############ PRIMEIRA LINHA #############-->
                             <div class="ui-g-12 ui-md-3">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:inputText id="idLoginUsuario" value="#{usuarioMB.usuario.login}" required="true"/>
+                                        <p:inputText id="idLoginUsuario" value="#{usuarioMB.usuario.login}" required="true" requiredMessage="Campo obrigatório!!!"/>
                                         <label>Digite o login do usuário</label>
                                     </h:panelGroup>     
                                 </div>
@@ -51,8 +55,9 @@
                             <div class="ui-g-12 ui-md-3">
                                 <div class="ui-inputgroup">
                                     <h:panelGroup styleClass="md-inputfield">
-                                        <p:password id="idSenhaUsuario" value="#{usuarioMB.senha}" required="true">
+                                        <p:password id="idSenhaUsuario" value="#{usuarioMB.senha}" required="true" requiredMessage="Campo obrigatório!!!">
                                             <f:validateLength minimum="8"/>
+                                            <p:tooltip value="A senha deve atender aos seguintes requisitos: ter no mínimo 8 caracteres, possuir letra minúcula 'a', letra maiúscula 'A' e número '123'!!!" for="idSenhaUsuario"/>
                                         </p:password>
                                         <label>Senha</label>
                                     </h:panelGroup>     
@@ -60,7 +65,7 @@
                             </div>
 
                             <div class="ui-g-12 ui-md-3">
-                                <p:selectOneMenu id="idUnidadeUsuario" label="Unidade" value="#{usuarioMB.idUS}" required="true" >
+                                <p:selectOneMenu id="idUnidadeUsuario" label="Unidade" value="#{usuarioMB.idUS}" required="true" style="width: 100%" requiredMessage="Campo obrigatório!!!">
                                     <f:selectItem itemLabel="Selecione o departamento do usuário" noSelectionOption="true"/>
                                     <f:selectItems value="#{usuarioMB.departamentos}" var="u" itemLabel="#{u.nome}" itemValue="#{u.id}" />                            
                                 </p:selectOneMenu>
@@ -68,7 +73,7 @@
 
                             <!-- ############ SEGUNDA LINHA #############-->
                             <div class="ui-g-12 ui-md-3">
-                                <p:selectOneMenu id="idTipoUsuario" label="Tipo Usuário" value="#{usuarioMB.idPermissao}" required="true" >
+                                <p:selectOneMenu id="idTipoUsuario" label="Tipo Usuário" value="#{usuarioMB.idPermissao}" required="true" style="width: 100%" requiredMessage="Campo obrigatório!!!">
                                     <f:selectItem itemLabel="Selecione o tipo de usuário" noSelectionOption="true"/>
                                     <f:selectItems value="#{usuarioMB.permissoes}" var="tu" itemLabel="#{tu.descricao}" itemValue="#{tu.id}" />                            
                                 </p:selectOneMenu>

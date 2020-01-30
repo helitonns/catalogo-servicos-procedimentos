@@ -90,7 +90,7 @@ public class DocumentoDAO {
     
     public int removerDocumentoPorId(Documento d) throws DAOException {
         try {
-            return em.createNativeQuery("DELETE FROM catalogo_servicos_procedimentos.documento d WHERE d.id = :idDocumento")
+            return em.createNativeQuery("DELETE FROM estrutura_organizacional.documento d WHERE d.id = :idDocumento")
                     .setParameter("idDocumento", d.getId())
                     .executeUpdate();
         } catch (Exception e) {

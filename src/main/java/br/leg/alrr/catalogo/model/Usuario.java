@@ -111,5 +111,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
         return true;
     }
     
+    public UsuarioComDepartamento getUsuarioComDepartamento(){
+        return new UsuarioComDepartamento(this.id);
+    }
     
 }

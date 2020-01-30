@@ -141,7 +141,7 @@ public class IndexMB implements Serializable {
             departamentosArvores.add(new DepartamentoArvore(new Departamento(0l), rootArvore));
 
             
-            TreeNode na = new DefaultTreeNode("" + departamentoPai.getNivel(), departamentoPai.getNome(), rootArvore);
+            TreeNode na = new DefaultTreeNode("" + departamentoPai.getNivel(), departamentoPai, rootArvore);
             na.setExpanded(true);
             departamentosArvores.add(new DepartamentoArvore(departamentoPai, na));
             
@@ -156,7 +156,7 @@ public class IndexMB implements Serializable {
                     for (DepartamentoArvore d2 : departamentosArvores) {
                         //Se o departamentoPai do nó for igual a algun nó que já estaja na lista
                         if (d.getDepartamentoPai().getId().equals(d2.getDepartamentoDoNo().getId())) {
-                            TreeNode no = new DefaultTreeNode(""+d.getNivel(), d.getNome(), d2.no);
+                            TreeNode no = new DefaultTreeNode(""+d.getNivel(), d, d2.no);
                             departamentosArvores.add(new DepartamentoArvore(d, no));
                             break;
                         }
@@ -170,10 +170,8 @@ public class IndexMB implements Serializable {
     }
 
     public void nodeSelectListener(OrganigramNodeSelectEvent event) throws IOException {
-        String nomeDoDepartamento = (String) event.getOrganigramNode().getData();
-
         for (DepartamentoNo dn : departamentosNos) {
-            if (dn.getDepartamentoDoNo().getNome().equals(nomeDoDepartamento)) {
+            if (dn.getNo().equals(selecionado))  {
                 FacesUtils.setBean("departamento", dn.getDepartamentoDoNo());
             }
         }
@@ -181,13 +179,14 @@ public class IndexMB implements Serializable {
     }
     
     public void onNodeSelect(NodeSelectEvent event) throws IOException {
-        String nomeDoDepartamento = (String) event.getTreeNode().getData();
+        Departamento depSelecionado = (Departamento) event.getTreeNode().getData();
         
-        for (DepartamentoNo dn : departamentosNos) {
-            if (dn.getDepartamentoDoNo().getNome().equals(nomeDoDepartamento)) {
+        for (DepartamentoArvore dn : departamentosArvores) {
+            if (dn.getDepartamentoDoNo().getId() == depSelecionado.getId()) {
                 FacesUtils.setBean("departamento", dn.getDepartamentoDoNo());
             }
         }
+        
         FacesContext.getCurrentInstance().getExternalContext().redirect("visualizar-departamento.xhtml?faces-redirect=true");
     }
 
@@ -246,8 +245,6 @@ public class IndexMB implements Serializable {
     public void setRootArvore(TreeNode rootArvore) {
         this.rootArvore = rootArvore;
     }
-    
-    
     //==========================================================================
 
     private class DepartamentoNo {

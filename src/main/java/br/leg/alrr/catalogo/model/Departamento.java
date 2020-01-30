@@ -43,7 +43,7 @@ public class Departamento implements BaseEntity, Serializable {
 
     private String chefe;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Ator> atores;
 
     @ManyToOne(optional = true)
