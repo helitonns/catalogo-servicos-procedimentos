@@ -61,25 +61,25 @@
                             </div>
                             
                             <div class="ui-g-12 ui-md-3">
-                                <p:selectOneMenu id="idSelectUnidade" value="#{autorizacaoMB.idDepartamento}" required="true" requiredMessage="Campo obrigatório" style="margin-top: 10px;">
+                                <p:selectOneMenu id="idSelectUnidade" value="#{autorizacaoMB.idDepartamento}" required="true" requiredMessage="Campo obrigatório" style="margin-top: 10px; width: 100%">
                                     <f:selectItem itemLabel="Selecione o departamento" noSelectionOption="true"/>
                                     <f:selectItems value="#{autorizacaoMB.departamentos}" var="varDepartamento" itemValue="#{varDepartamento.id}" itemLabel="#{varDepartamento.nome}" />
                                 </p:selectOneMenu>
                             </div>
                                                         
                             <div class="ui-g-12 ui-md-3">
-                                <p:selectOneButton value="#{autorizacaoMB.autorizacao.status}">
+                                <p:selectOneButton value="#{autorizacaoMB.autorizacao.status}" style="width: 100%">
                                     <f:selectItem itemLabel="Ativo" itemValue="#{true}" />
                                     <f:selectItem itemLabel="Inativo" itemValue="#{false}" />
                                 </p:selectOneButton>
                             </div>
                             
                             <div class="ui-g-12 ui-md-3">
-                                <p:commandButton value="Salvar" action="#{autorizacaoMB.salvarAutorizacaoParaCatalogo()}" ajax="false" icon="ui-icon-save"/>
+                                <p:commandButton value="Salvar" action="#{autorizacaoMB.salvarAutorizacaoParaCatalogo()}" ajax="false" icon="ui-icon-save" style="width: 100%"/>
                             </div>
 
                             <div class="ui-g-12 ui-md-3">
-                                <p:commandButton value="Cancelar" action="#{autorizacaoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true"/>
+                                <p:commandButton value="Cancelar" action="#{autorizacaoMB.cancelar()}" styleClass="blue-grey-btn" icon="ui-icon-cancel" immediate="true" style="width: 100%"/>
                             </div>
                         </div>
                     </div>

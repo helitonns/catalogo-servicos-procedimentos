@@ -161,6 +161,7 @@
                                             <p:commandButton value="Editar"  icon="ui-icon-edit" ajax="true" update="form" style="width: 100%">
                                                 <f:setPropertyActionListener value="#{departamento_var}" target="#{departamentoMB.departamento}"/>
                                                 <f:setPropertyActionListener value="#{departamento_var.departamentoPai}" target="#{departamentoMB.departamentoPai}"/>
+                                                <f:setPropertyActionListener value="#{departamento_var.departamentoPai != null ? true : false}" target="#{departamentoMB.ativarPai}"/>
                                                 <f:setPropertyActionListener value="#{departamento_var.atores}" target="#{departamentoMB.atoresAdicionados}"/>
                                             </p:commandButton>
                                         </h:panelGrid>
