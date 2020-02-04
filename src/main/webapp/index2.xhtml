@@ -28,12 +28,67 @@
                             <div class="ui-g-12 ui-md-12" style="width: 100%;">
 
                                 <div class="ui-g-12 ui-md-12">
-                                    <p:treeTable value="#{indexMB.rootArvore}" var="departamento" selectionMode="single" style="margin-top:0">
-                                        <p:ajax event="select" listener="#{indexMB.onNodeSelect}" />
-                                        <p:column headerText="Pesquisar" filterBy="#{departamento.nome}" >
-                                            <h:outputText value="#{departamento.nome}" />
-                                        </p:column>
-                                    </p:treeTable>
+                                    <center>
+                                        <p:organigram id="organigram"
+                                                      widgetVar="organigram"
+                                                      value="#{indexMB.rootNode}"
+                                                      selection="#{indexMB.selecionado}"
+                                                      var="node"
+                                                      zoom="true"
+                                                      autoScrollToSelection="true"
+                                                      >
+
+                                            <p:ajax event="select" listener="#{indexMB.nodeSelectListener}" />
+
+                                            <p:organigramNode type="1" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="2" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="3" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="4" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="5" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="6" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="7" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="8" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="9" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                            <p:organigramNode type="10" style="width: 120px; font-size: 12px">
+                                                <h:outputText value="#{node.data}"/>
+                                            </p:organigramNode>
+
+                                        </p:organigram>
+                                    </center>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-6" style="margin-top: 30px">
+                                    <p:commandButton value="Recolher organograma" action="#{indexMB.recolherOrganograma()}" ajax="true" update="organigram" icon="ui-icon-fullscreen-exit"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-6" style="margin-top: 30px">
+                                    <p:commandButton value="Expandir organograma" action="#{indexMB.expandirOrganograma()}" ajax="true" update="organigram" icon="ui-icon-fullscreen"/>
                                 </div>
                             </div>
 

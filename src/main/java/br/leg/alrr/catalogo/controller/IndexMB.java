@@ -55,9 +55,9 @@ public class IndexMB implements Serializable {
         iniciar();
 
         if (FacesUtils.getURL().contains("index2")) {
-            construirArvore();
-        }else{
             construirOrgonograma();
+        }else{
+            construirArvore();
         }
         
     }

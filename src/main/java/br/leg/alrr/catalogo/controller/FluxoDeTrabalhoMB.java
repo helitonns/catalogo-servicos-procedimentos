@@ -95,7 +95,7 @@ public class FluxoDeTrabalhoMB implements Serializable {
             //VERIFICA SE HÁ DEPARTAMETO NA SESSÃO
             if (FacesUtils.getBean("departamento") != null) {
                 departamento = (Departamento) FacesUtils.getBean("departamento");
-                atores = departamento.getAtoresNaoDuplicados();
+                //atores = departamento.getAtoresNaoDuplicados();
                 FacesUtils.removeBean("departamento");
                 listarTodasAtribuicoesPorDepartamento();
                 atribuicao = (Atribuicao) FacesUtils.getBean("atribuicao");
@@ -106,7 +106,7 @@ public class FluxoDeTrabalhoMB implements Serializable {
                 if (!a.getPrivilegio().getDescricao().equalsIgnoreCase("SUPERADMIN")) {
                     UsuarioComDepartamento u = (UsuarioComDepartamento) FacesUtils.getBean("usuario");
                     departamento = u.getDepartamento();
-                    atores = departamento.getAtoresNaoDuplicados();
+                    //atores = departamento.getAtoresNaoDuplicados();
                     listarTodasAtribuicoesPorDepartamento();
                 }
             }
