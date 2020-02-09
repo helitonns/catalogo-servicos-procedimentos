@@ -14,8 +14,11 @@
 
     <ui:define name="content">
         <h:form id="form">
+            <p:messages globalOnly="true" />
 
             <div class="ui-g" style="width: 100% !important;">
+
+
                 <div class="ui-g-12">
                     <center>
                         <label class="overview-numbers" style="color: #ff9800;font-size: 30px">Estrutura Organizacional da ALE/RR</label>
@@ -94,6 +97,39 @@
 
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+                    <p:dialog header="Avisos" widgetVar="modal_excluir" modal="true" minHeight="150" width="700"  visible="#{indexMB.mensagens.size() > 0 ? true : false}">
+
+
+                        <p:dataList value="#{indexMB.mensagens}" var="var_msg" type="definition">
+                            <h:outputText value="#{var_msg.titulo}:" style="font-weight: bold"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="#{var_msg.conteudo}"/>
+                            <hr style="width: 100%; border-style: dashed"/>
+                        </p:dataList>
+
+
+
+
+                    </p:dialog>
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </h:form>

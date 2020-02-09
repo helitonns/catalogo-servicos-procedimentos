@@ -1,19 +1,24 @@
 package br.leg.alrr.catalogo.controller;
 
 import br.leg.alrr.catalogo.model.Departamento;
+import br.leg.alrr.catalogo.model.Mensagem;
 import br.leg.alrr.catalogo.persistence.DepartamentoDAO;
+import br.leg.alrr.catalogo.persistence.MensagemDAO;
 import br.leg.alrr.catalogo.util.DAOException;
 import br.leg.alrr.catalogo.util.FacesUtils;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import static org.primefaces.behavior.confirm.ConfirmBehavior.PropertyKeys.message;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
@@ -39,14 +44,18 @@ public class IndexMB implements Serializable {
     @EJB
     private DepartamentoDAO departamentoDAO;
 
+    @EJB
+    private MensagemDAO mensagemDAO;
+
     private ArrayList<DepartamentoNo> departamentosNos;
     private ArrayList<DepartamentoArvore> departamentosArvores;
+    private ArrayList<Mensagem> mensagens;
 
     private Departamento departamentoPai;
 
     private OrganigramNode rootNode;
     private OrganigramNode selecionado;
-    
+
     private TreeNode rootArvore;
 
     // ==========================================================================
@@ -56,10 +65,13 @@ public class IndexMB implements Serializable {
 
         if (FacesUtils.getURL().contains("index2")) {
             construirArvore();
-        }else{
+        } else {
             construirOrgonograma();
         }
-        
+
+        listarMensagens();
+        System.out.println("Mensagens: "+mensagens.size());
+
     }
 
     private void construirOrgonograma() {
@@ -95,7 +107,7 @@ public class IndexMB implements Serializable {
                             if (i >= 2) {
                                 no.setExpanded(false);
                             }
-                            
+
                             departamentosNos.add(new DepartamentoNo(d, no));
                             break;
                         }
@@ -107,10 +119,9 @@ public class IndexMB implements Serializable {
             //Setando um filho para os nós que não possuem nenhum
             for (DepartamentoNo dn1 : departamentosNos) {
                 if (dn1.getNo().getChildCount() == 0) {
-                    OrganigramNode on = new DefaultOrganigramNode("" + (dn1.getDepartamentoDoNo().getNivel()+1), "Servidores", dn1.getNo());
+                    OrganigramNode on = new DefaultOrganigramNode("" + (dn1.getDepartamentoDoNo().getNivel() + 1), "Servidores", dn1.getNo());
                     dn1.getNo().setExpanded(false);
-                    
-                    
+
                     Departamento dep = new Departamento();
                     dep.setNivel(numeroMaximoDeNivel);
                     dep.setNome("servidores");
@@ -122,7 +133,7 @@ public class IndexMB implements Serializable {
             FacesUtils.addErrorMessage(e.getMessage());
         }
     }
-    
+
     private void construirArvore() {
         try {
             int numeroMaximoDeNivel = departamentoDAO.pesquisarOMaiorNivelDosDepartamentos();
@@ -136,16 +147,13 @@ public class IndexMB implements Serializable {
             //o terceiro parâmetro representa o pai do nó
             rootArvore = new DefaultTreeNode("0", "unidades", null);
 
-
             //Adiciona o nó ao departamento através da classe privada DepartamentoArvore
             departamentosArvores.add(new DepartamentoArvore(new Departamento(0l), rootArvore));
 
-            
             TreeNode na = new DefaultTreeNode("" + departamentoPai.getNivel(), departamentoPai, rootArvore);
             na.setExpanded(true);
             departamentosArvores.add(new DepartamentoArvore(departamentoPai, na));
-            
-            
+
             //Laço que vai construir os nós do organograma por nível
             for (int i = 2; i <= numeroMaximoDeNivel; i++) {
                 List<Departamento> departamentosDoNivel = departamentoDAO.pesquisarDepartamentosPorNivel(i);
@@ -156,7 +164,7 @@ public class IndexMB implements Serializable {
                     for (DepartamentoArvore d2 : departamentosArvores) {
                         //Se o departamentoPai do nó for igual a algun nó que já estaja na lista
                         if (d.getDepartamentoPai().getId().equals(d2.getDepartamentoDoNo().getId())) {
-                            TreeNode no = new DefaultTreeNode(""+d.getNivel(), d, d2.no);
+                            TreeNode no = new DefaultTreeNode("" + d.getNivel(), d, d2.no);
                             departamentosArvores.add(new DepartamentoArvore(d, no));
                             break;
                         }
@@ -171,22 +179,22 @@ public class IndexMB implements Serializable {
 
     public void nodeSelectListener(OrganigramNodeSelectEvent event) throws IOException {
         for (DepartamentoNo dn : departamentosNos) {
-            if (dn.getNo().equals(selecionado))  {
+            if (dn.getNo().equals(selecionado)) {
                 FacesUtils.setBean("departamento", dn.getDepartamentoDoNo());
             }
         }
         FacesContext.getCurrentInstance().getExternalContext().redirect("visualizar-departamento.xhtml?faces-redirect=true");
     }
-    
+
     public void onNodeSelect(NodeSelectEvent event) throws IOException {
         Departamento depSelecionado = (Departamento) event.getTreeNode().getData();
-        
+
         for (DepartamentoArvore dn : departamentosArvores) {
             if (dn.getDepartamentoDoNo().getId() == depSelecionado.getId()) {
                 FacesUtils.setBean("departamento", dn.getDepartamentoDoNo());
             }
         }
-        
+
         FacesContext.getCurrentInstance().getExternalContext().redirect("visualizar-departamento.xhtml?faces-redirect=true");
     }
 
@@ -203,7 +211,7 @@ public class IndexMB implements Serializable {
             }
         }
     }
-    
+
     public void expandirOrganograma() {
         for (DepartamentoNo dn1 : departamentosNos) {
             if (dn1.getNo().getChildCount() > 0) {
@@ -217,10 +225,19 @@ public class IndexMB implements Serializable {
         }
     }
 
+    private void listarMensagens() {
+        try {
+            System.out.println(LocalDate.now());
+            mensagens = (ArrayList<Mensagem>) mensagemDAO.listarTodasAsMensagensAtivasParaAData(LocalDate.now());
+        } catch (DAOException e) {
+            FacesUtils.addErrorMessage(e.getMessage());
+        }
+    }
+   
     public String cancelar() {
         return "index.xhtml" + "?faces-redirect=true";
     }
-    
+
     // ==========================================================================
     public OrganigramNode getRootNode() {
         return rootNode;
@@ -244,6 +261,10 @@ public class IndexMB implements Serializable {
 
     public void setRootArvore(TreeNode rootArvore) {
         this.rootArvore = rootArvore;
+    }
+
+    public ArrayList<Mensagem> getMensagens() {
+        return mensagens;
     }
     //==========================================================================
 
@@ -276,7 +297,7 @@ public class IndexMB implements Serializable {
             this.no = no;
         }
     }
-    
+
     private class DepartamentoArvore {
 
         private Departamento departamentoDoNo;

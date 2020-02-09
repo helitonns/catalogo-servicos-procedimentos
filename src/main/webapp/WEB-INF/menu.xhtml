@@ -24,6 +24,7 @@
                             </p:submenu>
 
                             <p:submenu id="sub_menu_usuario" label="Configurações gerais" icon="settings" rendered="#{startMB.admin || startMB.superAdmin}">
+                                <p:menuitem id="menu_mensagem" value="Mensagens" icon="chat_bubble_outline" outcome="/pages/admin/mensagem" />
                                 <p:menuitem id="menu_usuario" value="Usuários" icon="person" outcome="/pages/admin/usuario" />
                                 <p:menuitem id="menu_usuario_s" value="Super Usuários" icon="person" outcome="/pages/superadmin/superusuario" rendered="#{startMB.superAdmin}"/>
                                 <p:menuitem id="menu_sistema" value="Sistemas" icon="settings" outcome="/pages/superadmin/sistema" rendered="false"/>
