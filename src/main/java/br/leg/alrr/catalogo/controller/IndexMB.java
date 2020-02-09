@@ -70,8 +70,6 @@ public class IndexMB implements Serializable {
         }
 
         listarMensagens();
-        System.out.println("Mensagens: "+mensagens.size());
-
     }
 
     private void construirOrgonograma() {
@@ -227,7 +225,6 @@ public class IndexMB implements Serializable {
 
     private void listarMensagens() {
         try {
-            System.out.println(LocalDate.now());
             mensagens = (ArrayList<Mensagem>) mensagemDAO.listarTodasAsMensagensAtivasParaAData(LocalDate.now());
         } catch (DAOException e) {
             FacesUtils.addErrorMessage(e.getMessage());
